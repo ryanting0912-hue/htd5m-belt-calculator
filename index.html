@@ -10,11 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* ==========================================================================
-       FRC 8725 Website Design System Tokens (#252525 Neutral Matte Dark)
+       FRC 8725 Website Design System Tokens (#252525 Base + #CE5338 Accent)
        ========================================================================== */
     :root {
       --bg-base: #181818;
-      --bg-surface: #252525;       /* 核心主題基底色 #252525 */
+      --bg-surface: #252525;
       --bg-elevated: #2c2c2c;
       --bg-subtle: #1f1f1f;
       --bg-input: #141414;
@@ -29,10 +29,11 @@
       --text-secondary: #b0b0b0;
       --text-muted: #767676;
 
-      /* 主強調色 (預設採用沉穩的工程青綠/可於頂端切換為琥珀金或霧灰藍) */
-      --accent: #4db6ac;
-      --accent-soft: rgba(77, 182, 172, 0.14);
-      --accent-border: rgba(77, 182, 172, 0.45);
+      /* 固定使用指定強調色 HEX #CE5338 */
+      --accent: #CE5338;
+      --accent-soft: rgba(206, 83, 56, 0.16);
+      --accent-border: rgba(206, 83, 56, 0.50);
+      --accent-hover: rgba(206, 83, 56, 0.26);
 
       /* 語意狀態色 */
       --status-ok: #4caf50;
@@ -47,23 +48,6 @@
       --radius-sm: 6px;
       --radius-md: 8px;
       --radius-lg: 10px;
-    }
-
-    /* 主題強調色切換支援 */
-    [data-accent="amber"] {
-      --accent: #f59e0b;
-      --accent-soft: rgba(245, 158, 11, 0.14);
-      --accent-border: rgba(245, 158, 11, 0.45);
-    }
-    [data-accent="steel"] {
-      --accent: #64b5f6;
-      --accent-soft: rgba(100, 181, 246, 0.14);
-      --accent-border: rgba(100, 181, 246, 0.45);
-    }
-    [data-accent="mono"] {
-      --accent: #e0e0e0;
-      --accent-soft: rgba(224, 224, 224, 0.12);
-      --accent-border: rgba(224, 224, 224, 0.45);
     }
 
     * {
@@ -83,13 +67,11 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 捲軸樣式 */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg-base); }
     ::-webkit-scrollbar-thumb { background: #3d3d3d; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #525252; }
 
-    /* Focus-visible 清楚可見且不被裁切 (Interaction Checklist) */
     :focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 1px;
@@ -111,7 +93,7 @@
       border-right: 1px solid var(--border-subtle);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: flex-start;
       padding: 16px 12px;
       z-index: 20;
       user-select: none;
@@ -178,7 +160,6 @@
       gap: 4px;
     }
 
-    /* Hover 不造成尺寸或位置改變 (Interaction Checklist) */
     .nav-item {
       display: flex;
       align-items: center;
@@ -230,14 +211,6 @@
       color: var(--accent);
     }
 
-    .rail-bottom {
-      border-top: 1px solid var(--border-subtle);
-      padding-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
     /* ==========================================================================
        主內容區 (.main-area)
        ========================================================================== */
@@ -249,7 +222,6 @@
       background-color: var(--bg-base);
     }
 
-    /* 頂部工具列 (.topbar) */
     .topbar {
       min-height: 54px;
       background-color: var(--bg-surface);
@@ -289,38 +261,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .segmented-control {
-      display: inline-flex;
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-sm);
-      padding: 2px;
-    }
-
-    .segmented-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 9px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.12s, color 0.12s;
-    }
-
-    .segmented-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .segmented-btn.active {
-      background-color: var(--bg-elevated);
-      color: var(--accent);
-      border: 1px solid var(--border-strong);
     }
 
     /* ==========================================================================
@@ -426,7 +366,6 @@
       gap: 12px;
     }
 
-    /* 標準 .card / .card-head / .card-body 規範 */
     .card {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -460,7 +399,6 @@
       gap: 10px;
     }
 
-    /* 標準 .grid--2 與 .field 規範 */
     .grid--2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -575,7 +513,6 @@
       color: var(--text-muted);
     }
 
-    /* 標準按鈕 (.btn) — Hover 不改變尺寸與位置 */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -617,7 +554,7 @@
     }
 
     .btn--accent:hover {
-      background-color: rgba(77, 182, 172, 0.24);
+      background-color: var(--accent-hover);
       border-color: var(--accent);
       color: #ffffff;
     }
@@ -640,7 +577,7 @@
       cursor: pointer;
     }
 
-    /* 惰輪清單項目 (List Row / Panel) */
+    /* 惰輪清單項目 */
     .idler-panel {
       background-color: var(--bg-subtle);
       border: 1px solid var(--border-default);
@@ -655,9 +592,9 @@
     }
 
     .idler-panel.active {
-      border-color: var(--border-strong);
+      border-color: var(--accent-border);
       border-left: 3px solid var(--accent);
-      background-color: #222626;
+      background-color: rgba(206, 83, 56, 0.06);
     }
 
     .idler-panel-head {
@@ -796,7 +733,6 @@
       border-radius: 50%;
     }
 
-    /* Toast 通知 */
     .toast-stack {
       position: fixed;
       bottom: 20px;
@@ -821,7 +757,7 @@
     }
 
     /* ==========================================================================
-       07 · 手機與響應式四斷點規範 (1440 / 1024 / 768 / 390 px)
+       手機與響應式斷點規範
        ========================================================================== */
     @media (max-width: 1024px) {
       .summary-strip { grid-template-columns: repeat(2, 1fr); }
@@ -830,7 +766,6 @@
 
     @media (max-width: 768px) {
       body { height: auto; overflow: auto; }
-      /* 依照 07-mobile.md 規格：.shell 變成單欄 grid (auto / 1fr)，.rail 變成 sticky top bar (min-height: 59px) */
       .shell {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr;
@@ -855,8 +790,7 @@
         width: 100%;
         justify-content: space-between;
       }
-      .nav-section-label,
-      .rail-bottom {
+      .nav-section-label {
         display: none;
       }
       .nav-list {
@@ -883,13 +817,13 @@
     <!-- ================= 左側導覽列 (.rail) ================= -->
     <aside class="rail">
       <div class="rail-top">
-        <a href="https://frc8725.github.io/#/home" target="_blank" rel="noopener" class="brand">
+        <div class="brand">
           <span class="brand-mark">8725</span>
           <div class="brand-text">
             <span class="brand-title">Misty Panther</span>
             <span class="brand-subtitle">BELT CALCULATOR</span>
           </div>
-        </a>
+        </div>
 
         <div>
           <div class="nav-section-label">計算模式 (Mode)</div>
@@ -905,37 +839,6 @@
           </div>
         </div>
       </div>
-
-      <!-- FRC 8725 系統生態系連結 -->
-      <div class="rail-bottom">
-        <div class="nav-section-label">FRC 8725 系統群</div>
-        <div class="nav-list">
-          <a href="https://frc8725.github.io/#/home" target="_blank" rel="noopener" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-            <span>Portal Home</span>
-          </a>
-          <a href="https://frc8725-analysis.nsshfrc.workers.dev/#dashboard" target="_blank" rel="noopener" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            <span>Analysis</span>
-          </a>
-          <a href="https://frc8725-attendance.nsshfrc.workers.dev/" target="_blank" rel="noopener" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>Attendance</span>
-          </a>
-          <a href="https://frc8725-documents.nsshfrc.workers.dev/#/catalog" target="_blank" rel="noopener" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <span>Documents</span>
-          </a>
-          <a href="https://frc8725-tasks.nsshfrc.workers.dev/" target="_blank" rel="noopener" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            <span>Tasks</span>
-          </a>
-          <a href="https://frc8725-mistparts.nsshfrc.workers.dev/" target="_blank" rel="noopener" class="nav-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-            <span>MIST Parts</span>
-          </a>
-        </div>
-      </div>
     </aside>
 
     <!-- ================= 右側主區域 (.main-area) ================= -->
@@ -948,20 +851,6 @@
         </div>
 
         <div class="topbar-right">
-          <!-- 強調色調微調 (對齊不同子站點強調色) -->
-          <div class="segmented-control" title="切換介面強調色">
-            <button type="button" class="segmented-btn active" data-theme-btn="teal">青綠</button>
-            <button type="button" class="segmented-btn" data-theme-btn="amber">琥珀</button>
-            <button type="button" class="segmented-btn" data-theme-btn="steel">霧藍</button>
-            <button type="button" class="segmented-btn" data-theme-btn="mono">純白</button>
-          </div>
-
-          <!-- 全域單位一鍵切換 -->
-          <div class="segmented-control" title="一鍵切換全系統所有長度欄位單位">
-            <button type="button" class="segmented-btn active" id="btnGlobalMm">MM</button>
-            <button type="button" class="segmented-btn" id="btnGlobalIn">IN</button>
-          </div>
-
           <button type="button" class="btn" id="btnCopyAll">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             <span>複製報告</span>
@@ -1176,7 +1065,7 @@
               <div class="legend-node"><span class="swatch" style="background:#e091a8;"></span><span>HTD-5M 皮帶輪</span></div>
               <div class="legend-node"><span class="swatch" style="background:#8c939e;"></span><span>培林/惰輪 (外壓切外線 / 內撐切內線)</span></div>
               <div class="legend-node"><span class="swatch" style="background:#c8bba6;"></span><span>時規皮帶雙層虛線</span></div>
-              <div class="legend-node"><span class="swatch" style="background:var(--accent);"></span><span>張緊軌跡線 (模式一)</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span>張緊軌跡線 (模式一)</span></div>
             </div>
             <div style="font-family:var(--font-mono); font-size:11.5px; color:var(--text-secondary);" id="mouseCoord">
               X: 0.0 mm | Y: 0.0 mm
@@ -1194,6 +1083,7 @@
   const PITCH = 5.0;          // HTD-5M 齒距 5mm
   const BELT_THICK = 3.5;     // HTD-5M 皮帶厚度 3.5mm (外壓惰輪與外側虛線相切偏移量)
   const MM_PER_IN = 25.4;     // 1 inch = 25.4 mm
+  const ACCENT_HEX = '#CE5338';
 
   const state = {
     mode: 1,
@@ -1289,7 +1179,6 @@
     for (let i = 0; i < list.length; i++) {
       const it = list[i];
       const physicalR = it.od / 2;
-      // 外壓 (outside) 時惰輪壓在皮帶外側虛線上，內側基準虛線半徑為 physicalR + BELT_THICK
       const effInnerR = it.wrap === 'outside' ? (physicalR + BELT_THICK) : physicalR;
 
       const node = {
@@ -1619,10 +1508,6 @@
   function w2s(wx, wy) { return { x: view.ox + wx * view.scale, y: view.oy - wy * view.scale }; }
   function s2w(sx, sy) { return { x: (sx - view.ox) / view.scale, y: (view.oy - sy) / view.scale }; }
 
-  function getAccentColor() {
-    return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4db6ac';
-  }
-
   function resetView() {
     const rect = canvas.parentElement.getBoundingClientRect();
     let minX = Math.min(0, state.dx) - 45, maxX = Math.max(0, state.dx) + 45;
@@ -1698,7 +1583,6 @@
 
     if (!lastSol) return;
     const sol = lastSol;
-    const accentHex = getAccentColor();
     const pInS = w2s(0, 0), pOutS = w2s(state.dx, state.dy);
 
     // 繪製基準矩形框
@@ -1710,11 +1594,11 @@
     ctx.strokeRect(Math.min(pInS.x, pOutS.x), Math.min(pInS.y, pOutS.y), Math.abs(pOutS.x - pInS.x), Math.abs(pOutS.y - pInS.y));
     ctx.restore();
 
-    // 繪製等長張緊軌跡線
+    // 繪製等長張緊軌跡線 (使用固定 #CE5338)
     if (state.mode === 1 && state.showLocus && cachedLocus.length > 0) {
       ctx.save();
-      ctx.strokeStyle = accentHex;
-      ctx.globalAlpha = 0.8;
+      ctx.strokeStyle = ACCENT_HEX;
+      ctx.globalAlpha = 0.85;
       ctx.lineWidth = 2;
       ctx.setLineDash([6, 4]);
       ctx.beginPath();
@@ -1738,15 +1622,15 @@
       ctx.save();
       if (sel) {
         ctx.beginPath(); ctx.arc(c.x, c.y, rPx + 5, 0, Math.PI * 2);
-        ctx.strokeStyle = accentHex; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.strokeStyle = ACCENT_HEX; ctx.lineWidth = 1.5; ctx.stroke();
       }
       ctx.beginPath(); ctx.arc(c.x, c.y, rPx, 0, Math.PI * 2);
-      ctx.fillStyle = '#6e737b'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = sel ? accentHex : '#222222'; ctx.stroke();
+      ctx.fillStyle = '#6e737b'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = sel ? ACCENT_HEX : '#222222'; ctx.stroke();
       ctx.beginPath(); ctx.arc(c.x, c.y, rPx * 0.42, 0, Math.PI * 2);
       ctx.fillStyle = '#2c2c2c'; ctx.fill(); ctx.strokeStyle = '#b0b0b0'; ctx.stroke();
       ctx.restore();
 
-      ctx.fillStyle = sel ? accentHex : '#f0f0f0';
+      ctx.fillStyle = sel ? ACCENT_HEX : '#f0f0f0';
       ctx.font = '600 11.5px "Inter", "Noto Sans TC", sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(`惰輪 #${w.idx + 1} (OD:${w.od.toFixed(1)}mm | ${w.wrap === 'outside' ? '外壓' : '內撐'})`, c.x, c.y - rPx - 16);
@@ -1818,35 +1702,6 @@
 
   document.getElementById('btnMode1').addEventListener('click', () => setMode(1));
   document.getElementById('btnMode2').addEventListener('click', () => setMode(2));
-
-  // 主題強調色切換
-  document.querySelectorAll('[data-theme-btn]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('[data-theme-btn]').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const theme = btn.getAttribute('data-theme-btn');
-      if (theme === 'teal') document.documentElement.removeAttribute('data-accent');
-      else document.documentElement.setAttribute('data-accent', theme);
-      draw();
-    });
-  });
-
-  // 全域單位切換
-  function setGlobalUnit(u) {
-    document.getElementById('btnGlobalMm').classList.toggle('active', u === 'mm');
-    document.getElementById('btnGlobalIn').classList.toggle('active', u === 'in');
-    state.units.dx = u;
-    state.units.dy = u;
-    state.units.beltLen = u;
-    state.units.defaultOd = u;
-    state.idlers.forEach(it => { it.uOd = u; it.uX = u; it.uY = u; });
-    syncInputsFromState();
-    renderIdlerCards();
-    showToast(`已將所有長度欄位切換為 ${u.toUpperCase()}`);
-  }
-
-  document.getElementById('btnGlobalMm').addEventListener('click', () => setGlobalUnit('mm'));
-  document.getElementById('btnGlobalIn').addEventListener('click', () => setGlobalUnit('in'));
 
   ['inTeeth', 'outTeeth'].forEach(id => {
     document.getElementById(id).addEventListener('input', e => {
