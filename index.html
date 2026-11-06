@@ -82,7 +82,7 @@
        ========================================================================== */
     .shell {
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 205px 1fr;
       grid-template-rows: minmax(0, 1fr);
       height: 100vh;
       width: 100vw;
@@ -181,7 +181,6 @@
       transition: background-color 0.12s, color 0.12s, border-color 0.12s;
     }
 
-    /* 第三個選項「齒輪比計算」與前兩個選項中間留間距 */
     .nav-item--spaced {
       margin-top: 22px;
       position: relative;
@@ -397,11 +396,11 @@
     }
 
     /* ==========================================================================
-       工作區：左側表單區 (可獨立垂直捲動) + 右側 CAD 畫布
+       工作區：左側表單區 (縮窄為 336px) + 右側 CAD 畫布
        ========================================================================== */
     .workbench {
       display: grid;
-      grid-template-columns: 430px 1fr;
+      grid-template-columns: 336px 1fr;
       grid-template-rows: minmax(0, 1fr);
       flex: 1;
       min-height: 0;
@@ -416,16 +415,16 @@
       overflow-y: auto;
       overflow-x: hidden;
       overscroll-behavior: contain;
-      padding: 14px 14px 32px 14px;
+      padding: 12px 11px 32px 11px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
 
     .pane-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
     }
 
@@ -437,53 +436,53 @@
     }
 
     .card-head {
-      padding: 10px 14px;
+      padding: 9px 11px;
       background-color: var(--bg-elevated);
       border-bottom: 1px solid var(--border-subtle);
       border-radius: calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
     }
 
     .card-title {
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--text-primary);
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
     }
 
     .card-body {
-      padding: 12px 14px;
+      padding: 10px 11px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
     }
 
     .grid--2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
     }
 
     .grid--3 {
       display: grid;
-      grid-template-columns: 1.15fr 0.92fr 0.93fr;
-      gap: 8px;
+      grid-template-columns: 1.12fr 0.94fr 0.94fr;
+      gap: 6px;
     }
 
     .field {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
       min-width: 0;
     }
 
     .field label {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 500;
       color: var(--text-secondary);
       white-space: nowrap;
@@ -497,7 +496,7 @@
       background-color: var(--bg-input);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-sm);
-      height: 34px;
+      height: 32px;
       overflow: hidden;
       transition: border-color 0.12s;
     }
@@ -519,9 +518,9 @@
       border: none;
       color: var(--text-primary);
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      padding: 0 9px;
+      padding: 0 7px;
       height: 100%;
       outline: none;
     }
@@ -530,9 +529,9 @@
       background-color: var(--bg-input);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-sm);
-      height: 34px;
+      height: 32px;
       font-family: var(--font-family);
-      font-size: 12.5px;
+      font-size: 12px;
       cursor: pointer;
     }
 
@@ -541,9 +540,9 @@
     }
 
     .unit-addon {
-      padding: 0 8px;
+      padding: 0 6px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-muted);
       background-color: var(--bg-subtle);
       border-left: 1px solid var(--border-subtle);
@@ -557,9 +556,9 @@
       color: var(--accent);
       border: none;
       border-left: 1px solid var(--border-default);
-      padding: 0 6px;
+      padding: 0 4px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       height: 100%;
       cursor: pointer;
@@ -573,7 +572,7 @@
 
     .field-hint {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-muted);
     }
 
@@ -581,43 +580,54 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      height: 32px;
-      padding: 0 11px;
+      gap: 5px;
+      height: 30px;
+      padding: 0 10px;
       background-color: var(--bg-elevated);
       color: var(--text-primary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-sm);
       font-family: var(--font-family);
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: background-color 0.12s, border-color 0.12s, color 0.12s;
+      transition: background-color 0.12s, border-color 0.12s, color 0.12s, opacity 0.12s;
     }
 
     .btn svg {
       width: 14px;
       height: 14px;
+      flex-shrink: 0;
     }
 
-    .btn:hover {
+    .btn:hover:not(:disabled) {
       background-color: var(--bg-hover);
       border-color: var(--border-strong);
     }
 
-    .btn:active {
+    .btn:active:not(:disabled) {
       background-color: var(--bg-active);
+    }
+
+    .btn:disabled {
+      opacity: 0.36;
+      cursor: not-allowed;
+    }
+
+    .btn--icon {
+      width: 30px;
+      padding: 0;
     }
 
     .btn--accent {
       width: 100%;
-      height: 34px;
+      height: 32px;
       background-color: var(--accent-soft);
       border-color: var(--accent-border);
       color: var(--accent);
     }
 
-    .btn--accent:hover {
+    .btn--accent:hover:not(:disabled) {
       background-color: var(--accent-hover);
       border-color: var(--accent);
       color: #ffffff;
@@ -627,8 +637,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 4px 0;
-      font-size: 12.5px;
+      padding: 3px 0;
+      font-size: 12px;
       color: var(--text-secondary);
       cursor: pointer;
       user-select: none;
@@ -639,6 +649,7 @@
       height: 15px;
       accent-color: var(--accent);
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     /* 惰輪與齒輪清單項目 */
@@ -653,10 +664,10 @@
       border: 1px solid var(--border-default);
       border-left: 3px solid var(--border-strong);
       border-radius: var(--radius-sm);
-      padding: 10px;
+      padding: 9px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 7px;
       flex-shrink: 0;
       transition: border-color 0.12s, background-color 0.12s;
     }
@@ -675,7 +686,7 @@
 
     .idler-name {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--text-primary);
       display: flex;
@@ -690,13 +701,13 @@
     .rel-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
       background-color: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 7px 9px;
+      padding: 6px 8px;
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
     }
 
     .rel-block {
@@ -707,15 +718,15 @@
 
     .rel-block:first-child {
       border-right: 1px solid var(--border-subtle);
-      padding-right: 6px;
+      padding-right: 5px;
     }
 
     .rel-heading {
       font-family: var(--font-family);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
 
     .rel-coord { color: var(--text-secondary); }
@@ -749,13 +760,20 @@
       left: 12px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background-color: rgba(37, 37, 37, 0.92);
       border: 1px solid var(--border-default);
       padding: 6px 10px;
       border-radius: var(--radius-md);
       flex-wrap: wrap;
       z-index: 10;
+    }
+
+    .hud-divider {
+      width: 1px;
+      height: 18px;
+      background-color: var(--border-default);
+      margin: 0 2px;
     }
 
     .canvas-hud-status {
@@ -956,7 +974,7 @@
        ========================================================================== */
     @media (max-width: 1024px) {
       .summary-strip { grid-template-columns: repeat(2, 1fr); }
-      .workbench { grid-template-columns: 380px 1fr; }
+      .workbench { grid-template-columns: 310px 1fr; }
     }
 
     @media (max-width: 768px) {
@@ -1122,7 +1140,7 @@
 
       <!-- 主工作檯 (.workbench) -->
       <div class="workbench">
-        <!-- 左側表單區 (.form-pane) -->
+        <!-- 左側表單區 (.form-pane，已縮窄為 336px) -->
         <aside class="form-pane" id="formPane">
 
           <!-- ================= 模式一 & 二 表單群組 ================= -->
@@ -1285,7 +1303,7 @@
             <div class="card">
               <div class="card-head">
                 <div class="card-title" id="gearCard2Title">2. 各物件齒數與類型設定</div>
-                <span class="tag" id="gearCard2Tag">右鍵點擊畫布物件設輸入/輸出</span>
+                <span class="tag" id="gearCard2Tag">右鍵設輸入/輸出</span>
               </div>
               <div class="card-body">
                 <div id="gearItemList"></div>
@@ -1298,6 +1316,14 @@
         <!-- 右側互動式 CAD 視窗 (.canvas-pane) -->
         <main class="canvas-pane" id="canvasPane">
           <div class="canvas-hud-top">
+            <!-- 上一步 (Undo) 與 下一步 (Redo) 箭頭按鈕 -->
+            <button type="button" class="btn btn--icon" id="btnUndo" title="上一步 (Ctrl+Z)" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+            </button>
+            <button type="button" class="btn btn--icon" id="btnRedo" title="下一步 (Ctrl+Y)" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/></svg>
+            </button>
+            <span class="hud-divider"></span>
             <button type="button" class="btn" id="btnResetView">置中視角</button>
             <button type="button" class="btn" id="btnPreset">載入示意圖預設</button>
             <span style="font-size:12px; color:var(--text-muted); padding-left:4px;" id="canvasHudHint">
@@ -1334,10 +1360,10 @@
 
           <canvas id="cadCanvas"></canvas>
 
-          <!-- 模式一 & 二 底部圖例列 -->
+          <!-- 模式一 & 二 底部圖例列 (皮帶輪圖例圓點同步更新為 #CE5338) -->
           <div class="canvas-hud-bottom" id="beltHudBottom">
             <div class="legend-list">
-              <div class="legend-node"><span class="swatch" style="background:#e091a8;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
               <div class="legend-node"><span class="swatch" style="background:#8c939e;"></span><span id="legIdler">培林/惰輪 (外壓切外線 / 內撐切內線)</span></div>
               <div class="legend-node"><span class="swatch" style="background:#c8bba6;"></span><span id="legBelt">時規皮帶雙層虛線</span></div>
               <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span id="legLocus">張緊軌跡線</span></div>
@@ -1372,10 +1398,11 @@
 
 <script>
 (function() {
-  const PITCH = 5.0;          // HTD-5M 齒距 5mm (同時作為齒輪模數基準 M = 5/π，確保相同齒數節圓直徑一致)
+  const PITCH = 5.0;          // HTD-5M 齒距 5mm
   const BELT_THICK = 3.5;     // HTD-5M 皮帶厚度 3.5mm
   const MM_PER_IN = 25.4;     // 1 inch = 25.4 mm
   const ACCENT_HEX = '#CE5338';
+  const GEAR_GRAY_HEX = '#7c8b99';
 
   // 中／英雙語字典
   const I18N = {
@@ -1397,17 +1424,17 @@
       stat4: '兩主輪中心距 & 嚙合齒數',
       card1Title: '1. 主皮帶輪與相對位置',
       tagCoordRule: 'X右正左負 / Y上正下負',
-      tagAutoSolveXY: '自動解算輸出 X / Y 距離',
+      tagAutoSolveXY: '自動解算 X / Y',
       inTeeth: '皮帶輪(輸入) 齒數',
       outTeeth: '皮帶輪(輸出) 齒數',
       unitTeeth: '齒',
       pulleyDx: '兩皮帶輪 X 軸距離',
       pulleyDy: '兩皮帶輪 Y 軸距離',
-      pulleyDxOut: '兩皮帶輪 X 軸距離 (輸出)',
-      pulleyDyOut: '兩皮帶輪 Y 軸距離 (輸出)',
+      pulleyDxOut: '兩皮帶輪 X 距離(輸出)',
+      pulleyDyOut: '兩皮帶輪 Y 距離(輸出)',
       card2Title: '2. 固定皮帶長度設定',
       badgeMode1: '模式一',
-      badgeZeroIdler: '0 顆惰輪 (輸入皮帶長)',
+      badgeZeroIdler: '0 顆惰輪',
       beltLength: '目標皮帶長度',
       beltTeeth: '對應皮帶齒數 (NN)',
       snapIdler: '拖動惰輪時自動吸附至「完美張緊軌跡」',
@@ -1418,7 +1445,7 @@
       card3Title3: '3. 培林 / 惰輪參數與相對軸距',
       card3Title2: '2. 培林 / 惰輪參數與相對軸距',
       hintDragIdler: '可拖曳畫布惰輪',
-      hintDragOutPulley: '可於畫布拖曳輸出皮帶輪',
+      hintDragOutPulley: '可拖曳輸出皮帶輪',
       defaultOd: '惰輪統一外徑',
       idlerCount: '惰輪數量',
       opt0: '0 顆 (無惰輪)',
@@ -1426,6 +1453,8 @@
       opt2: '2 顆惰輪 (示意圖配置)',
       opt3: '3 顆惰輪',
       opt4: '4 顆惰輪',
+      undoTip: '上一步 (Ctrl+Z)',
+      redoTip: '下一步 (Ctrl+Y)',
       resetView: '置中視角',
       loadPreset: '載入示意圖預設',
       hudHintIdler: '左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
@@ -1491,16 +1520,18 @@
       toastSnapped: '已吸附至完美張緊位置',
       toastZeroUpdated: '已更新兩皮帶輪距離：',
       toastTooShort: '目標皮帶長度過短，請增加皮帶長度',
+      toastUndo: '已復原至上一步',
+      toastRedo: '已重做至下一步',
 
       // 模式三：齒輪比計算專屬字典
       gearCard1Title: '1. 皮帶輪 / 齒輪數量設定',
-      gearCard1Tag: '依實際尺寸比例繪製',
+      gearCard1Tag: '依實際尺寸繪製',
       lblGearCount: '皮帶輪 (齒輪) 數量',
       unitGearCount: '個',
       btnArrangeGears: '依序排列於畫布',
       btnClearGearLinks: '清除所有傳動連線',
       gearCard2Title: '2. 各物件齒數與類型設定',
-      gearCard2Tag: '右鍵點擊畫布物件設輸入/輸出',
+      gearCard2Tag: '右鍵設輸入/輸出',
       gearObjTitle: '物件',
       gearTeethLabel: '齒數 (Teeth)',
       gearTypeLabel: '物件類型',
@@ -1552,17 +1583,17 @@
       stat4: 'Center Distance & Teeth in Mesh',
       card1Title: '1. Main Pulleys & Relative Position',
       tagCoordRule: '+X Right/ -X Left · +Y Up/ -Y Down',
-      tagAutoSolveXY: 'Auto-Solve Output X / Y',
+      tagAutoSolveXY: 'Auto-Solve X / Y',
       inTeeth: 'Input Pulley Teeth',
       outTeeth: 'Output Pulley Teeth',
       unitTeeth: 'T',
       pulleyDx: 'Pulley X Distance',
       pulleyDy: 'Pulley Y Distance',
-      pulleyDxOut: 'Pulley X Distance (Output)',
-      pulleyDyOut: 'Pulley Y Distance (Output)',
+      pulleyDxOut: 'Pulley X Dist (Out)',
+      pulleyDyOut: 'Pulley Y Dist (Out)',
       card2Title: '2. Fixed Belt Length Settings',
       badgeMode1: 'Mode 1',
-      badgeZeroIdler: '0 Idlers (Input Belt Len)',
+      badgeZeroIdler: '0 Idlers',
       beltLength: 'Target Belt Length',
       beltTeeth: 'Belt Teeth (NN)',
       snapIdler: 'Auto-snap idler to tension locus while dragging',
@@ -1573,7 +1604,7 @@
       card3Title3: '3. Bearing / Idler Parameters',
       card3Title2: '2. Bearing / Idler Parameters',
       hintDragIdler: 'Draggable on Canvas',
-      hintDragOutPulley: 'Drag Output Pulley on Canvas',
+      hintDragOutPulley: 'Drag Output Pulley',
       defaultOd: 'Default Idler OD',
       idlerCount: 'Idler Count',
       opt0: '0 Idlers (Direct Drive)',
@@ -1581,6 +1612,8 @@
       opt2: '2 Idlers (Demo Preset)',
       opt3: '3 Idlers',
       opt4: '4 Idlers',
+      undoTip: 'Undo (Ctrl+Z)',
+      redoTip: 'Redo (Ctrl+Y)',
       resetView: 'Reset View',
       loadPreset: 'Load Preset',
       hudHintIdler: 'LMB Drag Idler · Scroll Zoom · Space+LMB or RMB Pan',
@@ -1646,16 +1679,18 @@
       toastSnapped: 'Snapped to optimal tension position',
       toastZeroUpdated: 'Pulley distances updated: ',
       toastTooShort: 'Target belt length is too short',
+      toastUndo: 'Undid last action',
+      toastRedo: 'Redid action',
 
       // Mode 3: Gear Ratio Calculator
       gearCard1Title: '1. Pulley / Gear Count',
-      gearCard1Tag: 'True-to-Scale Geometry',
+      gearCard1Tag: 'True-to-Scale',
       lblGearCount: 'Number of Pulleys / Gears',
       unitGearCount: 'pcs',
       btnArrangeGears: 'Arrange in Sequence',
       btnClearGearLinks: 'Clear All Links',
       gearCard2Title: '2. Teeth & Component Type',
-      gearCard2Tag: 'Right-click on canvas to set In/Out',
+      gearCard2Tag: 'RMB: Set In/Out',
       gearObjTitle: 'Object',
       gearTeethLabel: 'Teeth',
       gearTypeLabel: 'Component Type',
@@ -1720,11 +1755,122 @@
       { id: 3, teeth: 18, type: 'pulley', role: 'none', x: 45, y: 0, phase: 0 },
       { id: 4, teeth: 36, type: 'pulley', role: 'output', x: 110, y: 0, phase: 0 }
     ],
-    gearLinks: [] // { a: indexA, b: indexB, kind: 'belt' | 'mesh' }
+    gearLinks: []
   };
 
   function t(key) {
     return I18N[state.lang][key] || key;
+  }
+
+  // =========================================================================
+  // 上一步 (Undo) 與 下一步 (Redo) 歷史紀錄管理器
+  // =========================================================================
+  const MAX_HISTORY = 60;
+  let historyStack = [];
+  let historyPtr = -1;
+  let isRestoringHistory = false;
+  let inputHistoryTimer = null;
+
+  function serializeState() {
+    return JSON.stringify({
+      mode: state.mode,
+      inTeeth: state.inTeeth,
+      outTeeth: state.outTeeth,
+      dx: state.dx,
+      dy: state.dy,
+      targetLen: state.targetLen,
+      defaultOd: state.defaultOd,
+      units: state.units,
+      snap: state.snap,
+      showLocus: state.showLocus,
+      activeIdx: state.activeIdx,
+      idlers: state.idlers,
+      gearNodes: state.gearNodes,
+      gearLinks: state.gearLinks
+    });
+  }
+
+  function updateUndoRedoButtons() {
+    const btnUndo = document.getElementById('btnUndo');
+    const btnRedo = document.getElementById('btnRedo');
+    if (btnUndo) btnUndo.disabled = historyPtr <= 0;
+    if (btnRedo) btnRedo.disabled = historyPtr >= historyStack.length - 1;
+  }
+
+  function recordHistory() {
+    if (isRestoringHistory) return;
+    if (inputHistoryTimer) {
+      clearTimeout(inputHistoryTimer);
+      inputHistoryTimer = null;
+    }
+    const snap = serializeState();
+    if (historyPtr >= 0 && historyStack[historyPtr] === snap) return;
+
+    historyStack = historyStack.slice(0, historyPtr + 1);
+    historyStack.push(snap);
+    if (historyStack.length > MAX_HISTORY) {
+      historyStack.shift();
+    } else {
+      historyPtr++;
+    }
+    updateUndoRedoButtons();
+  }
+
+  function scheduleInputHistory() {
+    if (isRestoringHistory) return;
+    if (inputHistoryTimer) clearTimeout(inputHistoryTimer);
+    inputHistoryTimer = setTimeout(() => {
+      recordHistory();
+    }, 320);
+  }
+
+  function restoreSnapshot(snapStr) {
+    isRestoringHistory = true;
+    const data = JSON.parse(snapStr);
+    const prevMode = state.mode;
+
+    state.mode = data.mode;
+    state.inTeeth = data.inTeeth;
+    state.outTeeth = data.outTeeth;
+    state.dx = data.dx;
+    state.dy = data.dy;
+    state.targetLen = data.targetLen;
+    state.defaultOd = data.defaultOd;
+    state.units = JSON.parse(JSON.stringify(data.units));
+    state.snap = data.snap;
+    state.showLocus = data.showLocus;
+    state.activeIdx = data.activeIdx;
+    state.idlers = JSON.parse(JSON.stringify(data.idlers));
+    state.gearNodes = JSON.parse(JSON.stringify(data.gearNodes));
+    state.gearLinks = JSON.parse(JSON.stringify(data.gearLinks));
+
+    document.getElementById('btnMode1').classList.toggle('active', state.mode === 1);
+    document.getElementById('btnMode2').classList.toggle('active', state.mode === 2);
+    document.getElementById('btnMode3').classList.toggle('active', state.mode === 3);
+
+    syncInputsFromState();
+    syncModeAndZeroIdlerUI();
+    renderIdlerCards();
+    renderGearItemCards();
+    locusDirty = true;
+    if (prevMode !== state.mode) resetView();
+    updateAll();
+    updateUndoRedoButtons();
+    isRestoringHistory = false;
+  }
+
+  function performUndo() {
+    if (historyPtr <= 0) return;
+    historyPtr--;
+    restoreSnapshot(historyStack[historyPtr]);
+    showToast(t('toastUndo'));
+  }
+
+  function performRedo() {
+    if (historyPtr >= historyStack.length - 1) return;
+    historyPtr++;
+    restoreSnapshot(historyStack[historyPtr]);
+    showToast(t('toastRedo'));
   }
 
   const view = {
@@ -1733,7 +1879,6 @@
     oy: 0,
     draggingIdx: -1,
     draggingOutputPulley: false,
-    // 模式三互動狀態
     draggingGearBodyIdx: -1,
     linkingFromGearIdx: -1,
     linkingMouseWorld: { x: 0, y: 0 },
@@ -1769,7 +1914,7 @@
       el.style.opacity = '0';
       el.style.transition = 'opacity 0.2s';
       setTimeout(() => el.remove(), 220);
-    }, isError ? 3600 : 2300);
+    }, isError ? 3600 : 2100);
   }
 
   function mmToUnit(valMm, unit, decMm = 2, decIn = 3) {
@@ -1812,7 +1957,6 @@
     });
   }
 
-  // 兩齒輪咬合定位與齒向相位對齊
   function snapTwoGearsToMesh(idxFixed, idxMoving) {
     const g1 = state.gearNodes[idxFixed];
     const g2 = state.gearNodes[idxMoving];
@@ -1822,7 +1966,6 @@
     const r2 = getPitchRadius(g2.teeth);
     const targetDist = r1 + r2;
 
-    // 紀錄 g2 原本同心的共軸夥伴，讓同軸物件一起移動
     const oldX = g2.x, oldY = g2.y;
     const coaxialPeers = state.gearNodes.filter((n, i) => i !== idxMoving && i !== idxFixed && Math.hypot(n.x - oldX, n.y - oldY) < 1.0);
 
@@ -1834,7 +1977,6 @@
     g2.x = +(g1.x + targetDist * Math.cos(ang)).toFixed(2);
     g2.y = +(g1.y + targetDist * Math.sin(ang)).toFixed(2);
 
-    // 計算齒輪 2 的相位角，使接觸點處一齒對一槽完美咬合
     g2.phase = Math.PI + ang - (g1.teeth / g2.teeth) * (ang - (g1.phase || 0)) + Math.PI / g2.teeth;
 
     coaxialPeers.forEach(peer => {
@@ -1843,7 +1985,6 @@
     });
   }
 
-  // 解算從「輸入」到「輸出」的齒輪比與轉向
   function solveGearRatioSystem() {
     const n = state.gearNodes.length;
     const inputIdx = state.gearNodes.findIndex(it => it.role === 'input');
@@ -1853,10 +1994,8 @@
       return { valid: false, reason: 'no_in_out', inputIdx, outputIdx };
     }
 
-    // 建立傳動鄰接圖
     const adj = Array.from({ length: n }, () => []);
 
-    // 1. 同心共軸關係 (兩物件中心距離 < 1.0 mm 視為共用傳動軸，角速度 1:1 同向)
     for (let i = 0; i < n; i++) {
       for (let j = i + 1; j < n; j++) {
         if (Math.hypot(state.gearNodes[i].x - state.gearNodes[j].x, state.gearNodes[i].y - state.gearNodes[j].y) < 1.0) {
@@ -1866,7 +2005,6 @@
       }
     }
 
-    // 2. 虛線傳動連線 (皮帶輪或齒輪咬合)
     state.gearLinks.forEach(lk => {
       if (lk.a < 0 || lk.a >= n || lk.b < 0 || lk.b >= n) return;
       const na = state.gearNodes[lk.a];
@@ -1876,7 +2014,6 @@
       adj[lk.b].push({ to: lk.a, speedMult: nb.teeth / na.teeth, dirMult: dir, kind: lk.kind });
     });
 
-    // BFS 尋找輸入至輸出路徑
     const visited = new Array(n).fill(false);
     const queue = [{ idx: inputIdx, speed: 1.0, dir: 1, stages: [`#${inputIdx + 1}(${state.gearNodes[inputIdx].teeth}T)`] }];
     visited[inputIdx] = true;
@@ -1884,7 +2021,7 @@
     while (queue.length > 0) {
       const cur = queue.shift();
       if (cur.idx === outputIdx) {
-        const totalReduction = 1.0 / cur.speed; // 減速比 (輸入轉速 : 輸出轉速 = 1 : cur.speed 或 totalReduction : 1)
+        const totalReduction = 1.0 / cur.speed;
         return {
           valid: true,
           inputIdx,
@@ -2170,6 +2307,8 @@
     document.getElementById('optIdler3').textContent = t('opt3');
     document.getElementById('optIdler4').textContent = t('opt4');
 
+    document.getElementById('btnUndo').title = t('undoTip');
+    document.getElementById('btnRedo').title = t('redoTip');
     document.getElementById('btnResetView').textContent = t('resetView');
     document.getElementById('btnPreset').textContent = t('loadPreset');
 
@@ -2178,7 +2317,6 @@
     document.getElementById('legBelt').textContent = t('legBelt');
     document.getElementById('legLocus').textContent = t('legLocus');
 
-    // 模式三文字
     document.getElementById('gearCard1Title').textContent = t('gearCard1Title');
     document.getElementById('gearCard1Tag').textContent = t('gearCard1Tag');
     document.getElementById('lblGearCount').textContent = t('lblGearCount');
@@ -2267,7 +2405,6 @@
     document.getElementById('canvasHudHint').textContent = isZero ? t('hudHintZero') : t('hudHintIdler');
   }
 
-  // 渲染模式三左側物件清單
   function renderGearItemCards() {
     const box = document.getElementById('gearItemList');
     box.innerHTML = state.gearNodes.map((node, i) => {
@@ -2321,14 +2458,14 @@
             <div class="idler-name">
               <span>${t('zeroPanelTitle')}</span>
             </div>
-            <button type="button" class="btn btn-copy-zero" style="height:26px; padding:0 8px; font-size:11.5px;">${t('copyXY')}</button>
+            <button type="button" class="btn btn-copy-zero" style="height:24px; padding:0 7px; font-size:11px;">${t('copyXY')}</button>
           </div>
           <div class="rel-grid" id="zeroIdlerReadout">
             <div class="rel-block">
               <div class="rel-heading">${t('zeroOutHeading')}</div>
               <div class="rel-coord">${t('zeroXDist')} ${fmtDual(state.dx, state.units.dx)}</div>
               <div class="rel-coord">${t('zeroYDist')} ${fmtDual(state.dy, state.units.dy)}</div>
-              <div class="rel-c">${t('zeroCenterC')} ${C.toFixed(2)} mm (${(C / MM_PER_IN).toFixed(3)} in)</div>
+              <div class="rel-c">${t('zeroCenterC')} ${C.toFixed(2)} mm</div>
             </div>
             <div class="rel-block">
               <div class="rel-heading">${t('zeroGeoHeading')}</div>
@@ -2354,7 +2491,7 @@
             <div class="idler-name">
               <span>${t('idlerItemTitle')} #0${i + 1} ${i === state.activeIdx ? '· ACTIVE' : ''}</span>
             </div>
-            <button type="button" class="btn btn-copy-one" data-idx="${i}" style="height:26px; padding:0 8px; font-size:11.5px;">${t('copyCoords')}</button>
+            <button type="button" class="btn btn-copy-one" data-idx="${i}" style="height:24px; padding:0 7px; font-size:11px;">${t('copyCoords')}</button>
           </div>
           <div class="grid--3">
             <div class="field">
@@ -2433,7 +2570,7 @@
         <div class="rel-heading">${t('zeroOutHeading')}</div>
         <div class="rel-coord">${t('zeroXDist')} ${fmtDual(state.dx, state.units.dx)}</div>
         <div class="rel-coord">${t('zeroYDist')} ${fmtDual(state.dy, state.units.dy)}</div>
-        <div class="rel-c">${t('zeroCenterC')} ${C.toFixed(2)} mm (${(C / MM_PER_IN).toFixed(3)} in)</div>
+        <div class="rel-c">${t('zeroCenterC')} ${C.toFixed(2)} mm</div>
       </div>
       <div class="rel-block">
         <div class="rel-heading">${t('zeroGeoHeading')}</div>
@@ -2478,7 +2615,6 @@
     const stBadge = document.getElementById('stBadge');
     const stDetail = document.getElementById('stDetail');
 
-    // 若在模式三 (齒輪比計算)
     if (state.mode === 3) {
       const gSol = solveGearRatioSystem();
       lastGearSolve = gSol;
@@ -2500,7 +2636,7 @@
         stDetail.style.color = '#ffd54f';
         stDetail.textContent = msg;
       } else {
-        const redRatio = gSol.reductionRatio; // 輸入 1 圈 : 輸出 speed 圈 -> 減速比 redRatio : 1
+        const redRatio = gSol.reductionRatio;
         const speedMult = gSol.outputSpeed;
         const dirText = gSol.dir === 1 ? t('ratioSameDir') : t('ratioRevDir');
 
@@ -2608,7 +2744,7 @@
   }
 
   // =========================================================================
-  // Canvas 視覺化渲染
+  // Canvas 視覺化渲染 (皮帶輪改為 #CE5338，齒輪改為純灰色 #7c8b99)
   // =========================================================================
   function w2s(wx, wy) { return { x: view.ox + wx * view.scale, y: view.oy - wy * view.scale }; }
   function s2w(sx, sy) { return { x: (sx - view.ox) / view.scale, y: (view.oy - sy) / view.scale }; }
@@ -2683,7 +2819,6 @@
     ctx.strokeStyle = '#121212';
     ctx.stroke();
 
-    // 十字準星標記
     ctx.strokeStyle = isHovered ? '#ffffff' : ACCENT_HEX;
     ctx.lineWidth = 1.2;
     ctx.beginPath();
@@ -2693,6 +2828,7 @@
     ctx.restore();
   }
 
+  // 繪製皮帶輪 (顏色改為 HEX #CE5338)
   function drawPulley(w, label, isDraggableHighlight = false, showCenterIcon = false, isCenterHover = false) {
     const c = w2s(w.x, w.y), rPx = w.drawR * view.scale;
     ctx.save();
@@ -2709,8 +2845,9 @@
     ctx.beginPath(); ctx.arc(0, 0, rPx * 1.04, 0, Math.PI * 2);
     ctx.fillStyle = '#252525'; ctx.fill(); ctx.strokeStyle = isDraggableHighlight ? ACCENT_HEX : '#787878'; ctx.lineWidth = 1.5; ctx.stroke();
 
+    // 皮帶輪本體固定使用 HEX #CE5338
     ctx.beginPath(); ctx.arc(0, 0, rPx * 0.93, 0, Math.PI * 2);
-    ctx.fillStyle = '#e091a8'; ctx.fill();
+    ctx.fillStyle = ACCENT_HEX; ctx.fill();
 
     ctx.fillStyle = '#181818';
     for (let i = 0; i < w.teeth; i++) {
@@ -2740,7 +2877,7 @@
     ctx.fillText(label, c.x, w.role === 'in' ? c.y + rPx + 20 : c.y - rPx - 12);
   }
 
-  // 繪製外凸輪齒造型的齒輪 (Gear)
+  // 繪製外凸輪齒造型的齒輪 (改為統一純灰色 #7c8b99)
   function drawToothedGear(node, idx, isHovered = false, isCenterHover = false, labelOffset = 0) {
     const c = w2s(node.x, node.y);
     const pitchR = getPitchRadius(node.teeth);
@@ -2751,7 +2888,7 @@
     const dedendum = Math.min(rPx * 0.25, modulePx * 1.10);
     const outerR = rPx + addendum;
     const rootR = Math.max(4, rPx - dedendum);
-    const phase = -(node.phase || 0); // 轉換至螢幕順時針座標
+    const phase = -(node.phase || 0);
 
     ctx.save();
     ctx.translate(c.x, c.y);
@@ -2764,7 +2901,7 @@
       ctx.stroke();
     }
 
-    // 繪製漸開線梯形齒形輪廓
+    // 繪製純灰色齒輪整體 (與外圈相同的 #7c8b99 純灰色)
     const step = (2 * Math.PI) / teeth;
     ctx.beginPath();
     for (let i = 0; i < teeth; i++) {
@@ -2781,7 +2918,7 @@
       ctx.lineTo(Math.cos(a3) * rootR, Math.sin(a3) * rootR);
     }
     ctx.closePath();
-    ctx.fillStyle = '#7c8b99';
+    ctx.fillStyle = GEAR_GRAY_HEX;
     ctx.fill();
     ctx.lineWidth = 1.4;
     ctx.strokeStyle = '#181818';
@@ -2791,18 +2928,10 @@
     ctx.beginPath();
     ctx.setLineDash([4, 3]);
     ctx.arc(0, 0, rPx, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.setLineDash([]);
-
-    // 內圈輪轂減重環
-    ctx.beginPath();
-    ctx.arc(0, 0, rootR * 0.78, 0, Math.PI * 2);
-    ctx.fillStyle = '#4e5964';
-    ctx.fill();
-    ctx.strokeStyle = '#222';
-    ctx.stroke();
 
     // 中心六角孔
     const hexR = Math.min(rootR * 0.48, Math.max(6 * view.scale, 8));
@@ -2820,10 +2949,7 @@
 
     ctx.restore();
 
-    // 標註圓心圖示
     drawCenterMarker(c, isCenterHover);
-
-    // 標籤與角色徽章
     drawGearNodeLabels(node, idx, c, outerR, labelOffset);
   }
 
@@ -2858,9 +2984,7 @@
     ctx.restore();
   }
 
-  // 繪製模式三：齒輪比計算畫布
   function drawGearRatioMode() {
-    // 1. 先繪製已建立的傳動連線 (皮帶連線與齒輪咬合中心虛線)
     state.gearLinks.forEach(lk => {
       const na = state.gearNodes[lk.a];
       const nb = state.gearNodes[lk.b];
@@ -2869,7 +2993,6 @@
       const pb = w2s(nb.x, nb.y);
 
       if (lk.kind === 'belt') {
-        // 繪製兩皮帶輪之間的外公切線虛線皮帶
         const ra = getPitchRadius(na.teeth);
         const rb = getPitchRadius(nb.teeth);
         const seg1 = getTangent({ x: na.x, y: na.y, r: ra, s: 1 }, { x: nb.x, y: nb.y, r: rb, s: 1 });
@@ -2886,7 +3009,6 @@
         ctx.restore();
       }
 
-      // 兩圓心之間的傳動關係虛線
       ctx.save();
       ctx.setLineDash([5, 4]);
       ctx.lineWidth = 1.8;
@@ -2898,12 +3020,10 @@
       ctx.restore();
     });
 
-    // 2. 將物件依半徑由大到小排序繪製，確保同心共軸時小輪疊在大輪上方清楚可見
     const drawOrder = state.gearNodes
       .map((node, idx) => ({ node, idx, r: getPitchRadius(node.teeth) }))
       .sort((a, b) => b.r - a.r);
 
-    // 計算同心物件的標籤偏移量避免文字重疊
     const labelOffsets = new Array(state.gearNodes.length).fill(0);
     for (let i = 0; i < state.gearNodes.length; i++) {
       let count = 0;
@@ -2933,7 +3053,6 @@
       }
     });
 
-    // 3. 若正在從圓心拖曳拉出虛線，繪製動態連接虛線
     if (view.linkingFromGearIdx >= 0) {
       const src = state.gearNodes[view.linkingFromGearIdx];
       if (src) {
@@ -2966,7 +3085,6 @@
     const sol = lastSol;
     const pInS = w2s(0, 0), pOutS = w2s(state.dx, state.dy);
 
-    // 繪製基準矩形框
     ctx.save();
     ctx.strokeStyle = 'rgba(240, 240, 240, 0.38)';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
@@ -2975,7 +3093,6 @@
     ctx.strokeRect(Math.min(pInS.x, pOutS.x), Math.min(pInS.y, pOutS.y), Math.abs(pOutS.x - pInS.x), Math.abs(pOutS.y - pInS.y));
     ctx.restore();
 
-    // 繪製等長張緊軌跡線 (使用固定 #CE5338)
     if ((state.mode === 1 || state.idlers.length === 0) && state.showLocus && cachedLocus.length > 0) {
       ctx.save();
       ctx.strokeStyle = ACCENT_HEX;
@@ -3109,7 +3226,6 @@
     if (idx < 0 || !state.gearNodes[idx]) return;
     const newRole = e.target.value;
 
-    // 確保畫布上只有一個輸入源與一個輸出源
     if (newRole === 'input' || newRole === 'output') {
       state.gearNodes.forEach((n, i) => {
         if (i !== idx && n.role === newRole) n.role = 'none';
@@ -3118,6 +3234,7 @@
     state.gearNodes[idx].role = newRole;
     renderGearItemCards();
     updateAll();
+    recordHistory();
     hideNodeContextMenu();
   });
 
@@ -3126,13 +3243,34 @@
     if (idx < 0) return;
     state.gearLinks = state.gearLinks.filter(lk => lk.a !== idx && lk.b !== idx);
     updateAll();
+    recordHistory();
     hideNodeContextMenu();
   });
 
   // =========================================================================
-  // 事件與路由綁定
+  // 事件與路由綁定 (含 Ctrl+Z / Ctrl+Y 快捷鍵與按鈕)
   // =========================================================================
-  function setMode(m, updateHash = true) {
+  document.getElementById('btnUndo').addEventListener('click', performUndo);
+  document.getElementById('btnRedo').addEventListener('click', performRedo);
+
+  window.addEventListener('keydown', e => {
+    if (e.code === 'Space') spaceKey = true;
+
+    // 支援 Ctrl+Z / Ctrl+Y 全域上一步、下一步快捷鍵
+    if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+      const k = e.key.toLowerCase();
+      if (k === 'z') {
+        e.preventDefault();
+        if (e.shiftKey) performRedo();
+        else performUndo();
+      } else if (k === 'y') {
+        e.preventDefault();
+        performRedo();
+      }
+    }
+  });
+
+  function setMode(m, updateHash = true, saveHist = false) {
     state.mode = m;
     document.getElementById('btnMode1').classList.toggle('active', m === 1);
     document.getElementById('btnMode2').classList.toggle('active', m === 2);
@@ -3147,6 +3285,7 @@
     locusDirty = true;
     resetView();
     updateAll();
+    if (saveHist) recordHistory();
   }
 
   document.getElementById('langSelect').addEventListener('change', e => {
@@ -3164,9 +3303,9 @@
     else if (location.hash === '#/tension') setMode(1, false);
   });
 
-  document.getElementById('btnMode1').addEventListener('click', () => setMode(1));
-  document.getElementById('btnMode2').addEventListener('click', () => setMode(2));
-  document.getElementById('btnMode3').addEventListener('click', () => setMode(3));
+  document.getElementById('btnMode1').addEventListener('click', () => setMode(1, true, true));
+  document.getElementById('btnMode2').addEventListener('click', () => setMode(2, true, true));
+  document.getElementById('btnMode3').addEventListener('click', () => setMode(3, true, true));
 
   // 模式三：皮帶輪/齒輪數量變更與清單事件
   document.getElementById('gearCountInput').addEventListener('input', e => {
@@ -3194,17 +3333,20 @@
     renderGearItemCards();
     resetView();
     updateAll();
+    scheduleInputHistory();
   });
 
   document.getElementById('btnArrangeGears').addEventListener('click', () => {
     arrangeGearNodesInOrder();
     resetView();
     updateAll();
+    recordHistory();
   });
 
   document.getElementById('btnClearGearLinks').addEventListener('click', () => {
     state.gearLinks = [];
     updateAll();
+    recordHistory();
   });
 
   document.getElementById('gearItemList').addEventListener('input', e => {
@@ -3217,7 +3359,6 @@
       const val = parseInt(tEl.value, 10);
       if (!isNaN(val) && val >= 8) {
         node.teeth = Math.min(200, val);
-        // 若此齒輪已與其他齒輪咬合，自動重新更新咬合中心距
         state.gearLinks.forEach(lk => {
           if (lk.kind === 'mesh') {
             if (lk.a === idx) snapTwoGearsToMesh(lk.a, lk.b);
@@ -3225,20 +3366,20 @@
           }
         });
         renderGearItemCards();
-        // 保持焦點在當前輸入框
         const newInp = document.querySelector(`.gear-teeth-inp[data-gidx="${idx}"]`);
         if (newInp) { newInp.focus(); newInp.setSelectionRange(newInp.value.length, newInp.value.length); }
         updateAll();
+        scheduleInputHistory();
       }
     } else if (tEl.classList.contains('gear-type-sel')) {
       node.type = tEl.value;
-      // 移除因類型改變而不合法的異種連線
       state.gearLinks = state.gearLinks.filter(lk => {
         const na = state.gearNodes[lk.a], nb = state.gearNodes[lk.b];
         return na.type === nb.type;
       });
       renderGearItemCards();
       updateAll();
+      recordHistory();
     }
   });
 
@@ -3254,6 +3395,7 @@
       }
       locusDirty = true;
       updateAll();
+      scheduleInputHistory();
     });
   });
 
@@ -3268,6 +3410,7 @@
     }
     locusDirty = true;
     updateAll();
+    scheduleInputHistory();
   });
 
   document.getElementById('unitDx').addEventListener('change', e => {
@@ -3276,6 +3419,7 @@
     inp.step = state.units.dx === 'in' ? '0.05' : '0.5';
     inp.value = mmToUnit(state.dx, state.units.dx);
     if (state.idlers.length === 0) updateZeroIdlerReadoutDOM();
+    recordHistory();
   });
 
   document.getElementById('pulleyDy').addEventListener('input', e => {
@@ -3289,6 +3433,7 @@
     }
     locusDirty = true;
     updateAll();
+    scheduleInputHistory();
   });
 
   document.getElementById('unitDy').addEventListener('change', e => {
@@ -3297,6 +3442,7 @@
     inp.step = state.units.dy === 'in' ? '0.05' : '0.5';
     inp.value = mmToUnit(state.dy, state.units.dy);
     if (state.idlers.length === 0) updateZeroIdlerReadoutDOM();
+    recordHistory();
   });
 
   document.getElementById('beltLength').addEventListener('input', e => {
@@ -3310,6 +3456,7 @@
       }
       locusDirty = true;
       updateAll();
+      scheduleInputHistory();
     }
   });
 
@@ -3319,6 +3466,7 @@
     inp.step = state.units.beltLen === 'in' ? '0.2' : '5';
     inp.value = mmToUnit(state.targetLen, state.units.beltLen);
     if (state.idlers.length === 0) updateZeroIdlerReadoutDOM();
+    recordHistory();
   });
 
   document.getElementById('beltTeeth').addEventListener('input', e => {
@@ -3331,20 +3479,26 @@
       }
       locusDirty = true;
       updateAll();
+      scheduleInputHistory();
     }
   });
 
-  document.getElementById('chkSnap').addEventListener('change', e => { state.snap = e.target.checked; });
+  document.getElementById('chkSnap').addEventListener('change', e => {
+    state.snap = e.target.checked;
+    recordHistory();
+  });
   document.getElementById('chkLocus').addEventListener('change', e => {
     state.showLocus = e.target.checked;
     locusDirty = true;
     updateAll();
+    recordHistory();
   });
 
   document.getElementById('btnSnapNow').addEventListener('click', () => {
     if (state.idlers.length === 0) {
       if (updateXYForZeroIdlers()) {
         updateAll();
+        recordHistory();
         showToast(`${t('toastZeroUpdated')}X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm`);
       } else {
         showToast(t('toastTooShort'), true);
@@ -3357,6 +3511,7 @@
     state.idlers[i].y = +p.y.toFixed(2);
     updateFastIdlerReadout(i);
     updateAll();
+    recordHistory();
     showToast(`${t('idlerItemTitle')} #0${i + 1}: ${t('toastSnapped')}`);
   });
 
@@ -3369,6 +3524,7 @@
       locusDirty = true;
       renderIdlerCards();
       updateAll();
+      scheduleInputHistory();
     }
   });
 
@@ -3380,6 +3536,7 @@
     inp.value = mmToUnit(state.defaultOd, newU);
     state.idlers.forEach(it => { it.uOd = newU; });
     renderIdlerCards();
+    recordHistory();
   });
 
   document.getElementById('idlerCount').addEventListener('change', e => {
@@ -3404,9 +3561,10 @@
       updateXYForZeroIdlers();
     }
 
-    setMode(state.mode, false);
+    setMode(state.mode, false, false);
     renderIdlerCards();
     updateAll();
+    recordHistory();
   });
 
   document.getElementById('idlerList').addEventListener('input', e => {
@@ -3439,6 +3597,7 @@
     }
     updateFastIdlerReadout(idx);
     updateAll();
+    scheduleInputHistory();
   });
 
   document.getElementById('idlerList').addEventListener('change', e => {
@@ -3466,6 +3625,7 @@
       inp.value = mmToUnit(it.y, it.uY);
       updateFastIdlerReadout(idx);
     }
+    recordHistory();
   });
 
   document.getElementById('idlerList').addEventListener('click', e => {
@@ -3503,19 +3663,16 @@
   });
 
   // =========================================================================
-  // 畫布滑鼠互動 (支援模式三圓心拉虛線、本體拖曳共軸與右鍵選單)
+  // 畫布滑鼠互動
   // =========================================================================
   let spaceKey = false;
-  window.addEventListener('keydown', e => { if (e.code === 'Space') spaceKey = true; });
   window.addEventListener('keyup', e => { if (e.code === 'Space') spaceKey = false; });
 
-  // 依半徑由小到大找尋點擊到的齒輪/皮帶輪 (優先選取疊在上方的小輪)
   function hitTestGearNode(wx, wy, screenX, screenY) {
     const order = state.gearNodes
       .map((node, idx) => ({ node, idx, r: getPitchRadius(node.teeth) }))
       .sort((a, b) => a.r - b.r);
 
-    // 1. 先檢查是否點擊在任一物件的圓心圖示上 (螢幕距離 <= 11 px)
     for (const { node, idx } of order) {
       const cScr = w2s(node.x, node.y);
       if (Math.hypot(screenX - cScr.x, screenY - cScr.y) <= 11) {
@@ -3523,7 +3680,6 @@
       }
     }
 
-    // 2. 再檢查是否點擊在物件本體範圍內
     for (const { node, idx, r } of order) {
       if (Math.hypot(wx - node.x, wy - node.y) <= r * 1.12) {
         return { idx, part: 'body' };
@@ -3538,7 +3694,6 @@
     const w = s2w(sx, sy);
 
     if (state.mode === 3) {
-      // 右鍵點擊物件：開啟角色設定選單
       if (e.button === 2) {
         const hit = hitTestGearNode(w.x, w.y, sx, sy);
         if (hit) {
@@ -3560,13 +3715,11 @@
       const hit = hitTestGearNode(w.x, w.y, sx, sy);
       if (hit) {
         if (hit.part === 'center') {
-          // 左鍵長按圓心：拉出虛線連接傳動
           view.linkingFromGearIdx = hit.idx;
           view.linkingMouseWorld = { x: w.x, y: w.y };
           draw();
           return;
         } else {
-          // 左鍵長按本體：拖動物件位置
           view.draggingGearBodyIdx = hit.idx;
           return;
         }
@@ -3629,7 +3782,6 @@
         node.x = +w.x.toFixed(2);
         node.y = +w.y.toFixed(2);
 
-        // 若此齒輪有咬合夥伴，同步保持咬合接觸與相位
         state.gearLinks.forEach(lk => {
           if (lk.kind === 'mesh') {
             if (lk.a === idx) snapTwoGearsToMesh(lk.a, lk.b);
@@ -3647,7 +3799,6 @@
         return;
       }
 
-      // 更新游標懸停提示
       const hit = hitTestGearNode(w.x, w.y, sx, sy);
       const prevHover = view.hoverGearIdx;
       const prevCenter = view.hoverCenterIdx;
@@ -3701,7 +3852,6 @@
       const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
       const w = s2w(sx, sy);
 
-      // 完成圓心虛線拉動連接
       if (view.linkingFromGearIdx >= 0) {
         const srcIdx = view.linkingFromGearIdx;
         view.linkingFromGearIdx = -1;
@@ -3712,19 +3862,16 @@
           const nA = state.gearNodes[srcIdx];
           const nB = state.gearNodes[dstIdx];
 
-          // 檢查是否為皮帶輪與齒輪異種連接 -> 跳出 Error 提醒
           if (nA.type !== nB.type) {
             showToast(t('errPulleyGearLink'), true);
             updateAll();
             return;
           }
 
-          // 移除兩者間既有重複連線
           state.gearLinks = state.gearLinks.filter(
             lk => !((lk.a === srcIdx && lk.b === dstIdx) || (lk.a === dstIdx && lk.b === srcIdx))
           );
 
-          // 若兩物件原本同心，拉虛線傳動時先將目標物件拉開
           if (Math.hypot(nA.x - nB.x, nA.y - nB.y) < 1.0) {
             nB.x += getPitchRadius(nA.teeth) + getPitchRadius(nB.teeth) + 15;
           }
@@ -3737,11 +3884,11 @@
             snapTwoGearsToMesh(srcIdx, dstIdx);
             showToast(t('toastGearMeshed'));
           }
+          recordHistory();
         }
         updateAll();
       }
 
-      // 完成物件本體拖動：檢查是否與其他物件重疊 -> 若重疊則自動同心共用傳動軸
       if (view.draggingGearBodyIdx >= 0) {
         const draggedIdx = view.draggingGearBodyIdx;
         view.draggingGearBodyIdx = -1;
@@ -3750,7 +3897,6 @@
 
         for (let i = 0; i < state.gearNodes.length; i++) {
           if (i === draggedIdx) continue;
-          // 若兩者之間有齒輪咬合或皮帶傳動連線，則不執行同心重疊
           const isLinked = state.gearLinks.some(
             lk => (lk.a === draggedIdx && lk.b === i) || (lk.a === i && lk.b === draggedIdx)
           );
@@ -3768,6 +3914,7 @@
           }
         }
         updateAll();
+        recordHistory();
       }
 
       view.panning = false;
@@ -3777,11 +3924,13 @@
     if (view.draggingOutputPulley) {
       view.draggingOutputPulley = false;
       updateAll();
+      recordHistory();
     }
     if (view.draggingIdx >= 0) {
       view.draggingIdx = -1;
       locusDirty = true;
       updateAll();
+      recordHistory();
     }
     view.panning = false;
   });
@@ -3806,7 +3955,6 @@
 
   document.getElementById('btnPreset').addEventListener('click', () => {
     if (state.mode === 3) {
-      // 載入複合傳動範例 (齒輪1咬合齒輪2 -> 齒輪2與皮帶輪3同心共軸 -> 皮帶輪3帶動皮帶輪4)
       state.gearNodes = [
         { id: 1, teeth: 18, type: 'gear', role: 'input', x: -70, y: 0, phase: 0 },
         { id: 2, teeth: 36, type: 'gear', role: 'none', x: -27, y: 0, phase: 0 },
@@ -3824,6 +3972,7 @@
       renderGearItemCards();
       resetView();
       updateAll();
+      recordHistory();
       showToast(t('toastPreset'));
       return;
     }
@@ -3840,10 +3989,11 @@
     }
     locusDirty = true;
     syncInputsFromState();
-    setMode(state.mode, false);
+    setMode(state.mode, false, false);
     renderIdlerCards();
     resetView();
     updateAll();
+    recordHistory();
     showToast(t('toastPreset'));
   });
 
@@ -3910,9 +4060,10 @@
   }
   renderIdlerCards();
   renderGearItemCards();
-  setMode(state.mode, false);
+  setMode(state.mode, false, false);
   resize();
   updateAll();
+  recordHistory(); // 儲存初始狀態作為歷史紀錄第 0 筆
 })();
 </script>
 </body>
