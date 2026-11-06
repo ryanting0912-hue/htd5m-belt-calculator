@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#252525" />
-  <title>FRC 8725 · HTD-5M 時規皮帶與惰輪幾何計算器</title>
+  <title>FRC 8725 · HTD-5M 時規皮帶與齒輪比計算器</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -181,6 +181,22 @@
       transition: background-color 0.12s, color 0.12s, border-color 0.12s;
     }
 
+    /* 第三個選項「齒輪比計算」與前兩個選項中間留間距 */
+    .nav-item--spaced {
+      margin-top: 22px;
+      position: relative;
+    }
+
+    .nav-item--spaced::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 8px;
+      right: 8px;
+      height: 1px;
+      background-color: var(--border-subtle);
+    }
+
     .nav-item svg {
       width: 15px;
       height: 15px;
@@ -264,6 +280,13 @@
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .lang-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      user-select: none;
     }
 
     .lang-select {
@@ -397,6 +420,13 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+    }
+
+    .pane-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-shrink: 0;
     }
 
     .card {
@@ -611,8 +641,8 @@
       cursor: pointer;
     }
 
-    /* 惰輪清單項目 */
-    #idlerList {
+    /* 惰輪與齒輪清單項目 */
+    #idlerList, #gearItemList {
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -692,7 +722,7 @@
     .rel-c { color: var(--accent); font-weight: 600; }
 
     /* ==========================================================================
-       右側 CAD 畫布視窗
+       右側 CAD 畫布視窗與齒輪比專屬 HUD
        ========================================================================== */
     .canvas-pane {
       position: relative;
@@ -725,6 +755,7 @@
       padding: 6px 10px;
       border-radius: var(--radius-md);
       flex-wrap: wrap;
+      z-index: 10;
     }
 
     .canvas-hud-status {
@@ -736,6 +767,7 @@
       border-radius: var(--radius-md);
       padding: 9px 13px;
       min-width: 240px;
+      z-index: 10;
     }
 
     .canvas-hud-bottom {
@@ -754,6 +786,120 @@
       color: var(--text-secondary);
       flex-wrap: wrap;
       gap: 8px;
+      z-index: 10;
+    }
+
+    /* 模式三：右下角齒輪比計算結果與條列式說明框 */
+    .ratio-hud-bottom-right {
+      position: absolute;
+      bottom: 14px;
+      right: 14px;
+      width: 410px;
+      max-width: calc(100% - 28px);
+      background-color: rgba(32, 32, 32, 0.95);
+      border: 1px solid var(--border-default);
+      border-top: 3px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 13px 16px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+      z-index: 12;
+      display: none;
+    }
+
+    .ratio-result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .ratio-result-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    .ratio-result-main {
+      font-family: var(--font-mono);
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .ratio-result-sub {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      padding-bottom: 9px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .ratio-guide-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9e9e9e;
+      margin-bottom: 4px;
+    }
+
+    .ratio-guide-list {
+      padding-left: 16px;
+      margin: 0;
+      font-size: 11.5px;
+      line-height: 1.55;
+      color: #9e9e9e;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    /* 畫布物件右鍵彈出式下拉選單 */
+    .node-context-popup {
+      position: absolute;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      min-width: 210px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+      z-index: 30;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .node-context-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 5px;
+    }
+
+    .node-context-popup select {
+      width: 100%;
+      height: 32px;
+      background-color: var(--bg-input);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 0 8px;
+      font-family: var(--font-family);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .node-context-popup select:focus {
+      border-color: var(--accent);
     }
 
     .legend-list {
@@ -777,25 +923,32 @@
 
     .toast-stack {
       position: fixed;
-      bottom: 20px;
+      top: 68px;
       right: 20px;
-      z-index: 50;
+      z-index: 60;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       pointer-events: none;
     }
 
     .toast-item {
       background-color: var(--bg-surface);
       border: 1px solid var(--border-strong);
-      border-left: 3px solid var(--accent);
+      border-left: 4px solid var(--accent);
       color: var(--text-primary);
-      padding: 9px 14px;
+      padding: 10px 15px;
       border-radius: var(--radius-sm);
-      font-size: 12.5px;
-      font-weight: 500;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    }
+
+    .toast-item.error {
+      background-color: #2b1616;
+      border-color: #e57373;
+      border-left: 4px solid #ef5350;
+      color: #ffcdd2;
     }
 
     /* ==========================================================================
@@ -838,17 +991,24 @@
       .nav-list {
         flex-direction: row;
         gap: 4px;
+        flex-wrap: wrap;
       }
       .nav-item {
         width: auto;
         padding: 6px 9px;
         font-size: 12px;
       }
+      .nav-item--spaced {
+        margin-top: 0;
+      }
+      .nav-item--spaced::before {
+        display: none;
+      }
       .main-area { height: auto; overflow: visible; }
       .summary-strip { grid-template-columns: 1fr; }
       .workbench { grid-template-columns: 1fr; grid-template-rows: auto; overflow: visible; }
       .form-pane { height: auto; overflow: visible; border-right: none; border-bottom: 1px solid var(--border-subtle); }
-      .canvas-pane { height: 540px; }
+      .canvas-pane { height: 580px; }
       .grid--2, .grid--3 { grid-template-columns: 1fr; }
     }
   </style>
@@ -878,6 +1038,12 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
               <span id="navMode2Text">模式二：算皮帶長度</span>
             </button>
+
+            <!-- 與前兩個選項中間保留間距的「齒輪比計算」功能選項 -->
+            <button type="button" class="nav-item nav-item--spaced" id="btnMode3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="4"/><circle cx="17" cy="17" r="5"/><line x1="10" y1="10" x2="13.5" y2="13.5"/></svg>
+              <span id="navMode3Text">齒輪比計算</span>
+            </button>
           </div>
         </div>
       </div>
@@ -889,11 +1055,12 @@
       <header class="topbar">
         <div class="topbar-left">
           <h1 class="page-title" id="topbarModeTitle">模式一：固定皮帶長度找惰輪位置</h1>
-          <span class="spec-badge">HTD-5M (Pitch 5mm)</span>
+          <span class="spec-badge" id="topbarSpecBadge">HTD-5M (Pitch 5mm)</span>
         </div>
 
-        <!-- 右上角語言切換選單與複製報告按鈕 -->
+        <!-- 右上角固定「Language：」純文字 + 語言切換選單 + 複製報告按鈕 -->
         <div class="topbar-right">
+          <span class="lang-label">Language：</span>
           <select id="langSelect" class="lang-select" aria-label="Language">
             <option value="zh">繁體中文</option>
             <option value="en">English</option>
@@ -906,8 +1073,8 @@
         </div>
       </header>
 
-      <!-- 頂部數據摘要列 (.summary-strip) -->
-      <section class="summary-strip">
+      <!-- 頂部數據摘要列 (.summary-strip，於模式一、二顯示) -->
+      <section class="summary-strip" id="beltSummaryStrip">
         <div class="stat-card">
           <div class="stat-head">
             <span class="stat-label" id="statLabel1">1. 最接近整數皮帶長 (比實際大)</span>
@@ -957,139 +1124,179 @@
       <div class="workbench">
         <!-- 左側表單區 (.form-pane) -->
         <aside class="form-pane" id="formPane">
-          <!-- Card 1: 主皮帶輪設定 -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title" id="card1Title">1. 主皮帶輪與相對位置</div>
-              <span class="tag" id="pulleyCardTag">X右正左負 / Y上正下負</span>
+
+          <!-- ================= 模式一 & 二 表單群組 ================= -->
+          <div class="pane-group" id="beltFormGroup">
+            <!-- Card 1: 主皮帶輪設定 -->
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title" id="card1Title">1. 主皮帶輪與相對位置</div>
+                <span class="tag" id="pulleyCardTag">X右正左負 / Y上正下負</span>
+              </div>
+              <div class="card-body">
+                <div class="grid--2">
+                  <div class="field">
+                    <label id="lblInTeeth">皮帶輪(輸入) 齒數</label>
+                    <div class="input-wrap">
+                      <input type="number" id="inTeeth" min="8" max="200" step="1" />
+                      <span class="unit-addon" id="unitInTeeth">齒</span>
+                    </div>
+                    <div class="field-hint" id="inPdText">PD: 28.65 mm</div>
+                  </div>
+
+                  <div class="field">
+                    <label id="lblOutTeeth">皮帶輪(輸出) 齒數</label>
+                    <div class="input-wrap">
+                      <input type="number" id="outTeeth" min="8" max="200" step="1" />
+                      <span class="unit-addon" id="unitOutTeeth">齒</span>
+                    </div>
+                    <div class="field-hint" id="outPdText">PD: 57.30 mm</div>
+                  </div>
+
+                  <div class="field">
+                    <label id="lblPulleyDx">兩皮帶輪 X 軸距離</label>
+                    <div class="input-wrap">
+                      <input type="number" id="pulleyDx" step="0.5" />
+                      <select class="unit-select" id="unitDx">
+                        <option value="mm">mm</option>
+                        <option value="in">in</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label id="lblPulleyDy">兩皮帶輪 Y 軸距離</label>
+                    <div class="input-wrap">
+                      <input type="number" id="pulleyDy" step="0.5" />
+                      <select class="unit-select" id="unitDy">
+                        <option value="mm">mm</option>
+                        <option value="in">in</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="card-body">
-              <div class="grid--2">
-                <div class="field">
-                  <label id="lblInTeeth">皮帶輪(輸入) 齒數</label>
-                  <div class="input-wrap">
-                    <input type="number" id="inTeeth" min="8" max="200" step="1" />
-                    <span class="unit-addon" id="unitInTeeth">齒</span>
+
+            <!-- Card 2: 固定皮帶長度設定 -->
+            <div class="card" id="mode1Panel">
+              <div class="card-head">
+                <div class="card-title" id="card2Title">2. 固定皮帶長度設定</div>
+                <span class="tag tag--accent" id="beltPanelBadge">模式一</span>
+              </div>
+              <div class="card-body">
+                <div class="grid--2">
+                  <div class="field">
+                    <label id="lblBeltLength">目標皮帶長度</label>
+                    <div class="input-wrap">
+                      <input type="number" id="beltLength" min="1" max="4000" step="5" />
+                      <select class="unit-select" id="unitBeltLen">
+                        <option value="mm">mm</option>
+                        <option value="in">in</option>
+                      </select>
+                    </div>
                   </div>
-                  <div class="field-hint" id="inPdText">PD: 28.65 mm</div>
+
+                  <div class="field">
+                    <label id="lblBeltTeeth">對應皮帶齒數 (NN)</label>
+                    <div class="input-wrap">
+                      <input type="number" id="beltTeeth" min="12" max="800" step="1" />
+                      <span class="unit-addon" id="unitBeltTeeth">齒</span>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="field">
-                  <label id="lblOutTeeth">皮帶輪(輸出) 齒數</label>
-                  <div class="input-wrap">
-                    <input type="number" id="outTeeth" min="8" max="200" step="1" />
-                    <span class="unit-addon" id="unitOutTeeth">齒</span>
-                  </div>
-                  <div class="field-hint" id="outPdText">PD: 57.30 mm</div>
+                <div style="border-top: 1px solid var(--border-subtle); padding-top: 8px; display:flex; flex-direction:column; gap:4px;">
+                  <label class="check-row">
+                    <span id="lblSnapText">拖動惰輪時自動吸附至「完美張緊軌跡」</span>
+                    <input type="checkbox" id="chkSnap" checked />
+                  </label>
+                  <label class="check-row">
+                    <span id="lblLocusText">顯示「等皮帶長度張緊軌跡虛線」</span>
+                    <input type="checkbox" id="chkLocus" checked />
+                  </label>
+                  <button type="button" class="btn btn--accent" id="btnSnapNow" style="margin-top:4px;">
+                    <span id="btnSnapNowText">立即將作用中惰輪移至完美張緊位置</span>
+                  </button>
                 </div>
+              </div>
+            </div>
 
-                <div class="field">
-                  <label id="lblPulleyDx">兩皮帶輪 X 軸距離</label>
-                  <div class="input-wrap">
-                    <input type="number" id="pulleyDx" step="0.5" />
-                    <select class="unit-select" id="unitDx">
-                      <option value="mm">mm</option>
-                      <option value="in">in</option>
+            <!-- Card 3: 惰輪設定與相對距離清單 -->
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title" id="idlerCardTitle">3. 培林 / 惰輪參數與相對軸距</div>
+                <span class="tag" id="idlerCardHint">可拖曳畫布惰輪</span>
+              </div>
+              <div class="card-body">
+                <div class="grid--2">
+                  <div class="field">
+                    <label id="lblDefaultOd">惰輪統一外徑</label>
+                    <div class="input-wrap">
+                      <input type="number" id="defaultOd" min="0.1" max="200" step="0.5" />
+                      <select class="unit-select" id="unitDefaultOd">
+                        <option value="mm">mm</option>
+                        <option value="in">in</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label id="lblIdlerCount">惰輪數量</label>
+                    <select id="idlerCount">
+                      <option value="0" id="optIdler0">0 顆 (無惰輪)</option>
+                      <option value="1" id="optIdler1">1 顆惰輪</option>
+                      <option value="2" id="optIdler2">2 顆惰輪 (示意圖配置)</option>
+                      <option value="3" id="optIdler3">3 顆惰輪</option>
+                      <option value="4" id="optIdler4">4 顆惰輪</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="field">
-                  <label id="lblPulleyDy">兩皮帶輪 Y 軸距離</label>
-                  <div class="input-wrap">
-                    <input type="number" id="pulleyDy" step="0.5" />
-                    <select class="unit-select" id="unitDy">
-                      <option value="mm">mm</option>
-                      <option value="in">in</option>
-                    </select>
-                  </div>
-                </div>
+                <div id="idlerList"></div>
               </div>
             </div>
           </div>
 
-          <!-- Card 2: 固定皮帶長度設定 -->
-          <div class="card" id="mode1Panel">
-            <div class="card-head">
-              <div class="card-title" id="card2Title">2. 固定皮帶長度設定</div>
-              <span class="tag tag--accent" id="beltPanelBadge">模式一</span>
-            </div>
-            <div class="card-body">
-              <div class="grid--2">
+          <!-- ================= 模式三：齒輪比計算 表單群組 ================= -->
+          <div class="pane-group" id="gearFormGroup" style="display:none;">
+            <!-- Card 1: 數量與快速排列 -->
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title" id="gearCard1Title">1. 皮帶輪 / 齒輪數量設定</div>
+                <span class="tag tag--accent" id="gearCard1Tag">依實際尺寸比例繪製</span>
+              </div>
+              <div class="card-body">
                 <div class="field">
-                  <label id="lblBeltLength">目標皮帶長度</label>
+                  <label id="lblGearCount">皮帶輪 (齒輪) 數量</label>
                   <div class="input-wrap">
-                    <input type="number" id="beltLength" min="1" max="4000" step="5" />
-                    <select class="unit-select" id="unitBeltLen">
-                      <option value="mm">mm</option>
-                      <option value="in">in</option>
-                    </select>
+                    <input type="number" id="gearCountInput" min="2" max="12" step="1" value="4" />
+                    <span class="unit-addon" id="unitGearCount">個</span>
                   </div>
                 </div>
-
-                <div class="field">
-                  <label id="lblBeltTeeth">對應皮帶齒數 (NN)</label>
-                  <div class="input-wrap">
-                    <input type="number" id="beltTeeth" min="12" max="800" step="1" />
-                    <span class="unit-addon" id="unitBeltTeeth">齒</span>
-                  </div>
+                <div class="grid--2" style="margin-top:4px;">
+                  <button type="button" class="btn" id="btnArrangeGears">依序排列於畫布</button>
+                  <button type="button" class="btn" id="btnClearGearLinks">清除所有傳動連線</button>
                 </div>
               </div>
+            </div>
 
-              <div style="border-top: 1px solid var(--border-subtle); padding-top: 8px; display:flex; flex-direction:column; gap:4px;">
-                <label class="check-row">
-                  <span id="lblSnapText">拖動惰輪時自動吸附至「完美張緊軌跡」</span>
-                  <input type="checkbox" id="chkSnap" checked />
-                </label>
-                <label class="check-row">
-                  <span id="lblLocusText">顯示「等皮帶長度張緊軌跡虛線」</span>
-                  <input type="checkbox" id="chkLocus" checked />
-                </label>
-                <button type="button" class="btn btn--accent" id="btnSnapNow" style="margin-top:4px;">
-                  <span id="btnSnapNowText">立即將作用中惰輪移至完美張緊位置</span>
-                </button>
+            <!-- Card 2: 各皮帶輪(齒輪)齒數與類型清單 -->
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title" id="gearCard2Title">2. 各物件齒數與類型設定</div>
+                <span class="tag" id="gearCard2Tag">右鍵點擊畫布物件設輸入/輸出</span>
+              </div>
+              <div class="card-body">
+                <div id="gearItemList"></div>
               </div>
             </div>
           </div>
 
-          <!-- Card 3: 惰輪設定與相對距離清單 (已將「(TT)」移除) -->
-          <div class="card">
-            <div class="card-head">
-              <div class="card-title" id="idlerCardTitle">3. 培林 / 惰輪參數與相對軸距</div>
-              <span class="tag" id="idlerCardHint">可拖曳畫布惰輪</span>
-            </div>
-            <div class="card-body">
-              <div class="grid--2">
-                <div class="field">
-                  <label id="lblDefaultOd">惰輪統一外徑</label>
-                  <div class="input-wrap">
-                    <input type="number" id="defaultOd" min="0.1" max="200" step="0.5" />
-                    <select class="unit-select" id="unitDefaultOd">
-                      <option value="mm">mm</option>
-                      <option value="in">in</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="field">
-                  <label id="lblIdlerCount">惰輪數量</label>
-                  <select id="idlerCount">
-                    <option value="0" id="optIdler0">0 顆 (無惰輪)</option>
-                    <option value="1" id="optIdler1">1 顆惰輪</option>
-                    <option value="2" id="optIdler2">2 顆惰輪 (示意圖配置)</option>
-                    <option value="3" id="optIdler3">3 顆惰輪</option>
-                    <option value="4" id="optIdler4">4 顆惰輪</option>
-                  </select>
-                </div>
-              </div>
-
-              <div id="idlerList"></div>
-            </div>
-          </div>
         </aside>
 
         <!-- 右側互動式 CAD 視窗 (.canvas-pane) -->
-        <main class="canvas-pane">
+        <main class="canvas-pane" id="canvasPane">
           <div class="canvas-hud-top">
             <button type="button" class="btn" id="btnResetView">置中視角</button>
             <button type="button" class="btn" id="btnPreset">載入示意圖預設</button>
@@ -1106,9 +1313,29 @@
             <div style="font-family:var(--font-mono); font-size:12px; font-weight:600;" id="stDetail">就緒</div>
           </div>
 
+          <!-- 畫布物件右鍵彈出式選單 (模式三專用) -->
+          <div class="node-context-popup" id="nodeContextPopup">
+            <div class="node-context-title">
+              <span id="ctxPopupTitle">物件 #01 設定</span>
+              <button type="button" class="btn" id="btnCloseCtx" style="height:20px; padding:0 6px; font-size:11px;">✕</button>
+            </div>
+            <div class="field">
+              <label id="lblCtxRole">設定動力角色 (下拉選單)</label>
+              <select id="ctxRoleSelect">
+                <option value="none" id="optRoleNone">中間過渡件 (無標示)</option>
+                <option value="input" id="optRoleInput">動力輸入源 (標示：輸入)</option>
+                <option value="output" id="optRoleOutput">動力輸出源 (標示：輸出)</option>
+              </select>
+            </div>
+            <button type="button" class="btn" id="btnCtxDisconnect" style="width:100%; height:28px; font-size:11.5px;">
+              解除此物件的傳動連線
+            </button>
+          </div>
+
           <canvas id="cadCanvas"></canvas>
 
-          <div class="canvas-hud-bottom">
+          <!-- 模式一 & 二 底部圖例列 -->
+          <div class="canvas-hud-bottom" id="beltHudBottom">
             <div class="legend-list">
               <div class="legend-node"><span class="swatch" style="background:#e091a8;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
               <div class="legend-node"><span class="swatch" style="background:#8c939e;"></span><span id="legIdler">培林/惰輪 (外壓切外線 / 內撐切內線)</span></div>
@@ -1119,6 +1346,23 @@
               X: 0.0 mm | Y: 0.0 mm
             </div>
           </div>
+
+          <!-- 模式三：右下角齒輪比即時輸出與條列式使用說明 -->
+          <div class="ratio-hud-bottom-right" id="ratioHudBox">
+            <div class="ratio-result-header">
+              <span class="ratio-result-label" id="ratioBoxHeader">即時齒輪比計算結果 (輸入 ➔ 輸出)</span>
+              <span class="tag tag--accent" id="ratioDirBadge">待機中</span>
+            </div>
+            <div class="ratio-result-main" id="ratioMainValue">-- : --</div>
+            <div class="ratio-result-sub" id="ratioSubDetail">請拉出圓心虛線連接傳動件，並以右鍵設定輸入與輸出源</div>
+
+            <div class="ratio-guide-title" id="ratioGuideTitle">使用方法說明：</div>
+            <ul class="ratio-guide-list" id="ratioGuideList">
+              <li><b>右鍵點擊物件</b>：於物件上開啟下拉選單，設定為「輸入」或「輸出」動力源（未選則為過渡輪）。</li>
+              <li><b>左鍵長按外圈拖動</b>：移動物件位置；若兩物件重疊將自動同心，視為<b>共用一根傳動軸</b>。</li>
+              <li><b>左鍵長按圓心拖動</b>：拉出虛線連接兩圓心建立傳動（皮帶輪保持原位；兩齒輪自動接合咬合；皮帶輪與齒輪不可互連）。</li>
+            </ul>
+          </div>
         </main>
       </div>
     </div>
@@ -1128,20 +1372,22 @@
 
 <script>
 (function() {
-  const PITCH = 5.0;          // HTD-5M 齒距 5mm
-  const BELT_THICK = 3.5;     // HTD-5M 皮帶厚度 3.5mm (外壓惰輪與外側虛線相切偏移量)
+  const PITCH = 5.0;          // HTD-5M 齒距 5mm (同時作為齒輪模數基準 M = 5/π，確保相同齒數節圓直徑一致)
+  const BELT_THICK = 3.5;     // HTD-5M 皮帶厚度 3.5mm
   const MM_PER_IN = 25.4;     // 1 inch = 25.4 mm
   const ACCENT_HEX = '#CE5338';
 
   // 中／英雙語字典
   const I18N = {
     zh: {
-      pageDocTitle: 'FRC 8725 · HTD-5M 時規皮帶與惰輪幾何計算器',
+      pageDocTitle: 'FRC 8725 · HTD-5M 時規皮帶與齒輪比計算器',
       navSectionMode: '計算模式 (Mode)',
       navMode1: '模式一：找惰輪位置',
       navMode2: '模式二：算皮帶長度',
+      navMode3: '齒輪比計算',
       topbarMode1: '模式一：固定皮帶長度找惰輪位置',
       topbarMode2: '模式二：固定皮帶輪與惰輪位置計算皮帶長度',
+      topbarMode3: '齒輪比計算：互動式皮帶輪 / 齒輪傳動模擬',
       topbarZero1: '模式一 (0 顆惰輪)：依齒數與皮帶長度計算兩皮帶輪 X、Y 軸距離',
       topbarZero2: '模式二 (0 顆惰輪)：依齒數與皮帶長度計算兩皮帶輪 X、Y 軸距離',
       copyReport: '複製報告',
@@ -1184,6 +1430,7 @@
       loadPreset: '載入示意圖預設',
       hudHintIdler: '左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
       hudHintZero: '左鍵拖曳輸出皮帶輪改變角度 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
+      hudHintGear: '左鍵拖外圈移動(重疊即共軸) · 左鍵拖圓心拉虛線連接傳動 · 右鍵設輸入/輸出',
       legPulley: 'HTD-5M 皮帶輪',
       legIdler: '培林/惰輪 (外壓切外線 / 內撐切內線)',
       legBelt: '時規皮帶雙層虛線',
@@ -1237,21 +1484,65 @@
       canvasOutside: '外壓',
       canvasInside: '內撐',
       toastViewReset: '已自動置中視角',
-      toastPreset: '已載入示意圖預設配置',
+      toastPreset: '已載入預設配置',
       toastReportCopied: '已複製完整工程報告至剪貼簿',
       toastIdlerCopied: '已複製惰輪座標',
       toastZeroCopied: '已複製兩皮帶輪 X/Y 距離',
       toastSnapped: '已吸附至完美張緊位置',
       toastZeroUpdated: '已更新兩皮帶輪距離：',
-      toastTooShort: '目標皮帶長度過短，請增加皮帶長度'
+      toastTooShort: '目標皮帶長度過短，請增加皮帶長度',
+
+      // 模式三：齒輪比計算專屬字典
+      gearCard1Title: '1. 皮帶輪 / 齒輪數量設定',
+      gearCard1Tag: '依實際尺寸比例繪製',
+      lblGearCount: '皮帶輪 (齒輪) 數量',
+      unitGearCount: '個',
+      btnArrangeGears: '依序排列於畫布',
+      btnClearGearLinks: '清除所有傳動連線',
+      gearCard2Title: '2. 各物件齒數與類型設定',
+      gearCard2Tag: '右鍵點擊畫布物件設輸入/輸出',
+      gearObjTitle: '物件',
+      gearTeethLabel: '齒數 (Teeth)',
+      gearTypeLabel: '物件類型',
+      typePulley: '皮帶輪 (圓形)',
+      typeGear: '齒輪 (齒輪狀)',
+      roleNoneTag: '過渡件',
+      roleInputTag: '輸入',
+      roleOutputTag: '輸出',
+      ctxTitlePrefix: '物件',
+      ctxRoleLabel: '設定動力角色 (下拉選單)',
+      optRoleNone: '中間過渡件 (無標示)',
+      optRoleInput: '動力輸入源 (標示：輸入)',
+      optRoleOutput: '動力輸出源 (標示：輸出)',
+      btnCtxDisconnect: '解除此物件的傳動連線',
+      ratioBoxHeader: '即時齒輪比計算結果 (輸入 ➔ 輸出)',
+      ratioStandby: '未完成傳動',
+      ratioSameDir: '同向旋轉',
+      ratioRevDir: '反向旋轉',
+      ratioUnconnected: '尚未建立從「輸入」到「輸出」的完整傳動路徑',
+      ratioNoInOut: '請右鍵點擊畫布物件，設定一個「輸入」與一個「輸出」',
+      ratioSpeedMult: '輸出轉速倍率:',
+      ratioTorqueMult: '輸出扭力倍率:',
+      ratioGuideTitle: '使用方法說明：',
+      ratioGuideHTML: `
+        <li><b>右鍵點擊物件</b>：於物件上開啟下拉選單，設定為「輸入」或「輸出」動力源（沒選則為中間過渡件）。</li>
+        <li><b>左鍵長按外圈拖動</b>：移動物件位置；若兩物件重疊將自動同心，視為<b>共用一根傳動軸</b>。</li>
+        <li><b>左鍵長按圓心拖動</b>：拉出虛線連接兩圓心建立傳動（兩皮帶輪保持原位；兩齒輪自動移動咬合；皮帶輪與齒輪不可透過虛線連接）。</li>
+      `,
+      errPulleyGearLink: 'ERROR：皮帶輪與齒輪無法透過虛線直接連接！若共用傳動軸請直接拖曳物件重疊同心。',
+      toastGearMeshed: '齒輪已自動接合咬合並建立傳動關係',
+      toastBeltLinked: '皮帶輪已建立皮帶傳動關係',
+      toastCoaxial: '兩物件重疊，已自動對齊同心並共用傳動軸'
     },
     en: {
-      pageDocTitle: 'FRC 8725 · HTD-5M Timing Belt & Idler Calculator',
+      pageDocTitle: 'FRC 8725 · HTD-5M Belt & Gear Ratio Calculator',
       navSectionMode: 'CALCULATION MODE',
       navMode1: 'Mode 1: Find Idler Pos',
       navMode2: 'Mode 2: Calc Belt Length',
+      navMode3: 'Gear Ratio Calculator',
       topbarMode1: 'Mode 1: Fixed Belt Length ➔ Find Idler Position',
       topbarMode2: 'Mode 2: Fixed Pulley & Idler Positions ➔ Calculate Belt Length',
+      topbarMode3: 'Gear Ratio Calculator: Interactive Pulley & Gear Transmission',
       topbarZero1: 'Mode 1 (0 Idlers): Solve Pulley X & Y Distances from Belt Length',
       topbarZero2: 'Mode 2 (0 Idlers): Solve Pulley X & Y Distances from Belt Length',
       copyReport: 'Copy Report',
@@ -1294,6 +1585,7 @@
       loadPreset: 'Load Preset',
       hudHintIdler: 'LMB Drag Idler · Scroll Zoom · Space+LMB or RMB Pan',
       hudHintZero: 'LMB Drag Output Pulley Angle · Scroll Zoom · Space+LMB or RMB Pan',
+      hudHintGear: 'LMB Body: Move (Overlap=Coaxial) · LMB Center: Pull Dashed Link · RMB: Set Input/Output',
       legPulley: 'HTD-5M Pulley',
       legIdler: 'Idler (Outside: Outer Line / Inside: Inner Line)',
       legBelt: 'Timing Belt Dual Dashed Lines',
@@ -1347,19 +1639,61 @@
       canvasOutside: 'Outside',
       canvasInside: 'Inside',
       toastViewReset: 'View centered automatically',
-      toastPreset: 'Demo preset loaded',
+      toastPreset: 'Preset loaded',
       toastReportCopied: 'Full engineering report copied to clipboard',
       toastIdlerCopied: 'Idler coordinates copied',
       toastZeroCopied: 'Pulley X/Y distances copied',
       toastSnapped: 'Snapped to optimal tension position',
       toastZeroUpdated: 'Pulley distances updated: ',
-      toastTooShort: 'Target belt length is too short'
+      toastTooShort: 'Target belt length is too short',
+
+      // Mode 3: Gear Ratio Calculator
+      gearCard1Title: '1. Pulley / Gear Count',
+      gearCard1Tag: 'True-to-Scale Geometry',
+      lblGearCount: 'Number of Pulleys / Gears',
+      unitGearCount: 'pcs',
+      btnArrangeGears: 'Arrange in Sequence',
+      btnClearGearLinks: 'Clear All Links',
+      gearCard2Title: '2. Teeth & Component Type',
+      gearCard2Tag: 'Right-click on canvas to set In/Out',
+      gearObjTitle: 'Object',
+      gearTeethLabel: 'Teeth',
+      gearTypeLabel: 'Component Type',
+      typePulley: 'Pulley (Circular)',
+      typeGear: 'Gear (Toothed)',
+      roleNoneTag: 'Idler/Mid',
+      roleInputTag: 'INPUT',
+      roleOutputTag: 'OUTPUT',
+      ctxTitlePrefix: 'Object',
+      ctxRoleLabel: 'Power Role (Dropdown)',
+      optRoleNone: 'Intermediate (No Label)',
+      optRoleInput: 'Power Input (Label: INPUT)',
+      optRoleOutput: 'Power Output (Label: OUTPUT)',
+      btnCtxDisconnect: 'Disconnect Links on This Object',
+      ratioBoxHeader: 'LIVE GEAR RATIO RESULT (INPUT ➔ OUTPUT)',
+      ratioStandby: 'INCOMPLETE',
+      ratioSameDir: 'Same Dir',
+      ratioRevDir: 'Reverse Dir',
+      ratioUnconnected: 'No complete transmission path from INPUT to OUTPUT yet',
+      ratioNoInOut: 'Right-click objects on canvas to set one INPUT and one OUTPUT',
+      ratioSpeedMult: 'Output Speed:',
+      ratioTorqueMult: 'Output Torque:',
+      ratioGuideTitle: 'How to Use:',
+      ratioGuideHTML: `
+        <li><b>Right-click Object</b>: Open dropdown menu on the object to set as <b>Input</b> or <b>Output</b> (unselected = intermediate).</li>
+        <li><b>LMB Drag Body</b>: Move object; overlapping two objects snaps them concentric to <b>share a common shaft</b>.</li>
+        <li><b>LMB Drag Center Icon</b>: Pull dashed line between centers to link (Pulleys stay in place; Gears snap & mesh; Pulley-to-Gear is blocked with Error).</li>
+      `,
+      errPulleyGearLink: 'ERROR: Cannot connect a Pulley and a Gear via dashed line! Overlap them to share a coaxial shaft instead.',
+      toastGearMeshed: 'Gears snapped into mesh and linked',
+      toastBeltLinked: 'Belt transmission link established',
+      toastCoaxial: 'Objects overlapped: snapped concentric (shared shaft)'
     }
   };
 
   const state = {
     lang: 'zh',
-    mode: 1,
+    mode: 1, // 1: 找惰輪位置, 2: 算皮帶長度, 3: 齒輪比計算
     inTeeth: 18,
     outTeeth: 36,
     dx: 75.0,
@@ -1378,7 +1712,15 @@
     idlers: [
       { od: 22, x: 32.0, y: 52.0, span: 'upper', wrap: 'outside', uOd: 'mm', uX: 'mm', uY: 'mm' },
       { od: 22, x: 68.0, y: 26.0, span: 'lower', wrap: 'inside', uOd: 'mm', uX: 'mm', uY: 'mm' }
-    ]
+    ],
+    // 模式三：齒輪比計算狀態
+    gearNodes: [
+      { id: 1, teeth: 18, type: 'gear', role: 'input', x: -75, y: 0, phase: 0 },
+      { id: 2, teeth: 36, type: 'gear', role: 'none', x: -15, y: 0, phase: 0 },
+      { id: 3, teeth: 18, type: 'pulley', role: 'none', x: 45, y: 0, phase: 0 },
+      { id: 4, teeth: 36, type: 'pulley', role: 'output', x: 110, y: 0, phase: 0 }
+    ],
+    gearLinks: [] // { a: indexA, b: indexB, kind: 'belt' | 'mesh' }
   };
 
   function t(key) {
@@ -1391,6 +1733,13 @@
     oy: 0,
     draggingIdx: -1,
     draggingOutputPulley: false,
+    // 模式三互動狀態
+    draggingGearBodyIdx: -1,
+    linkingFromGearIdx: -1,
+    linkingMouseWorld: { x: 0, y: 0 },
+    hoverGearIdx: -1,
+    hoverCenterIdx: -1,
+    ctxTargetGearIdx: -1,
     panning: false,
     px: 0,
     py: 0
@@ -1398,6 +1747,7 @@
   let cachedLocus = [];
   let locusDirty = true;
   let lastSol = null;
+  let lastGearSolve = null;
 
   const canvas = document.getElementById('cadCanvas');
   const ctx = canvas.getContext('2d');
@@ -1409,17 +1759,17 @@
     }
   }, { passive: true });
 
-  function showToast(msg) {
+  function showToast(msg, isError = false) {
     const box = document.getElementById('toastBox');
     const el = document.createElement('div');
-    el.className = 'toast-item';
+    el.className = 'toast-item' + (isError ? ' error' : '');
     el.textContent = msg;
     box.appendChild(el);
     setTimeout(() => {
       el.style.opacity = '0';
-      el.style.transition = 'opacity 0.18s';
-      setTimeout(() => el.remove(), 200);
-    }, 2200);
+      el.style.transition = 'opacity 0.2s';
+      setTimeout(() => el.remove(), 220);
+    }, isError ? 3600 : 2300);
   }
 
   function mmToUnit(valMm, unit, decMm = 2, decIn = 3) {
@@ -1439,10 +1789,136 @@
     return `${valMm.toFixed(2)} mm`;
   }
 
-  // --- 0 顆惰輪專用：由兩輪齒數與目標皮帶長度反解精確中心距 C ---
+  function getPitchRadius(teeth) {
+    return (teeth * PITCH) / (2 * Math.PI);
+  }
+
+  // =========================================================================
+  // 模式三：齒輪比與傳動拓撲計算引擎
+  // =========================================================================
+  function arrangeGearNodesInOrder() {
+    let curX = 0;
+    const gap = 22;
+    const radii = state.gearNodes.map(n => getPitchRadius(n.teeth));
+    const totalW = radii.reduce((acc, r, idx) => acc + r * 2 + (idx > 0 ? gap : 0), 0);
+    curX = -totalW / 2;
+
+    state.gearNodes.forEach((n, idx) => {
+      const r = radii[idx];
+      n.x = +(curX + r).toFixed(2);
+      n.y = 0;
+      n.phase = 0;
+      curX += r * 2 + gap;
+    });
+  }
+
+  // 兩齒輪咬合定位與齒向相位對齊
+  function snapTwoGearsToMesh(idxFixed, idxMoving) {
+    const g1 = state.gearNodes[idxFixed];
+    const g2 = state.gearNodes[idxMoving];
+    if (!g1 || !g2) return;
+
+    const r1 = getPitchRadius(g1.teeth);
+    const r2 = getPitchRadius(g2.teeth);
+    const targetDist = r1 + r2;
+
+    // 紀錄 g2 原本同心的共軸夥伴，讓同軸物件一起移動
+    const oldX = g2.x, oldY = g2.y;
+    const coaxialPeers = state.gearNodes.filter((n, i) => i !== idxMoving && i !== idxFixed && Math.hypot(n.x - oldX, n.y - oldY) < 1.0);
+
+    let dx = g2.x - g1.x;
+    let dy = g2.y - g1.y;
+    let ang = Math.atan2(dy, dx);
+    if (Math.hypot(dx, dy) < 1e-3) ang = 0;
+
+    g2.x = +(g1.x + targetDist * Math.cos(ang)).toFixed(2);
+    g2.y = +(g1.y + targetDist * Math.sin(ang)).toFixed(2);
+
+    // 計算齒輪 2 的相位角，使接觸點處一齒對一槽完美咬合
+    g2.phase = Math.PI + ang - (g1.teeth / g2.teeth) * (ang - (g1.phase || 0)) + Math.PI / g2.teeth;
+
+    coaxialPeers.forEach(peer => {
+      peer.x = g2.x;
+      peer.y = g2.y;
+    });
+  }
+
+  // 解算從「輸入」到「輸出」的齒輪比與轉向
+  function solveGearRatioSystem() {
+    const n = state.gearNodes.length;
+    const inputIdx = state.gearNodes.findIndex(it => it.role === 'input');
+    const outputIdx = state.gearNodes.findIndex(it => it.role === 'output');
+
+    if (inputIdx === -1 || outputIdx === -1 || inputIdx === outputIdx) {
+      return { valid: false, reason: 'no_in_out', inputIdx, outputIdx };
+    }
+
+    // 建立傳動鄰接圖
+    const adj = Array.from({ length: n }, () => []);
+
+    // 1. 同心共軸關係 (兩物件中心距離 < 1.0 mm 視為共用傳動軸，角速度 1:1 同向)
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        if (Math.hypot(state.gearNodes[i].x - state.gearNodes[j].x, state.gearNodes[i].y - state.gearNodes[j].y) < 1.0) {
+          adj[i].push({ to: j, speedMult: 1.0, dirMult: 1, kind: 'coaxial' });
+          adj[j].push({ to: i, speedMult: 1.0, dirMult: 1, kind: 'coaxial' });
+        }
+      }
+    }
+
+    // 2. 虛線傳動連線 (皮帶輪或齒輪咬合)
+    state.gearLinks.forEach(lk => {
+      if (lk.a < 0 || lk.a >= n || lk.b < 0 || lk.b >= n) return;
+      const na = state.gearNodes[lk.a];
+      const nb = state.gearNodes[lk.b];
+      const dir = lk.kind === 'mesh' ? -1 : 1;
+      adj[lk.a].push({ to: lk.b, speedMult: na.teeth / nb.teeth, dirMult: dir, kind: lk.kind });
+      adj[lk.b].push({ to: lk.a, speedMult: nb.teeth / na.teeth, dirMult: dir, kind: lk.kind });
+    });
+
+    // BFS 尋找輸入至輸出路徑
+    const visited = new Array(n).fill(false);
+    const queue = [{ idx: inputIdx, speed: 1.0, dir: 1, stages: [`#${inputIdx + 1}(${state.gearNodes[inputIdx].teeth}T)`] }];
+    visited[inputIdx] = true;
+
+    while (queue.length > 0) {
+      const cur = queue.shift();
+      if (cur.idx === outputIdx) {
+        const totalReduction = 1.0 / cur.speed; // 減速比 (輸入轉速 : 輸出轉速 = 1 : cur.speed 或 totalReduction : 1)
+        return {
+          valid: true,
+          inputIdx,
+          outputIdx,
+          outputSpeed: cur.speed,
+          reductionRatio: totalReduction,
+          dir: cur.dir,
+          pathStr: cur.stages.join(' ➔ ')
+        };
+      }
+      for (const edge of adj[cur.idx]) {
+        if (!visited[edge.to]) {
+          visited[edge.to] = true;
+          const nextNode = state.gearNodes[edge.to];
+          const sym = edge.kind === 'coaxial' ? ' ==[共軸]== ' : (edge.kind === 'mesh' ? ' ⚙ ' : '  belt  ');
+          queue.push({
+            idx: edge.to,
+            speed: cur.speed * edge.speedMult,
+            dir: cur.dir * edge.dirMult,
+            stages: [...cur.stages, `${sym}#${edge.to + 1}(${nextNode.teeth}T)`]
+          });
+        }
+      }
+    }
+
+    return { valid: false, reason: 'unconnected', inputIdx, outputIdx };
+  }
+
+  // =========================================================================
+  // 模式一 & 二：皮帶幾何解算器
+  // =========================================================================
   function solveZeroIdlerCenterDist(inTeeth, outTeeth, targetLen) {
-    const r1 = (inTeeth * PITCH) / (2 * Math.PI);
-    const r2 = (outTeeth * PITCH) / (2 * Math.PI);
+    const r1 = getPitchRadius(inTeeth);
+    const r2 = getPitchRadius(outTeeth);
     const dr = Math.abs(r1 - r2);
     const minC = dr + 0.05;
     const minPossibleLen = Math.PI * (r1 + r2) + Math.PI * dr;
@@ -1499,7 +1975,6 @@
     return true;
   }
 
-  // --- 1. 核心幾何切線解算器 (外壓惰輪與皮帶外側虛線完美相切) ---
   function getTangent(c1, c2) {
     const dx = c2.x - c1.x, dy = c2.y - c1.y;
     const D = Math.hypot(dx, dy);
@@ -1519,8 +1994,8 @@
   }
 
   function solveBelt(customIdlers) {
-    const rIn = (state.inTeeth * PITCH) / (2 * Math.PI);
-    const rOut = (state.outTeeth * PITCH) / (2 * Math.PI);
+    const rIn = getPitchRadius(state.inTeeth);
+    const rOut = getPitchRadius(state.outTeeth);
     const pIn = { role: 'in', teeth: state.inTeeth, x: 0, y: 0, r: rIn, drawR: rIn, s: 1 };
     const pOut = { role: 'out', teeth: state.outTeeth, x: state.dx, y: state.dy, r: rOut, drawR: rOut, s: 1 };
 
@@ -1574,7 +2049,6 @@
     return { valid: true, pIn, pOut, chain, segs, totalLen, mainD };
   }
 
-  // --- 2. 牛頓梯度吸附與等長軌跡快取 ---
   function evalLenAt(idx, x, y) {
     const temp = state.idlers.map((it, i) => i === idx ? { ...it, x, y } : it);
     const res = solveBelt(temp);
@@ -1607,7 +2081,7 @@
   function rebuildLocusCache() {
     cachedLocus = [];
     locusDirty = false;
-    if (!state.showLocus) return;
+    if (state.mode === 3 || !state.showLocus) return;
 
     if (state.idlers.length === 0) {
       const C = solveZeroIdlerCenterDist(state.inTeeth, state.outTeeth, state.targetLen);
@@ -1658,7 +2132,9 @@
     }
   }
 
-  // --- 3. 語言與 UI 同步渲染 ---
+  // =========================================================================
+  // UI 同步與 DOM 渲染
+  // =========================================================================
   function applyLanguageStaticText() {
     document.title = t('pageDocTitle');
     document.documentElement.lang = state.lang === 'en' ? 'en' : 'zh-TW';
@@ -1666,6 +2142,7 @@
     document.getElementById('navSectionModeLabel').textContent = t('navSectionMode');
     document.getElementById('navMode1Text').textContent = t('navMode1');
     document.getElementById('navMode2Text').textContent = t('navMode2');
+    document.getElementById('navMode3Text').textContent = t('navMode3');
     document.getElementById('btnCopyAllText').textContent = t('copyReport');
 
     document.getElementById('statLabel1').textContent = t('stat1');
@@ -1700,6 +2177,26 @@
     document.getElementById('legIdler').textContent = t('legIdler');
     document.getElementById('legBelt').textContent = t('legBelt');
     document.getElementById('legLocus').textContent = t('legLocus');
+
+    // 模式三文字
+    document.getElementById('gearCard1Title').textContent = t('gearCard1Title');
+    document.getElementById('gearCard1Tag').textContent = t('gearCard1Tag');
+    document.getElementById('lblGearCount').textContent = t('lblGearCount');
+    document.getElementById('unitGearCount').textContent = t('unitGearCount');
+    document.getElementById('btnArrangeGears').textContent = t('btnArrangeGears');
+    document.getElementById('btnClearGearLinks').textContent = t('btnClearGearLinks');
+    document.getElementById('gearCard2Title').textContent = t('gearCard2Title');
+    document.getElementById('gearCard2Tag').textContent = t('gearCard2Tag');
+
+    document.getElementById('lblCtxRole').textContent = t('ctxRoleLabel');
+    document.getElementById('optRoleNone').textContent = t('optRoleNone');
+    document.getElementById('optRoleInput').textContent = t('optRoleInput');
+    document.getElementById('optRoleOutput').textContent = t('optRoleOutput');
+    document.getElementById('btnCtxDisconnect').textContent = t('btnCtxDisconnect');
+
+    document.getElementById('ratioBoxHeader').textContent = t('ratioBoxHeader');
+    document.getElementById('ratioGuideTitle').textContent = t('ratioGuideTitle');
+    document.getElementById('ratioGuideList').innerHTML = t('ratioGuideHTML');
   }
 
   function syncInputsFromState() {
@@ -1726,9 +2223,25 @@
     document.getElementById('idlerCount').value = String(state.idlers.length);
     document.getElementById('chkSnap').checked = state.snap;
     document.getElementById('chkLocus').checked = state.showLocus;
+    document.getElementById('gearCountInput').value = state.gearNodes.length;
   }
 
   function syncModeAndZeroIdlerUI() {
+    const isMode3 = state.mode === 3;
+    document.getElementById('beltSummaryStrip').style.display = isMode3 ? 'none' : 'grid';
+    document.getElementById('beltFormGroup').style.display = isMode3 ? 'none' : 'flex';
+    document.getElementById('gearFormGroup').style.display = isMode3 ? 'flex' : 'none';
+    document.getElementById('beltHudBottom').style.display = isMode3 ? 'none' : 'flex';
+    document.getElementById('ratioHudBox').style.display = isMode3 ? 'block' : 'none';
+
+    if (isMode3) {
+      document.getElementById('topbarModeTitle').textContent = t('topbarMode3');
+      document.getElementById('canvasHudHint').textContent = t('hudHintGear');
+      return;
+    }
+
+    hideNodeContextMenu();
+
     const isZero = state.idlers.length === 0;
     const showBeltPanel = (state.mode === 1) || isZero;
     document.getElementById('mode1Panel').style.display = showBeltPanel ? 'block' : 'none';
@@ -1752,6 +2265,49 @@
     document.getElementById('btnSnapNowText').textContent = isZero ? t('btnSnapZero') : t('btnSnapIdler');
     document.getElementById('idlerCardHint').textContent = isZero ? t('hintDragOutPulley') : t('hintDragIdler');
     document.getElementById('canvasHudHint').textContent = isZero ? t('hudHintZero') : t('hudHintIdler');
+  }
+
+  // 渲染模式三左側物件清單
+  function renderGearItemCards() {
+    const box = document.getElementById('gearItemList');
+    box.innerHTML = state.gearNodes.map((node, i) => {
+      const pd = (getPitchRadius(node.teeth) * 2).toFixed(2);
+      let roleBadgeClass = 'tag';
+      let roleBadgeText = t('roleNoneTag');
+      if (node.role === 'input') {
+        roleBadgeClass = 'tag tag--ok';
+        roleBadgeText = t('roleInputTag');
+      } else if (node.role === 'output') {
+        roleBadgeClass = 'tag tag--accent';
+        roleBadgeText = t('roleOutputTag');
+      }
+
+      return `
+        <div class="idler-panel ${node.role !== 'none' ? 'active' : ''}" data-gidx="${i}">
+          <div class="idler-panel-head">
+            <div class="idler-name">
+              <span>${t('gearObjTitle')} #0${i + 1} (PD: ${pd} mm)</span>
+            </div>
+            <span class="${roleBadgeClass}">${roleBadgeText}</span>
+          </div>
+          <div class="grid--2">
+            <div class="field">
+              <label>${t('gearTeethLabel')}</label>
+              <div class="input-wrap">
+                <input type="number" class="gear-teeth-inp" data-gidx="${i}" value="${node.teeth}" min="8" max="200" step="1" />
+                <span class="unit-addon">${t('unitTeeth')}</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>${t('gearTypeLabel')}</label>
+              <select class="gear-type-sel" data-gidx="${i}">
+                <option value="pulley" ${node.type === 'pulley' ? 'selected' : ''}>${t('typePulley')}</option>
+                <option value="gear" ${node.type === 'gear' ? 'selected' : ''}>${t('typeGear')}</option>
+              </select>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
   }
 
   function renderIdlerCards() {
@@ -1918,6 +2474,52 @@
   }
 
   function updateAll() {
+    const stTitle = document.getElementById('stTitle');
+    const stBadge = document.getElementById('stBadge');
+    const stDetail = document.getElementById('stDetail');
+
+    // 若在模式三 (齒輪比計算)
+    if (state.mode === 3) {
+      const gSol = solveGearRatioSystem();
+      lastGearSolve = gSol;
+
+      const ratioMain = document.getElementById('ratioMainValue');
+      const ratioSub = document.getElementById('ratioSubDetail');
+      const ratioBadge = document.getElementById('ratioDirBadge');
+
+      if (!gSol.valid) {
+        ratioMain.textContent = '-- : --';
+        ratioBadge.textContent = t('ratioStandby');
+        ratioBadge.className = 'tag tag--warn';
+        const msg = gSol.reason === 'no_in_out' ? t('ratioNoInOut') : t('ratioUnconnected');
+        ratioSub.textContent = msg;
+
+        stTitle.textContent = t('navMode3');
+        stBadge.textContent = t('ratioStandby');
+        stBadge.className = 'tag tag--warn';
+        stDetail.style.color = '#ffd54f';
+        stDetail.textContent = msg;
+      } else {
+        const redRatio = gSol.reductionRatio; // 輸入 1 圈 : 輸出 speed 圈 -> 減速比 redRatio : 1
+        const speedMult = gSol.outputSpeed;
+        const dirText = gSol.dir === 1 ? t('ratioSameDir') : t('ratioRevDir');
+
+        ratioMain.textContent = `1 : ${ redRatio.toFixed(2) }  (${ speedMult.toFixed(2) }x)`;
+        ratioBadge.textContent = dirText;
+        ratioBadge.className = 'tag tag--ok';
+        ratioSub.innerHTML = `${t('ratioSpeedMult')} <b>${speedMult.toFixed(3)}x</b> | ${t('ratioTorqueMult')} <b>${redRatio.toFixed(3)}x</b><br/><span style="color:#9e9e9e;">${gSol.pathStr}</span>`;
+
+        stTitle.textContent = `${t('navMode3')} (${dirText})`;
+        stBadge.textContent = 'SOLVED';
+        stBadge.className = 'tag tag--ok';
+        stDetail.style.color = '#81c784';
+        stDetail.textContent = `Ratio = 1 : ${redRatio.toFixed(2)} | ${gSol.pathStr}`;
+      }
+
+      draw();
+      return;
+    }
+
     if (locusDirty) rebuildLocusCache();
     const sol = solveBelt();
     lastSol = sol;
@@ -1960,10 +2562,6 @@
 
     document.getElementById('wrapBar').textContent =
       `${t('meshWrap')} ${inTIM.toFixed(1)}T | ${t('meshOut')} ${outTIM.toFixed(1)}T`;
-
-    const stTitle = document.getElementById('stTitle');
-    const stBadge = document.getElementById('stBadge');
-    const stDetail = document.getElementById('stDetail');
 
     if (state.idlers.length === 0) {
       const exactC = solveZeroIdlerCenterDist(state.inTeeth, state.outTeeth, state.targetLen);
@@ -2009,12 +2607,36 @@
     draw();
   }
 
-  // --- 4. Canvas 視覺化渲染 ---
+  // =========================================================================
+  // Canvas 視覺化渲染
+  // =========================================================================
   function w2s(wx, wy) { return { x: view.ox + wx * view.scale, y: view.oy - wy * view.scale }; }
   function s2w(sx, sy) { return { x: (sx - view.ox) / view.scale, y: (view.oy - sy) / view.scale }; }
 
   function resetView() {
     const rect = canvas.parentElement.getBoundingClientRect();
+
+    if (state.mode === 3) {
+      let minX = -60, maxX = 60, minY = -50, maxY = 50;
+      state.gearNodes.forEach((n, idx) => {
+        const r = getPitchRadius(n.teeth) + 15;
+        if (idx === 0) {
+          minX = n.x - r; maxX = n.x + r;
+          minY = n.y - r; maxY = n.y + r;
+        } else {
+          minX = Math.min(minX, n.x - r); maxX = Math.max(maxX, n.x + r);
+          minY = Math.min(minY, n.y - r); maxY = Math.max(maxY, n.y + r);
+        }
+      });
+      const sx = (rect.width - 180) / Math.max(80, maxX - minX);
+      const sy = (rect.height - 200) / Math.max(80, maxY - minY);
+      view.scale = Math.max(0.5, Math.min(5.5, Math.min(sx, sy)));
+      view.ox = rect.width / 2 - ((minX + maxX) / 2) * view.scale;
+      view.oy = rect.height / 2 + ((minY + maxY) / 2) * view.scale - 20;
+      draw();
+      return;
+    }
+
     let minX = Math.min(0, state.dx) - 45, maxX = Math.max(0, state.dx) + 45;
     let minY = Math.min(0, state.dy) - 45, maxY = Math.max(0, state.dy) + 45;
     state.idlers.forEach(it => {
@@ -2048,7 +2670,30 @@
     ctx.restore();
   }
 
-  function drawPulley(w, label, isDraggableHighlight = false) {
+  // 繪製圓心圖示 (供拉出虛線使用)
+  function drawCenterMarker(c, isHovered = false) {
+    ctx.save();
+    ctx.translate(c.x, c.y);
+    const r = isHovered ? 6.5 : 4.8;
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fillStyle = isHovered ? ACCENT_HEX : '#f0f0f0';
+    ctx.fill();
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = '#121212';
+    ctx.stroke();
+
+    // 十字準星標記
+    ctx.strokeStyle = isHovered ? '#ffffff' : ACCENT_HEX;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(-r - 3, 0); ctx.lineTo(r + 3, 0);
+    ctx.moveTo(0, -r - 3); ctx.lineTo(0, r + 3);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawPulley(w, label, isDraggableHighlight = false, showCenterIcon = false, isCenterHover = false) {
     const c = w2s(w.x, w.y), rPx = w.drawR * view.scale;
     ctx.save();
     ctx.translate(c.x, c.y);
@@ -2085,16 +2730,237 @@
     ctx.closePath(); ctx.fillStyle = '#303030'; ctx.fill(); ctx.strokeStyle = '#121212'; ctx.stroke();
     ctx.restore();
 
+    if (showCenterIcon) {
+      drawCenterMarker(c, isCenterHover);
+    }
+
     ctx.fillStyle = isDraggableHighlight ? ACCENT_HEX : '#f0f0f0';
     ctx.font = '600 12px "Inter", "Noto Sans TC", sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(label, c.x, w.role === 'in' ? c.y + rPx + 20 : c.y - rPx - 12);
   }
 
+  // 繪製外凸輪齒造型的齒輪 (Gear)
+  function drawToothedGear(node, idx, isHovered = false, isCenterHover = false, labelOffset = 0) {
+    const c = w2s(node.x, node.y);
+    const pitchR = getPitchRadius(node.teeth);
+    const rPx = pitchR * view.scale;
+    const teeth = node.teeth;
+    const modulePx = (PITCH / Math.PI) * view.scale;
+    const addendum = Math.min(rPx * 0.22, modulePx * 0.95);
+    const dedendum = Math.min(rPx * 0.25, modulePx * 1.10);
+    const outerR = rPx + addendum;
+    const rootR = Math.max(4, rPx - dedendum);
+    const phase = -(node.phase || 0); // 轉換至螢幕順時針座標
+
+    ctx.save();
+    ctx.translate(c.x, c.y);
+
+    if (isHovered) {
+      ctx.beginPath();
+      ctx.arc(0, 0, outerR + 5, 0, Math.PI * 2);
+      ctx.strokeStyle = ACCENT_HEX;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    // 繪製漸開線梯形齒形輪廓
+    const step = (2 * Math.PI) / teeth;
+    ctx.beginPath();
+    for (let i = 0; i < teeth; i++) {
+      const aCenter = phase + i * step;
+      const a0 = aCenter - step * 0.34;
+      const a1 = aCenter - step * 0.16;
+      const a2 = aCenter + step * 0.16;
+      const a3 = aCenter + step * 0.34;
+
+      if (i === 0) ctx.moveTo(Math.cos(a0) * rootR, Math.sin(a0) * rootR);
+      else ctx.lineTo(Math.cos(a0) * rootR, Math.sin(a0) * rootR);
+      ctx.lineTo(Math.cos(a1) * outerR, Math.sin(a1) * outerR);
+      ctx.lineTo(Math.cos(a2) * outerR, Math.sin(a2) * outerR);
+      ctx.lineTo(Math.cos(a3) * rootR, Math.sin(a3) * rootR);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#7c8b99';
+    ctx.fill();
+    ctx.lineWidth = 1.4;
+    ctx.strokeStyle = '#181818';
+    ctx.stroke();
+
+    // 節圓參考虛線
+    ctx.beginPath();
+    ctx.setLineDash([4, 3]);
+    ctx.arc(0, 0, rPx, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 內圈輪轂減重環
+    ctx.beginPath();
+    ctx.arc(0, 0, rootR * 0.78, 0, Math.PI * 2);
+    ctx.fillStyle = '#4e5964';
+    ctx.fill();
+    ctx.strokeStyle = '#222';
+    ctx.stroke();
+
+    // 中心六角孔
+    const hexR = Math.min(rootR * 0.48, Math.max(6 * view.scale, 8));
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+      const a = (i * Math.PI) / 3 + Math.PI / 6;
+      if (i === 0) ctx.moveTo(Math.cos(a) * hexR, Math.sin(a) * hexR);
+      else ctx.lineTo(Math.cos(a) * hexR, Math.sin(a) * hexR);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#26292e';
+    ctx.fill();
+    ctx.strokeStyle = '#111';
+    ctx.stroke();
+
+    ctx.restore();
+
+    // 標註圓心圖示
+    drawCenterMarker(c, isCenterHover);
+
+    // 標籤與角色徽章
+    drawGearNodeLabels(node, idx, c, outerR, labelOffset);
+  }
+
+  function drawGearNodeLabels(node, idx, c, outerR, labelOffset = 0) {
+    const typeName = node.type === 'gear' ? (state.lang === 'en' ? 'Gear' : '齒輪') : (state.lang === 'en' ? 'Pulley' : '皮帶輪');
+    const baseText = `#0${idx + 1} ${typeName} ${node.teeth}T`;
+    const yPos = c.y - outerR - 12 - labelOffset * 18;
+
+    ctx.save();
+    ctx.font = '600 12px "Inter", "Noto Sans TC", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillText(baseText, c.x, yPos);
+
+    if (node.role === 'input' || node.role === 'output') {
+      const roleStr = node.role === 'input' ? t('roleInputTag') : t('roleOutputTag');
+      const bgCol = node.role === 'input' ? '#2e7d32' : ACCENT_HEX;
+      const badgeW = ctx.measureText(roleStr).width + 12;
+      const badgeH = 18;
+      const bx = c.x - badgeW / 2;
+      const by = c.y + outerR + 8 + labelOffset * 20;
+
+      ctx.fillStyle = bgCol;
+      ctx.beginPath();
+      ctx.roundRect(bx, by, badgeW, badgeH, 4);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 11px "Inter", "Noto Sans TC", sans-serif';
+      ctx.fillText(roleStr, c.x, by + 13);
+    }
+    ctx.restore();
+  }
+
+  // 繪製模式三：齒輪比計算畫布
+  function drawGearRatioMode() {
+    // 1. 先繪製已建立的傳動連線 (皮帶連線與齒輪咬合中心虛線)
+    state.gearLinks.forEach(lk => {
+      const na = state.gearNodes[lk.a];
+      const nb = state.gearNodes[lk.b];
+      if (!na || !nb) return;
+      const pa = w2s(na.x, na.y);
+      const pb = w2s(nb.x, nb.y);
+
+      if (lk.kind === 'belt') {
+        // 繪製兩皮帶輪之間的外公切線虛線皮帶
+        const ra = getPitchRadius(na.teeth);
+        const rb = getPitchRadius(nb.teeth);
+        const seg1 = getTangent({ x: na.x, y: na.y, r: ra, s: 1 }, { x: nb.x, y: nb.y, r: rb, s: 1 });
+        const seg2 = getTangent({ x: nb.x, y: nb.y, r: rb, s: 1 }, { x: na.x, y: na.y, r: ra, s: 1 });
+        ctx.save();
+        ctx.setLineDash([7, 4]);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#c8bba6';
+        [seg1, seg2].forEach(s => {
+          if (!s) return;
+          const t1 = w2s(s.t1x, s.t1y), t2 = w2s(s.t2x, s.t2y);
+          ctx.beginPath(); ctx.moveTo(t1.x, t1.y); ctx.lineTo(t2.x, t2.y); ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      // 兩圓心之間的傳動關係虛線
+      ctx.save();
+      ctx.setLineDash([5, 4]);
+      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = lk.kind === 'mesh' ? '#81c784' : ACCENT_HEX;
+      ctx.beginPath();
+      ctx.moveTo(pa.x, pa.y);
+      ctx.lineTo(pb.x, pb.y);
+      ctx.stroke();
+      ctx.restore();
+    });
+
+    // 2. 將物件依半徑由大到小排序繪製，確保同心共軸時小輪疊在大輪上方清楚可見
+    const drawOrder = state.gearNodes
+      .map((node, idx) => ({ node, idx, r: getPitchRadius(node.teeth) }))
+      .sort((a, b) => b.r - a.r);
+
+    // 計算同心物件的標籤偏移量避免文字重疊
+    const labelOffsets = new Array(state.gearNodes.length).fill(0);
+    for (let i = 0; i < state.gearNodes.length; i++) {
+      let count = 0;
+      for (let j = 0; j < i; j++) {
+        if (Math.hypot(state.gearNodes[i].x - state.gearNodes[j].x, state.gearNodes[i].y - state.gearNodes[j].y) < 1.0) {
+          count++;
+        }
+      }
+      labelOffsets[i] = count;
+    }
+
+    drawOrder.forEach(({ node, idx, r }) => {
+      const isHover = view.hoverGearIdx === idx;
+      const isCenterHover = view.hoverCenterIdx === idx;
+      if (node.type === 'gear') {
+        drawToothedGear(node, idx, isHover, isCenterHover, labelOffsets[idx]);
+      } else {
+        const c = w2s(node.x, node.y);
+        drawPulley(
+          { x: node.x, y: node.y, teeth: node.teeth, drawR: r, role: 'out' },
+          '',
+          isHover,
+          true,
+          isCenterHover
+        );
+        drawGearNodeLabels(node, idx, c, r * view.scale * 1.04, labelOffsets[idx]);
+      }
+    });
+
+    // 3. 若正在從圓心拖曳拉出虛線，繪製動態連接虛線
+    if (view.linkingFromGearIdx >= 0) {
+      const src = state.gearNodes[view.linkingFromGearIdx];
+      if (src) {
+        const p1 = w2s(src.x, src.y);
+        const p2 = w2s(view.linkingMouseWorld.x, view.linkingMouseWorld.y);
+        ctx.save();
+        ctx.setLineDash([6, 4]);
+        ctx.lineWidth = 2.2;
+        ctx.strokeStyle = ACCENT_HEX;
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+
   function draw() {
     const rect = canvas.parentElement.getBoundingClientRect();
     ctx.clearRect(0, 0, rect.width, rect.height);
     drawGrid(rect);
+
+    if (state.mode === 3) {
+      drawGearRatioMode();
+      return;
+    }
 
     if (!lastSol) return;
     const sol = lastSol;
@@ -2126,7 +2992,6 @@
       ctx.restore();
     }
 
-    // 繪製主皮帶輪與惰輪實體
     const isZero = state.idlers.length === 0;
     drawPulley(sol.pIn, `${t('canvasInPulley')} ${state.inTeeth}T (0, 0)`, false);
     drawPulley(
@@ -2163,7 +3028,6 @@
       ctx.fillText(`(${w.x.toFixed(1)}, ${w.y.toFixed(1)})`, c.x, c.y - rPx - 3);
     });
 
-    // 繪製皮帶雙層虛線與連心距離線
     if (sol.valid) {
       const thickPx = BELT_THICK * view.scale;
       [0, thickPx].forEach((off, layer) => {
@@ -2214,38 +3078,171 @@
     }
   }
 
-  // --- 5. 事件與路由綁定 ---
+  // =========================================================================
+  // 模式三：右鍵彈出式角色設定選單
+  // =========================================================================
+  function openNodeContextMenu(gIdx, screenX, screenY) {
+    view.ctxTargetGearIdx = gIdx;
+    const node = state.gearNodes[gIdx];
+    const popup = document.getElementById('nodeContextPopup');
+    document.getElementById('ctxPopupTitle').textContent = `${t('ctxTitlePrefix')} #0${gIdx + 1} (${node.teeth}T)`;
+    document.getElementById('ctxRoleSelect').value = node.role;
+
+    const paneRect = document.getElementById('canvasPane').getBoundingClientRect();
+    const leftPx = Math.min(paneRect.width - 225, Math.max(12, screenX + 8));
+    const topPx = Math.min(paneRect.height - 150, Math.max(12, screenY - 10));
+
+    popup.style.left = `${leftPx}px`;
+    popup.style.top = `${topPx}px`;
+    popup.style.display = 'flex';
+  }
+
+  function hideNodeContextMenu() {
+    document.getElementById('nodeContextPopup').style.display = 'none';
+    view.ctxTargetGearIdx = -1;
+  }
+
+  document.getElementById('btnCloseCtx').addEventListener('click', hideNodeContextMenu);
+
+  document.getElementById('ctxRoleSelect').addEventListener('change', e => {
+    const idx = view.ctxTargetGearIdx;
+    if (idx < 0 || !state.gearNodes[idx]) return;
+    const newRole = e.target.value;
+
+    // 確保畫布上只有一個輸入源與一個輸出源
+    if (newRole === 'input' || newRole === 'output') {
+      state.gearNodes.forEach((n, i) => {
+        if (i !== idx && n.role === newRole) n.role = 'none';
+      });
+    }
+    state.gearNodes[idx].role = newRole;
+    renderGearItemCards();
+    updateAll();
+    hideNodeContextMenu();
+  });
+
+  document.getElementById('btnCtxDisconnect').addEventListener('click', () => {
+    const idx = view.ctxTargetGearIdx;
+    if (idx < 0) return;
+    state.gearLinks = state.gearLinks.filter(lk => lk.a !== idx && lk.b !== idx);
+    updateAll();
+    hideNodeContextMenu();
+  });
+
+  // =========================================================================
+  // 事件與路由綁定
+  // =========================================================================
   function setMode(m, updateHash = true) {
     state.mode = m;
     document.getElementById('btnMode1').classList.toggle('active', m === 1);
     document.getElementById('btnMode2').classList.toggle('active', m === 2);
+    document.getElementById('btnMode3').classList.toggle('active', m === 3);
 
     syncModeAndZeroIdlerUI();
 
     if (updateHash) {
-      history.replaceState(null, '', m === 1 ? '#/tension' : '#/length');
+      const h = m === 1 ? '#/tension' : (m === 2 ? '#/length' : '#/ratio');
+      history.replaceState(null, '', h);
     }
     locusDirty = true;
+    resetView();
     updateAll();
   }
 
-  // 語言切換選單事件
   document.getElementById('langSelect').addEventListener('change', e => {
     state.lang = e.target.value;
     applyLanguageStaticText();
     syncModeAndZeroIdlerUI();
     renderIdlerCards();
+    renderGearItemCards();
     updateAll();
   });
 
   window.addEventListener('hashchange', () => {
     if (location.hash === '#/length') setMode(2, false);
+    else if (location.hash === '#/ratio') setMode(3, false);
     else if (location.hash === '#/tension') setMode(1, false);
   });
 
   document.getElementById('btnMode1').addEventListener('click', () => setMode(1));
   document.getElementById('btnMode2').addEventListener('click', () => setMode(2));
+  document.getElementById('btnMode3').addEventListener('click', () => setMode(3));
 
+  // 模式三：皮帶輪/齒輪數量變更與清單事件
+  document.getElementById('gearCountInput').addEventListener('input', e => {
+    let cnt = parseInt(e.target.value, 10);
+    if (isNaN(cnt)) return;
+    cnt = Math.max(2, Math.min(12, cnt));
+
+    while (state.gearNodes.length < cnt) {
+      const nextIdx = state.gearNodes.length;
+      state.gearNodes.push({
+        id: nextIdx + 1,
+        teeth: nextIdx % 2 === 0 ? 18 : 36,
+        type: nextIdx < 2 ? 'gear' : 'pulley',
+        role: 'none',
+        x: 0,
+        y: 0,
+        phase: 0
+      });
+    }
+    if (state.gearNodes.length > cnt) {
+      state.gearNodes.length = cnt;
+      state.gearLinks = state.gearLinks.filter(lk => lk.a < cnt && lk.b < cnt);
+    }
+    arrangeGearNodesInOrder();
+    renderGearItemCards();
+    resetView();
+    updateAll();
+  });
+
+  document.getElementById('btnArrangeGears').addEventListener('click', () => {
+    arrangeGearNodesInOrder();
+    resetView();
+    updateAll();
+  });
+
+  document.getElementById('btnClearGearLinks').addEventListener('click', () => {
+    state.gearLinks = [];
+    updateAll();
+  });
+
+  document.getElementById('gearItemList').addEventListener('input', e => {
+    const tEl = e.target;
+    const idx = parseInt(tEl.dataset.gidx, 10);
+    if (isNaN(idx) || !state.gearNodes[idx]) return;
+    const node = state.gearNodes[idx];
+
+    if (tEl.classList.contains('gear-teeth-inp')) {
+      const val = parseInt(tEl.value, 10);
+      if (!isNaN(val) && val >= 8) {
+        node.teeth = Math.min(200, val);
+        // 若此齒輪已與其他齒輪咬合，自動重新更新咬合中心距
+        state.gearLinks.forEach(lk => {
+          if (lk.kind === 'mesh') {
+            if (lk.a === idx) snapTwoGearsToMesh(lk.a, lk.b);
+            else if (lk.b === idx) snapTwoGearsToMesh(lk.b, lk.a);
+          }
+        });
+        renderGearItemCards();
+        // 保持焦點在當前輸入框
+        const newInp = document.querySelector(`.gear-teeth-inp[data-gidx="${idx}"]`);
+        if (newInp) { newInp.focus(); newInp.setSelectionRange(newInp.value.length, newInp.value.length); }
+        updateAll();
+      }
+    } else if (tEl.classList.contains('gear-type-sel')) {
+      node.type = tEl.value;
+      // 移除因類型改變而不合法的異種連線
+      state.gearLinks = state.gearLinks.filter(lk => {
+        const na = state.gearNodes[lk.a], nb = state.gearNodes[lk.b];
+        return na.type === nb.type;
+      });
+      renderGearItemCards();
+      updateAll();
+    }
+  });
+
+  // 模式一 & 二 表單事件
   ['inTeeth', 'outTeeth'].forEach(id => {
     document.getElementById(id).addEventListener('input', e => {
       const val = parseFloat(e.target.value);
@@ -2350,7 +3347,7 @@
         updateAll();
         showToast(`${t('toastZeroUpdated')}X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm`);
       } else {
-        showToast(t('toastTooShort'));
+        showToast(t('toastTooShort'), true);
       }
       return;
     }
@@ -2505,22 +3502,86 @@
     }
   });
 
-  // 畫布滑鼠拖曳與縮放
+  // =========================================================================
+  // 畫布滑鼠互動 (支援模式三圓心拉虛線、本體拖曳共軸與右鍵選單)
+  // =========================================================================
   let spaceKey = false;
   window.addEventListener('keydown', e => { if (e.code === 'Space') spaceKey = true; });
   window.addEventListener('keyup', e => { if (e.code === 'Space') spaceKey = false; });
+
+  // 依半徑由小到大找尋點擊到的齒輪/皮帶輪 (優先選取疊在上方的小輪)
+  function hitTestGearNode(wx, wy, screenX, screenY) {
+    const order = state.gearNodes
+      .map((node, idx) => ({ node, idx, r: getPitchRadius(node.teeth) }))
+      .sort((a, b) => a.r - b.r);
+
+    // 1. 先檢查是否點擊在任一物件的圓心圖示上 (螢幕距離 <= 11 px)
+    for (const { node, idx } of order) {
+      const cScr = w2s(node.x, node.y);
+      if (Math.hypot(screenX - cScr.x, screenY - cScr.y) <= 11) {
+        return { idx, part: 'center' };
+      }
+    }
+
+    // 2. 再檢查是否點擊在物件本體範圍內
+    for (const { node, idx, r } of order) {
+      if (Math.hypot(wx - node.x, wy - node.y) <= r * 1.12) {
+        return { idx, part: 'body' };
+      }
+    }
+    return null;
+  }
 
   canvas.addEventListener('mousedown', e => {
     const rect = canvas.getBoundingClientRect();
     const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
     const w = s2w(sx, sy);
 
+    if (state.mode === 3) {
+      // 右鍵點擊物件：開啟角色設定選單
+      if (e.button === 2) {
+        const hit = hitTestGearNode(w.x, w.y, sx, sy);
+        if (hit) {
+          openNodeContextMenu(hit.idx, sx, sy);
+          return;
+        }
+        hideNodeContextMenu();
+        view.panning = true; view.px = sx - view.ox; view.py = sy - view.oy;
+        return;
+      }
+
+      hideNodeContextMenu();
+
+      if (e.button === 1 || spaceKey) {
+        view.panning = true; view.px = sx - view.ox; view.py = sy - view.oy;
+        return;
+      }
+
+      const hit = hitTestGearNode(w.x, w.y, sx, sy);
+      if (hit) {
+        if (hit.part === 'center') {
+          // 左鍵長按圓心：拉出虛線連接傳動
+          view.linkingFromGearIdx = hit.idx;
+          view.linkingMouseWorld = { x: w.x, y: w.y };
+          draw();
+          return;
+        } else {
+          // 左鍵長按本體：拖動物件位置
+          view.draggingGearBodyIdx = hit.idx;
+          return;
+        }
+      }
+
+      view.panning = true; view.px = sx - view.ox; view.py = sy - view.oy;
+      return;
+    }
+
     if (e.button === 1 || e.button === 2 || spaceKey) {
       view.panning = true; view.px = sx - view.ox; view.py = sy - view.oy; return;
     }
 
     if (state.idlers.length === 0) {
-      const rOut = (state.outTeeth * PITCH) / (2 * Math.PI);
+      const rOut = getPitchRadius(state.outTeeth);
       if (Math.hypot(w.x - state.dx, w.y - state.dy) <= Math.max(rOut + 6, 16 / view.scale)) {
         view.draggingOutputPulley = true;
         return;
@@ -2547,9 +3608,56 @@
     const rect = canvas.getBoundingClientRect();
     const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
     const w = s2w(sx, sy);
+
     if (sx >= 0 && sy >= 0 && sx <= rect.width && sy <= rect.height) {
       document.getElementById('mouseCoord').textContent =
         `X: ${w.x.toFixed(1)} mm (${(w.x / MM_PER_IN).toFixed(2)} in) | Y: ${w.y.toFixed(1)} mm (${(w.y / MM_PER_IN).toFixed(2)} in)`;
+    }
+
+    if (state.mode === 3) {
+      if (view.linkingFromGearIdx >= 0) {
+        view.linkingMouseWorld = { x: w.x, y: w.y };
+        const hit = hitTestGearNode(w.x, w.y, sx, sy);
+        view.hoverGearIdx = hit ? hit.idx : -1;
+        draw();
+        return;
+      }
+
+      if (view.draggingGearBodyIdx >= 0) {
+        const idx = view.draggingGearBodyIdx;
+        const node = state.gearNodes[idx];
+        node.x = +w.x.toFixed(2);
+        node.y = +w.y.toFixed(2);
+
+        // 若此齒輪有咬合夥伴，同步保持咬合接觸與相位
+        state.gearLinks.forEach(lk => {
+          if (lk.kind === 'mesh') {
+            if (lk.a === idx) snapTwoGearsToMesh(lk.a, lk.b);
+            else if (lk.b === idx) snapTwoGearsToMesh(lk.b, lk.a);
+          }
+        });
+
+        updateAll();
+        return;
+      }
+
+      if (view.panning) {
+        view.ox = sx - view.px; view.oy = sy - view.py;
+        draw();
+        return;
+      }
+
+      // 更新游標懸停提示
+      const hit = hitTestGearNode(w.x, w.y, sx, sy);
+      const prevHover = view.hoverGearIdx;
+      const prevCenter = view.hoverCenterIdx;
+      view.hoverGearIdx = hit ? hit.idx : -1;
+      view.hoverCenterIdx = (hit && hit.part === 'center') ? hit.idx : -1;
+      canvas.style.cursor = view.hoverCenterIdx >= 0 ? 'crosshair' : (view.hoverGearIdx >= 0 ? 'move' : 'grab');
+      if (prevHover !== view.hoverGearIdx || prevCenter !== view.hoverCenterIdx) {
+        draw();
+      }
+      return;
     }
 
     if (view.draggingOutputPulley && state.idlers.length === 0) {
@@ -2587,7 +3695,85 @@
     }
   });
 
-  window.addEventListener('mouseup', () => {
+  window.addEventListener('mouseup', e => {
+    if (state.mode === 3) {
+      const rect = canvas.getBoundingClientRect();
+      const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+      const w = s2w(sx, sy);
+
+      // 完成圓心虛線拉動連接
+      if (view.linkingFromGearIdx >= 0) {
+        const srcIdx = view.linkingFromGearIdx;
+        view.linkingFromGearIdx = -1;
+        const hit = hitTestGearNode(w.x, w.y, sx, sy);
+
+        if (hit && hit.idx !== srcIdx) {
+          const dstIdx = hit.idx;
+          const nA = state.gearNodes[srcIdx];
+          const nB = state.gearNodes[dstIdx];
+
+          // 檢查是否為皮帶輪與齒輪異種連接 -> 跳出 Error 提醒
+          if (nA.type !== nB.type) {
+            showToast(t('errPulleyGearLink'), true);
+            updateAll();
+            return;
+          }
+
+          // 移除兩者間既有重複連線
+          state.gearLinks = state.gearLinks.filter(
+            lk => !((lk.a === srcIdx && lk.b === dstIdx) || (lk.a === dstIdx && lk.b === srcIdx))
+          );
+
+          // 若兩物件原本同心，拉虛線傳動時先將目標物件拉開
+          if (Math.hypot(nA.x - nB.x, nA.y - nB.y) < 1.0) {
+            nB.x += getPitchRadius(nA.teeth) + getPitchRadius(nB.teeth) + 15;
+          }
+
+          if (nA.type === 'pulley' && nB.type === 'pulley') {
+            state.gearLinks.push({ a: srcIdx, b: dstIdx, kind: 'belt' });
+            showToast(t('toastBeltLinked'));
+          } else if (nA.type === 'gear' && nB.type === 'gear') {
+            state.gearLinks.push({ a: srcIdx, b: dstIdx, kind: 'mesh' });
+            snapTwoGearsToMesh(srcIdx, dstIdx);
+            showToast(t('toastGearMeshed'));
+          }
+        }
+        updateAll();
+      }
+
+      // 完成物件本體拖動：檢查是否與其他物件重疊 -> 若重疊則自動同心共用傳動軸
+      if (view.draggingGearBodyIdx >= 0) {
+        const draggedIdx = view.draggingGearBodyIdx;
+        view.draggingGearBodyIdx = -1;
+        const draggedNode = state.gearNodes[draggedIdx];
+        const rDragged = getPitchRadius(draggedNode.teeth);
+
+        for (let i = 0; i < state.gearNodes.length; i++) {
+          if (i === draggedIdx) continue;
+          // 若兩者之間有齒輪咬合或皮帶傳動連線，則不執行同心重疊
+          const isLinked = state.gearLinks.some(
+            lk => (lk.a === draggedIdx && lk.b === i) || (lk.a === i && lk.b === draggedIdx)
+          );
+          if (isLinked) continue;
+
+          const other = state.gearNodes[i];
+          const rOther = getPitchRadius(other.teeth);
+          const dist = Math.hypot(draggedNode.x - other.x, draggedNode.y - other.y);
+
+          if (dist < (rDragged + rOther) * 0.72) {
+            draggedNode.x = other.x;
+            draggedNode.y = other.y;
+            showToast(t('toastCoaxial'));
+            break;
+          }
+        }
+        updateAll();
+      }
+
+      view.panning = false;
+      return;
+    }
+
     if (view.draggingOutputPulley) {
       view.draggingOutputPulley = false;
       updateAll();
@@ -2603,6 +3789,7 @@
   canvas.addEventListener('contextmenu', e => e.preventDefault());
   canvas.addEventListener('wheel', e => {
     e.preventDefault();
+    hideNodeContextMenu();
     const rect = canvas.getBoundingClientRect();
     const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
     const wBefore = s2w(sx, sy);
@@ -2618,6 +3805,29 @@
   });
 
   document.getElementById('btnPreset').addEventListener('click', () => {
+    if (state.mode === 3) {
+      // 載入複合傳動範例 (齒輪1咬合齒輪2 -> 齒輪2與皮帶輪3同心共軸 -> 皮帶輪3帶動皮帶輪4)
+      state.gearNodes = [
+        { id: 1, teeth: 18, type: 'gear', role: 'input', x: -70, y: 0, phase: 0 },
+        { id: 2, teeth: 36, type: 'gear', role: 'none', x: -27, y: 0, phase: 0 },
+        { id: 3, teeth: 18, type: 'pulley', role: 'none', x: -27, y: 0, phase: 0 },
+        { id: 4, teeth: 36, type: 'pulley', role: 'output', x: 75, y: 0, phase: 0 }
+      ];
+      snapTwoGearsToMesh(0, 1);
+      state.gearNodes[2].x = state.gearNodes[1].x;
+      state.gearNodes[2].y = state.gearNodes[1].y;
+      state.gearLinks = [
+        { a: 0, b: 1, kind: 'mesh' },
+        { a: 2, b: 3, kind: 'belt' }
+      ];
+      document.getElementById('gearCountInput').value = 4;
+      renderGearItemCards();
+      resetView();
+      updateAll();
+      showToast(t('toastPreset'));
+      return;
+    }
+
     state.inTeeth = 18; state.outTeeth = 36; state.dx = 75; state.dy = 125;
     state.targetLen = 450; state.defaultOd = 22; state.activeIdx = 0;
     state.idlers = [
@@ -2638,6 +3848,20 @@
   });
 
   document.getElementById('btnCopyAll').addEventListener('click', () => {
+    if (state.mode === 3) {
+      const gSol = solveGearRatioSystem();
+      let txt = `=== FRC 8725 Misty Panther | Gear Ratio Report ===\n`;
+      state.gearNodes.forEach((n, i) => {
+        txt += `#0${i + 1}: ${n.type.toUpperCase()} ${n.teeth}T (${n.role.toUpperCase()}) @ (${n.x.toFixed(1)}, ${n.y.toFixed(1)})\n`;
+      });
+      if (gSol.valid) {
+        txt += `Result Ratio: 1 : ${gSol.reductionRatio.toFixed(2)} (Speed: ${gSol.outputSpeed.toFixed(3)}x)\nPath: ${gSol.pathStr}\n`;
+      }
+      navigator.clipboard.writeText(txt);
+      showToast(t('toastReportCopied'));
+      return;
+    }
+
     if (!lastSol || !lastSol.valid) return;
     const L = lastSol.totalLen;
     let txt = '';
@@ -2673,15 +3897,20 @@
   }
   window.addEventListener('resize', resize);
 
+  // 初始化啟動
+  arrangeGearNodesInOrder();
   if (location.hash === '#/length') state.mode = 2;
+  else if (location.hash === '#/ratio') state.mode = 3;
+
   applyLanguageStaticText();
   syncInputsFromState();
   if (state.mode === 1 && state.snap && state.idlers.length > 0) {
     const p = snapIdlerToTarget(0, state.idlers[0].x, state.idlers[0].y);
     state.idlers[0].x = +p.x.toFixed(2); state.idlers[0].y = +p.y.toFixed(2);
   }
-  setMode(state.mode, false);
   renderIdlerCards();
+  renderGearItemCards();
+  setMode(state.mode, false);
   resize();
   updateAll();
 })();
