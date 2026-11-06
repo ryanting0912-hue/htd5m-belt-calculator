@@ -266,6 +266,30 @@
       gap: 8px;
     }
 
+    .lang-select {
+      height: 32px;
+      padding: 0 10px;
+      background-color: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-family);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.12s, border-color 0.12s;
+    }
+
+    .lang-select:hover {
+      background-color: var(--bg-hover);
+      border-color: var(--border-strong);
+    }
+
+    .lang-select:focus-visible {
+      border-color: var(--accent);
+    }
+
     /* ==========================================================================
        KPI 數據摘要列 (4 欄固定卡片)
        ========================================================================== */
@@ -844,15 +868,15 @@
         </div>
 
         <div>
-          <div class="nav-section-label">計算模式 (Mode)</div>
+          <div class="nav-section-label" id="navSectionModeLabel">計算模式 (Mode)</div>
           <div class="nav-list">
             <button type="button" class="nav-item active" id="btnMode1">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              <span>模式一：找惰輪位置</span>
+              <span id="navMode1Text">模式一：找惰輪位置</span>
             </button>
             <button type="button" class="nav-item" id="btnMode2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-              <span>模式二：算皮帶長度</span>
+              <span id="navMode2Text">模式二：算皮帶長度</span>
             </button>
           </div>
         </div>
@@ -868,10 +892,16 @@
           <span class="spec-badge">HTD-5M (Pitch 5mm)</span>
         </div>
 
+        <!-- 右上角語言切換選單與複製報告按鈕 -->
         <div class="topbar-right">
+          <select id="langSelect" class="lang-select" aria-label="Language">
+            <option value="zh">繁體中文</option>
+            <option value="en">English</option>
+          </select>
+
           <button type="button" class="btn" id="btnCopyAll">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span>複製報告</span>
+            <span id="btnCopyAllText">複製報告</span>
           </button>
         </div>
       </header>
@@ -880,7 +910,7 @@
       <section class="summary-strip">
         <div class="stat-card">
           <div class="stat-head">
-            <span class="stat-label">1. 最接近整數皮帶長 (比實際大)</span>
+            <span class="stat-label" id="statLabel1">1. 最接近整數皮帶長 (比實際大)</span>
             <span class="tag">UPPER INT</span>
           </div>
           <div class="stat-body">
@@ -891,7 +921,7 @@
 
         <div class="stat-card highlight">
           <div class="stat-head">
-            <span class="stat-label">2. 實際算出的皮帶長度</span>
+            <span class="stat-label" id="statLabel2">2. 實際算出的皮帶長度</span>
             <span class="tag tag--accent">EXACT</span>
           </div>
           <div class="stat-body">
@@ -902,7 +932,7 @@
 
         <div class="stat-card">
           <div class="stat-head">
-            <span class="stat-label">3. 最接近整數皮帶長 (比實際小)</span>
+            <span class="stat-label" id="statLabel3">3. 最接近整數皮帶長 (比實際小)</span>
             <span class="tag">LOWER INT</span>
           </div>
           <div class="stat-body">
@@ -913,7 +943,7 @@
 
         <div class="stat-card">
           <div class="stat-head">
-            <span class="stat-label">兩主輪中心距 & 嚙合齒數</span>
+            <span class="stat-label" id="statLabel4">兩主輪中心距 & 嚙合齒數</span>
             <span class="tag tag--ok" id="kpiMeshBadge">MESH OK</span>
           </div>
           <div class="stat-body">
@@ -930,25 +960,25 @@
           <!-- Card 1: 主皮帶輪設定 -->
           <div class="card">
             <div class="card-head">
-              <div class="card-title">1. 主皮帶輪與相對位置</div>
+              <div class="card-title" id="card1Title">1. 主皮帶輪與相對位置</div>
               <span class="tag" id="pulleyCardTag">X右正左負 / Y上正下負</span>
             </div>
             <div class="card-body">
               <div class="grid--2">
                 <div class="field">
-                  <label>皮帶輪(輸入) 齒數</label>
+                  <label id="lblInTeeth">皮帶輪(輸入) 齒數</label>
                   <div class="input-wrap">
                     <input type="number" id="inTeeth" min="8" max="200" step="1" />
-                    <span class="unit-addon">齒</span>
+                    <span class="unit-addon" id="unitInTeeth">齒</span>
                   </div>
                   <div class="field-hint" id="inPdText">PD: 28.65 mm</div>
                 </div>
 
                 <div class="field">
-                  <label>皮帶輪(輸出) 齒數</label>
+                  <label id="lblOutTeeth">皮帶輪(輸出) 齒數</label>
                   <div class="input-wrap">
                     <input type="number" id="outTeeth" min="8" max="200" step="1" />
-                    <span class="unit-addon">齒</span>
+                    <span class="unit-addon" id="unitOutTeeth">齒</span>
                   </div>
                   <div class="field-hint" id="outPdText">PD: 57.30 mm</div>
                 </div>
@@ -981,13 +1011,13 @@
           <!-- Card 2: 固定皮帶長度設定 -->
           <div class="card" id="mode1Panel">
             <div class="card-head">
-              <div class="card-title">2. 固定皮帶長度設定</div>
+              <div class="card-title" id="card2Title">2. 固定皮帶長度設定</div>
               <span class="tag tag--accent" id="beltPanelBadge">模式一</span>
             </div>
             <div class="card-body">
               <div class="grid--2">
                 <div class="field">
-                  <label>目標皮帶長度</label>
+                  <label id="lblBeltLength">目標皮帶長度</label>
                   <div class="input-wrap">
                     <input type="number" id="beltLength" min="1" max="4000" step="5" />
                     <select class="unit-select" id="unitBeltLen">
@@ -998,10 +1028,10 @@
                 </div>
 
                 <div class="field">
-                  <label>對應皮帶齒數 (NN)</label>
+                  <label id="lblBeltTeeth">對應皮帶齒數 (NN)</label>
                   <div class="input-wrap">
                     <input type="number" id="beltTeeth" min="12" max="800" step="1" />
-                    <span class="unit-addon">齒</span>
+                    <span class="unit-addon" id="unitBeltTeeth">齒</span>
                   </div>
                 </div>
               </div>
@@ -1012,7 +1042,7 @@
                   <input type="checkbox" id="chkSnap" checked />
                 </label>
                 <label class="check-row">
-                  <span>顯示「等皮帶長度張緊軌跡虛線」</span>
+                  <span id="lblLocusText">顯示「等皮帶長度張緊軌跡虛線」</span>
                   <input type="checkbox" id="chkLocus" checked />
                 </label>
                 <button type="button" class="btn btn--accent" id="btnSnapNow" style="margin-top:4px;">
@@ -1022,7 +1052,7 @@
             </div>
           </div>
 
-          <!-- Card 3: 惰輪設定與相對距離清單 -->
+          <!-- Card 3: 惰輪設定與相對距離清單 (已將「(TT)」移除) -->
           <div class="card">
             <div class="card-head">
               <div class="card-title" id="idlerCardTitle">3. 培林 / 惰輪參數與相對軸距</div>
@@ -1031,7 +1061,7 @@
             <div class="card-body">
               <div class="grid--2">
                 <div class="field">
-                  <label>惰輪統一外徑 (TT)</label>
+                  <label id="lblDefaultOd">惰輪統一外徑</label>
                   <div class="input-wrap">
                     <input type="number" id="defaultOd" min="0.1" max="200" step="0.5" />
                     <select class="unit-select" id="unitDefaultOd">
@@ -1042,13 +1072,13 @@
                 </div>
 
                 <div class="field">
-                  <label>惰輪數量</label>
+                  <label id="lblIdlerCount">惰輪數量</label>
                   <select id="idlerCount">
-                    <option value="0">0 顆 (無惰輪)</option>
-                    <option value="1">1 顆惰輪</option>
-                    <option value="2">2 顆惰輪 (示意圖配置)</option>
-                    <option value="3">3 顆惰輪</option>
-                    <option value="4">4 顆惰輪</option>
+                    <option value="0" id="optIdler0">0 顆 (無惰輪)</option>
+                    <option value="1" id="optIdler1">1 顆惰輪</option>
+                    <option value="2" id="optIdler2">2 顆惰輪 (示意圖配置)</option>
+                    <option value="3" id="optIdler3">3 顆惰輪</option>
+                    <option value="4" id="optIdler4">4 顆惰輪</option>
                   </select>
                 </div>
               </div>
@@ -1080,10 +1110,10 @@
 
           <div class="canvas-hud-bottom">
             <div class="legend-list">
-              <div class="legend-node"><span class="swatch" style="background:#e091a8;"></span><span>HTD-5M 皮帶輪</span></div>
-              <div class="legend-node"><span class="swatch" style="background:#8c939e;"></span><span>培林/惰輪 (外壓切外線 / 內撐切內線)</span></div>
-              <div class="legend-node"><span class="swatch" style="background:#c8bba6;"></span><span>時規皮帶雙層虛線</span></div>
-              <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span>張緊軌跡線</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#e091a8;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#8c939e;"></span><span id="legIdler">培林/惰輪 (外壓切外線 / 內撐切內線)</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#c8bba6;"></span><span id="legBelt">時規皮帶雙層虛線</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span id="legLocus">張緊軌跡線</span></div>
             </div>
             <div style="font-family:var(--font-mono); font-size:11.5px; color:var(--text-secondary);" id="mouseCoord">
               X: 0.0 mm | Y: 0.0 mm
@@ -1103,7 +1133,232 @@
   const MM_PER_IN = 25.4;     // 1 inch = 25.4 mm
   const ACCENT_HEX = '#CE5338';
 
+  // 中／英雙語字典
+  const I18N = {
+    zh: {
+      pageDocTitle: 'FRC 8725 · HTD-5M 時規皮帶與惰輪幾何計算器',
+      navSectionMode: '計算模式 (Mode)',
+      navMode1: '模式一：找惰輪位置',
+      navMode2: '模式二：算皮帶長度',
+      topbarMode1: '模式一：固定皮帶長度找惰輪位置',
+      topbarMode2: '模式二：固定皮帶輪與惰輪位置計算皮帶長度',
+      topbarZero1: '模式一 (0 顆惰輪)：依齒數與皮帶長度計算兩皮帶輪 X、Y 軸距離',
+      topbarZero2: '模式二 (0 顆惰輪)：依齒數與皮帶長度計算兩皮帶輪 X、Y 軸距離',
+      copyReport: '複製報告',
+      stat1: '1. 最接近整數皮帶長 (比實際大)',
+      stat2: '2. 實際算出的皮帶長度',
+      stat3: '3. 最接近整數皮帶長 (比實際小)',
+      stat4: '兩主輪中心距 & 嚙合齒數',
+      card1Title: '1. 主皮帶輪與相對位置',
+      tagCoordRule: 'X右正左負 / Y上正下負',
+      tagAutoSolveXY: '自動解算輸出 X / Y 距離',
+      inTeeth: '皮帶輪(輸入) 齒數',
+      outTeeth: '皮帶輪(輸出) 齒數',
+      unitTeeth: '齒',
+      pulleyDx: '兩皮帶輪 X 軸距離',
+      pulleyDy: '兩皮帶輪 Y 軸距離',
+      pulleyDxOut: '兩皮帶輪 X 軸距離 (輸出)',
+      pulleyDyOut: '兩皮帶輪 Y 軸距離 (輸出)',
+      card2Title: '2. 固定皮帶長度設定',
+      badgeMode1: '模式一',
+      badgeZeroIdler: '0 顆惰輪 (輸入皮帶長)',
+      beltLength: '目標皮帶長度',
+      beltTeeth: '對應皮帶齒數 (NN)',
+      snapIdler: '拖動惰輪時自動吸附至「完美張緊軌跡」',
+      snapZero: '拖動輸出皮帶輪時自動吸附至「等皮帶長圓軌跡」',
+      showLocus: '顯示「等皮帶長度張緊軌跡虛線」',
+      btnSnapIdler: '立即將作用中惰輪移至完美張緊位置',
+      btnSnapZero: '立即將輸出皮帶輪移至完美張緊距離',
+      card3Title3: '3. 培林 / 惰輪參數與相對軸距',
+      card3Title2: '2. 培林 / 惰輪參數與相對軸距',
+      hintDragIdler: '可拖曳畫布惰輪',
+      hintDragOutPulley: '可於畫布拖曳輸出皮帶輪',
+      defaultOd: '惰輪統一外徑',
+      idlerCount: '惰輪數量',
+      opt0: '0 顆 (無惰輪)',
+      opt1: '1 顆惰輪',
+      opt2: '2 顆惰輪 (示意圖配置)',
+      opt3: '3 顆惰輪',
+      opt4: '4 顆惰輪',
+      resetView: '置中視角',
+      loadPreset: '載入示意圖預設',
+      hudHintIdler: '左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
+      hudHintZero: '左鍵拖曳輸出皮帶輪改變角度 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
+      legPulley: 'HTD-5M 皮帶輪',
+      legIdler: '培林/惰輪 (外壓切外線 / 內撐切內線)',
+      legBelt: '時規皮帶雙層虛線',
+      legLocus: '張緊軌跡線',
+      idlerItemTitle: '惰輪',
+      copyCoords: '複製座標',
+      copyXY: '複製 X/Y 距離',
+      idlerOd: '惰輪外徑',
+      beltSpan: '安裝皮帶段',
+      spanUpper: '上/左段',
+      spanLower: '下/右段',
+      wrapType: '壓緊方向',
+      wrapOutside: '外壓(背側)',
+      wrapInside: '內撐(齒側)',
+      xDistIn: '與輸入輪 X 距離',
+      yDistIn: '與輸入輪 Y 距離',
+      relIn: '相對輸入輪 (0, 0)',
+      relOut: '相對輸出輪',
+      centerDistC: '軸距 C =',
+      zeroPanelTitle: '0 顆惰輪 · 兩皮帶輪相對距離輸出',
+      zeroOutHeading: '輸出兩皮帶輪 X / Y 距離',
+      zeroXDist: 'X 軸距離:',
+      zeroYDist: 'Y 軸距離:',
+      zeroCenterC: '中心距 C =',
+      zeroGeoHeading: '傳動幾何資訊',
+      zeroAngle: '連心線角度:',
+      zeroTargetBelt: '目標皮帶長:',
+      zeroHintText: '可拖曳畫布輸出輪或修改單軸距離',
+      overlapErr: '位置重疊',
+      pullApartErr: '請拉開輪距',
+      stdUpper: '標準上限:',
+      stdLower: '標準下限:',
+      meshWrap: '嚙合: 輸入',
+      meshOut: '輸出',
+      stZeroTitle: '0 顆惰輪 · 皮帶長',
+      stZeroShort: '目標皮帶長度過短，小於兩皮帶輪最小包覆周長',
+      stZeroSolved: '輸出距離:',
+      stMode1Title: '目標皮帶:',
+      stOptimal: '完美張緊！實際長',
+      stErrDiff: '誤差',
+      stLoose: '皮帶偏鬆：尚差',
+      stTight: '皮帶過緊：超出',
+      stCurrent: '當前',
+      stMode2Title: '模式二：皮帶長度計算',
+      stMode2Body: '大整數:',
+      stMode2Exact: '實際:',
+      stMode2Lower: '小整數:',
+      canvasInPulley: 'HTD-5M 輸入輪',
+      canvasOutPulley: 'HTD-5M 輸出輪',
+      canvasIdler: '惰輪',
+      canvasOutside: '外壓',
+      canvasInside: '內撐',
+      toastViewReset: '已自動置中視角',
+      toastPreset: '已載入示意圖預設配置',
+      toastReportCopied: '已複製完整工程報告至剪貼簿',
+      toastIdlerCopied: '已複製惰輪座標',
+      toastZeroCopied: '已複製兩皮帶輪 X/Y 距離',
+      toastSnapped: '已吸附至完美張緊位置',
+      toastZeroUpdated: '已更新兩皮帶輪距離：',
+      toastTooShort: '目標皮帶長度過短，請增加皮帶長度'
+    },
+    en: {
+      pageDocTitle: 'FRC 8725 · HTD-5M Timing Belt & Idler Calculator',
+      navSectionMode: 'CALCULATION MODE',
+      navMode1: 'Mode 1: Find Idler Pos',
+      navMode2: 'Mode 2: Calc Belt Length',
+      topbarMode1: 'Mode 1: Fixed Belt Length ➔ Find Idler Position',
+      topbarMode2: 'Mode 2: Fixed Pulley & Idler Positions ➔ Calculate Belt Length',
+      topbarZero1: 'Mode 1 (0 Idlers): Solve Pulley X & Y Distances from Belt Length',
+      topbarZero2: 'Mode 2 (0 Idlers): Solve Pulley X & Y Distances from Belt Length',
+      copyReport: 'Copy Report',
+      stat1: '1. Nearest Int Belt Len (Upper)',
+      stat2: '2. Exact Calculated Belt Length',
+      stat3: '3. Nearest Int Belt Len (Lower)',
+      stat4: 'Center Distance & Teeth in Mesh',
+      card1Title: '1. Main Pulleys & Relative Position',
+      tagCoordRule: '+X Right/ -X Left · +Y Up/ -Y Down',
+      tagAutoSolveXY: 'Auto-Solve Output X / Y',
+      inTeeth: 'Input Pulley Teeth',
+      outTeeth: 'Output Pulley Teeth',
+      unitTeeth: 'T',
+      pulleyDx: 'Pulley X Distance',
+      pulleyDy: 'Pulley Y Distance',
+      pulleyDxOut: 'Pulley X Distance (Output)',
+      pulleyDyOut: 'Pulley Y Distance (Output)',
+      card2Title: '2. Fixed Belt Length Settings',
+      badgeMode1: 'Mode 1',
+      badgeZeroIdler: '0 Idlers (Input Belt Len)',
+      beltLength: 'Target Belt Length',
+      beltTeeth: 'Belt Teeth (NN)',
+      snapIdler: 'Auto-snap idler to tension locus while dragging',
+      snapZero: 'Auto-snap output pulley to equal-belt-length circle',
+      showLocus: 'Show equal-belt-length tension locus line',
+      btnSnapIdler: 'Snap Active Idler to Optimal Tension Position',
+      btnSnapZero: 'Snap Output Pulley to Optimal Tension Distance',
+      card3Title3: '3. Bearing / Idler Parameters',
+      card3Title2: '2. Bearing / Idler Parameters',
+      hintDragIdler: 'Draggable on Canvas',
+      hintDragOutPulley: 'Drag Output Pulley on Canvas',
+      defaultOd: 'Default Idler OD',
+      idlerCount: 'Idler Count',
+      opt0: '0 Idlers (Direct Drive)',
+      opt1: '1 Idler',
+      opt2: '2 Idlers (Demo Preset)',
+      opt3: '3 Idlers',
+      opt4: '4 Idlers',
+      resetView: 'Reset View',
+      loadPreset: 'Load Preset',
+      hudHintIdler: 'LMB Drag Idler · Scroll Zoom · Space+LMB or RMB Pan',
+      hudHintZero: 'LMB Drag Output Pulley Angle · Scroll Zoom · Space+LMB or RMB Pan',
+      legPulley: 'HTD-5M Pulley',
+      legIdler: 'Idler (Outside: Outer Line / Inside: Inner Line)',
+      legBelt: 'Timing Belt Dual Dashed Lines',
+      legLocus: 'Tension Locus Line',
+      idlerItemTitle: 'Idler',
+      copyCoords: 'Copy Coords',
+      copyXY: 'Copy X/Y Dist',
+      idlerOd: 'Idler OD',
+      beltSpan: 'Belt Span',
+      spanUpper: 'Upper/Left',
+      spanLower: 'Lower/Right',
+      wrapType: 'Wrap Type',
+      wrapOutside: 'Outside (Back)',
+      wrapInside: 'Inside (Teeth)',
+      xDistIn: 'X Dist to Input',
+      yDistIn: 'Y Dist to Input',
+      relIn: 'Rel to Input (0, 0)',
+      relOut: 'Rel to Output Pulley',
+      centerDistC: 'Center C =',
+      zeroPanelTitle: '0 Idlers · Pulley Relative X / Y Output',
+      zeroOutHeading: 'Output Pulley X / Y Distance',
+      zeroXDist: 'X Distance:',
+      zeroYDist: 'Y Distance:',
+      zeroCenterC: 'Center Dist C =',
+      zeroGeoHeading: 'Drive Geometry Info',
+      zeroAngle: 'Centerline Angle:',
+      zeroTargetBelt: 'Target Belt Len:',
+      zeroHintText: 'Drag output pulley on canvas or edit X/Y',
+      overlapErr: 'Overlap Error',
+      pullApartErr: 'Increase Distance',
+      stdUpper: 'Std Upper:',
+      stdLower: 'Std Lower:',
+      meshWrap: 'TIM: In',
+      meshOut: 'Out',
+      stZeroTitle: '0 Idlers · Belt',
+      stZeroShort: 'Target belt length is too short for the selected pulleys',
+      stZeroSolved: 'Output Dist:',
+      stMode1Title: 'Target Belt:',
+      stOptimal: 'Optimal Tension! Exact',
+      stErrDiff: 'Diff',
+      stLoose: 'Belt Loose: Short by',
+      stTight: 'Over-Tight: Exceeds by',
+      stCurrent: 'Current',
+      stMode2Title: 'Mode 2: Belt Length Solver',
+      stMode2Body: 'Upper Int:',
+      stMode2Exact: 'Exact:',
+      stMode2Lower: 'Lower Int:',
+      canvasInPulley: 'HTD-5M Input',
+      canvasOutPulley: 'HTD-5M Output',
+      canvasIdler: 'Idler',
+      canvasOutside: 'Outside',
+      canvasInside: 'Inside',
+      toastViewReset: 'View centered automatically',
+      toastPreset: 'Demo preset loaded',
+      toastReportCopied: 'Full engineering report copied to clipboard',
+      toastIdlerCopied: 'Idler coordinates copied',
+      toastZeroCopied: 'Pulley X/Y distances copied',
+      toastSnapped: 'Snapped to optimal tension position',
+      toastZeroUpdated: 'Pulley distances updated: ',
+      toastTooShort: 'Target belt length is too short'
+    }
+  };
+
   const state = {
+    lang: 'zh',
     mode: 1,
     inTeeth: 18,
     outTeeth: 36,
@@ -1125,6 +1380,10 @@
       { od: 22, x: 68.0, y: 26.0, span: 'lower', wrap: 'inside', uOd: 'mm', uX: 'mm', uY: 'mm' }
     ]
   };
+
+  function t(key) {
+    return I18N[state.lang][key] || key;
+  }
 
   const view = {
     scale: 2.5,
@@ -1201,14 +1460,12 @@
     return C;
   }
 
-  // 當惰輪數量為 0 時，依目標皮帶長度自動計算並輸出兩皮帶輪 X、Y 軸距離
   function updateXYForZeroIdlers(constraintAxis = null) {
     if (state.idlers.length !== 0) return true;
     const C = solveZeroIdlerCenterDist(state.inTeeth, state.outTeeth, state.targetLen);
     if (C === null) return false;
 
     if (constraintAxis === 'x') {
-      // 使用者指定了 X 軸距離，自動算出對應的 Y 軸距離
       const signY = state.dy < 0 ? -1 : 1;
       if (Math.abs(state.dx) >= C) {
         state.dx = (state.dx < 0 ? -1 : 1) * C;
@@ -1217,7 +1474,6 @@
         state.dy = signY * Math.sqrt(Math.max(0, C * C - state.dx * state.dx));
       }
     } else if (constraintAxis === 'y') {
-      // 使用者指定了 Y 軸距離，自動算出對應的 X 軸距離
       const signX = state.dx < 0 ? -1 : 1;
       if (Math.abs(state.dy) >= C) {
         state.dy = (state.dy < 0 ? -1 : 1) * C;
@@ -1226,7 +1482,6 @@
         state.dx = signX * Math.sqrt(Math.max(0, C * C - state.dy * state.dy));
       }
     } else {
-      // 使用者修改了齒數或皮帶長度：保持現有兩輪角度方向，自動更新 X 與 Y 距離
       let ang = Math.atan2(state.dy, state.dx);
       if (Math.hypot(state.dx, state.dy) < 1e-4) ang = Math.atan2(125, 75);
       state.dx = C * Math.cos(ang);
@@ -1354,7 +1609,6 @@
     locusDirty = false;
     if (!state.showLocus) return;
 
-    // 當惰輪為 0 顆時，等皮帶長度的輸出輪軌跡為半徑 C 的圓
     if (state.idlers.length === 0) {
       const C = solveZeroIdlerCenterDist(state.inTeeth, state.outTeeth, state.targetLen);
       if (C !== null && C > 0) {
@@ -1404,7 +1658,50 @@
     }
   }
 
-  // --- 3. UI 同步與 DOM 渲染 ---
+  // --- 3. 語言與 UI 同步渲染 ---
+  function applyLanguageStaticText() {
+    document.title = t('pageDocTitle');
+    document.documentElement.lang = state.lang === 'en' ? 'en' : 'zh-TW';
+
+    document.getElementById('navSectionModeLabel').textContent = t('navSectionMode');
+    document.getElementById('navMode1Text').textContent = t('navMode1');
+    document.getElementById('navMode2Text').textContent = t('navMode2');
+    document.getElementById('btnCopyAllText').textContent = t('copyReport');
+
+    document.getElementById('statLabel1').textContent = t('stat1');
+    document.getElementById('statLabel2').textContent = t('stat2');
+    document.getElementById('statLabel3').textContent = t('stat3');
+    document.getElementById('statLabel4').textContent = t('stat4');
+
+    document.getElementById('card1Title').textContent = t('card1Title');
+    document.getElementById('lblInTeeth').textContent = t('inTeeth');
+    document.getElementById('lblOutTeeth').textContent = t('outTeeth');
+    document.getElementById('unitInTeeth').textContent = t('unitTeeth');
+    document.getElementById('unitOutTeeth').textContent = t('unitTeeth');
+
+    document.getElementById('card2Title').textContent = t('card2Title');
+    document.getElementById('lblBeltLength').textContent = t('beltLength');
+    document.getElementById('lblBeltTeeth').textContent = t('beltTeeth');
+    document.getElementById('unitBeltTeeth').textContent = t('unitTeeth');
+    document.getElementById('lblLocusText').textContent = t('showLocus');
+
+    document.getElementById('lblDefaultOd').textContent = t('defaultOd');
+    document.getElementById('lblIdlerCount').textContent = t('idlerCount');
+    document.getElementById('optIdler0').textContent = t('opt0');
+    document.getElementById('optIdler1').textContent = t('opt1');
+    document.getElementById('optIdler2').textContent = t('opt2');
+    document.getElementById('optIdler3').textContent = t('opt3');
+    document.getElementById('optIdler4').textContent = t('opt4');
+
+    document.getElementById('btnResetView').textContent = t('resetView');
+    document.getElementById('btnPreset').textContent = t('loadPreset');
+
+    document.getElementById('legPulley').textContent = t('legPulley');
+    document.getElementById('legIdler').textContent = t('legIdler');
+    document.getElementById('legBelt').textContent = t('legBelt');
+    document.getElementById('legLocus').textContent = t('legLocus');
+  }
+
   function syncInputsFromState() {
     document.getElementById('inTeeth').value = state.inTeeth;
     document.getElementById('outTeeth').value = state.outTeeth;
@@ -1433,29 +1730,28 @@
 
   function syncModeAndZeroIdlerUI() {
     const isZero = state.idlers.length === 0;
-    // 在模式一，或惰輪數量為 0 顆時，皆顯示「2. 固定皮帶長度設定」以供輸入皮帶長度
     const showBeltPanel = (state.mode === 1) || isZero;
     document.getElementById('mode1Panel').style.display = showBeltPanel ? 'block' : 'none';
 
-    document.getElementById('idlerCardTitle').textContent =
-      showBeltPanel ? '3. 培林 / 惰輪參數與相對軸距' : '2. 培林 / 惰輪參數與相對軸距';
+    if (isZero) {
+      document.getElementById('topbarModeTitle').textContent =
+        state.mode === 1 ? t('topbarZero1') : t('topbarZero2');
+    } else {
+      document.getElementById('topbarModeTitle').textContent =
+        state.mode === 1 ? t('topbarMode1') : t('topbarMode2');
+    }
 
-    document.getElementById('beltPanelBadge').textContent = isZero ? '0 顆惰輪 (輸入皮帶長)' : '模式一';
-    document.getElementById('lblPulleyDx').textContent = isZero ? '兩皮帶輪 X 軸距離 (輸出)' : '兩皮帶輪 X 軸距離';
-    document.getElementById('lblPulleyDy').textContent = isZero ? '兩皮帶輪 Y 軸距離 (輸出)' : '兩皮帶輪 Y 軸距離';
-    document.getElementById('pulleyCardTag').textContent = isZero ? '自動解算輸出 X / Y 距離' : 'X右正左負 / Y上正下負';
-    document.getElementById('lblSnapText').textContent = isZero
-      ? '拖動輸出皮帶輪時自動吸附至「等皮帶長圓軌跡」'
-      : '拖動惰輪時自動吸附至「完美張緊軌跡」';
-    document.getElementById('btnSnapNowText').textContent = isZero
-      ? '立即將輸出皮帶輪移至完美張緊距離'
-      : '立即將作用中惰輪移至完美張緊位置';
-    document.getElementById('idlerCardHint').textContent = isZero
-      ? '可於畫布拖曳輸出皮帶輪'
-      : '可拖曳畫布惰輪';
-    document.getElementById('canvasHudHint').textContent = isZero
-      ? '左鍵拖曳輸出皮帶輪改變角度 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移'
-      : '左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移';
+    document.getElementById('idlerCardTitle').textContent =
+      showBeltPanel ? t('card3Title3') : t('card3Title2');
+
+    document.getElementById('beltPanelBadge').textContent = isZero ? t('badgeZeroIdler') : t('badgeMode1');
+    document.getElementById('lblPulleyDx').textContent = isZero ? t('pulleyDxOut') : t('pulleyDx');
+    document.getElementById('lblPulleyDy').textContent = isZero ? t('pulleyDyOut') : t('pulleyDy');
+    document.getElementById('pulleyCardTag').textContent = isZero ? t('tagAutoSolveXY') : t('tagCoordRule');
+    document.getElementById('lblSnapText').textContent = isZero ? t('snapZero') : t('snapIdler');
+    document.getElementById('btnSnapNowText').textContent = isZero ? t('btnSnapZero') : t('btnSnapIdler');
+    document.getElementById('idlerCardHint').textContent = isZero ? t('hintDragOutPulley') : t('hintDragIdler');
+    document.getElementById('canvasHudHint').textContent = isZero ? t('hudHintZero') : t('hudHintIdler');
   }
 
   function renderIdlerCards() {
@@ -1467,22 +1763,22 @@
         <div class="idler-panel active">
           <div class="idler-panel-head">
             <div class="idler-name">
-              <span>0 顆惰輪 · 兩皮帶輪相對距離輸出</span>
+              <span>${t('zeroPanelTitle')}</span>
             </div>
-            <button type="button" class="btn btn-copy-zero" style="height:26px; padding:0 8px; font-size:11.5px;">複製 X/Y 距離</button>
+            <button type="button" class="btn btn-copy-zero" style="height:26px; padding:0 8px; font-size:11.5px;">${t('copyXY')}</button>
           </div>
           <div class="rel-grid" id="zeroIdlerReadout">
             <div class="rel-block">
-              <div class="rel-heading">輸出兩皮帶輪 X / Y 距離</div>
-              <div class="rel-coord">X 軸距離: ${fmtDual(state.dx, state.units.dx)}</div>
-              <div class="rel-coord">Y 軸距離: ${fmtDual(state.dy, state.units.dy)}</div>
-              <div class="rel-c">中心距 C = ${C.toFixed(2)} mm (${(C / MM_PER_IN).toFixed(3)} in)</div>
+              <div class="rel-heading">${t('zeroOutHeading')}</div>
+              <div class="rel-coord">${t('zeroXDist')} ${fmtDual(state.dx, state.units.dx)}</div>
+              <div class="rel-coord">${t('zeroYDist')} ${fmtDual(state.dy, state.units.dy)}</div>
+              <div class="rel-c">${t('zeroCenterC')} ${C.toFixed(2)} mm (${(C / MM_PER_IN).toFixed(3)} in)</div>
             </div>
             <div class="rel-block">
-              <div class="rel-heading">傳動幾何資訊</div>
-              <div class="rel-coord">連心線角度: ${angDeg.toFixed(1)}°</div>
-              <div class="rel-coord">目標皮帶長: ${fmtDual(state.targetLen, state.units.beltLen)}</div>
-              <div class="rel-c">可拖曳畫布輸出輪或修改單軸距離</div>
+              <div class="rel-heading">${t('zeroGeoHeading')}</div>
+              <div class="rel-coord">${t('zeroAngle')} ${angDeg.toFixed(1)}°</div>
+              <div class="rel-coord">${t('zeroTargetBelt')} ${fmtDual(state.targetLen, state.units.beltLen)}</div>
+              <div class="rel-c">${t('zeroHintText')}</div>
             </div>
           </div>
         </div>`;
@@ -1500,13 +1796,13 @@
         <div class="idler-panel ${i === state.activeIdx ? 'active' : ''}" data-idx="${i}">
           <div class="idler-panel-head">
             <div class="idler-name">
-              <span>惰輪 #0${i + 1} ${i === state.activeIdx ? '· ACTIVE' : ''}</span>
+              <span>${t('idlerItemTitle')} #0${i + 1} ${i === state.activeIdx ? '· ACTIVE' : ''}</span>
             </div>
-            <button type="button" class="btn btn-copy-one" data-idx="${i}" style="height:26px; padding:0 8px; font-size:11.5px;">複製座標</button>
+            <button type="button" class="btn btn-copy-one" data-idx="${i}" style="height:26px; padding:0 8px; font-size:11.5px;">${t('copyCoords')}</button>
           </div>
           <div class="grid--3">
             <div class="field">
-              <label>惰輪外徑</label>
+              <label>${t('idlerOd')}</label>
               <div class="input-wrap">
                 <input type="number" id="idlOd_${i}" class="idl-od" data-idx="${i}" value="${dispOd}" step="${it.uOd === 'in' ? '0.05' : '0.5'}" />
                 <select class="unit-select idl-u-od" data-idx="${i}">
@@ -1516,23 +1812,23 @@
               </div>
             </div>
             <div class="field">
-              <label>安裝皮帶段</label>
+              <label>${t('beltSpan')}</label>
               <select class="idl-span" data-idx="${i}">
-                <option value="upper" ${it.span === 'upper' ? 'selected' : ''}>上/左段</option>
-                <option value="lower" ${it.span === 'lower' ? 'selected' : ''}>下/右段</option>
+                <option value="upper" ${it.span === 'upper' ? 'selected' : ''}>${t('spanUpper')}</option>
+                <option value="lower" ${it.span === 'lower' ? 'selected' : ''}>${t('spanLower')}</option>
               </select>
             </div>
             <div class="field">
-              <label>壓緊方向</label>
+              <label>${t('wrapType')}</label>
               <select class="idl-wrap" data-idx="${i}">
-                <option value="outside" ${it.wrap === 'outside' ? 'selected' : ''}>外壓(背側)</option>
-                <option value="inside" ${it.wrap === 'inside' ? 'selected' : ''}>內撐(齒側)</option>
+                <option value="outside" ${it.wrap === 'outside' ? 'selected' : ''}>${t('wrapOutside')}</option>
+                <option value="inside" ${it.wrap === 'inside' ? 'selected' : ''}>${t('wrapInside')}</option>
               </select>
             </div>
           </div>
           <div class="grid--2">
             <div class="field">
-              <label>與輸入輪 X 距離</label>
+              <label>${t('xDistIn')}</label>
               <div class="input-wrap">
                 <input type="number" id="idlX_${i}" class="idl-x" data-idx="${i}" value="${dispX}" step="${it.uX === 'in' ? '0.05' : '0.5'}" />
                 <select class="unit-select idl-u-x" data-idx="${i}">
@@ -1542,7 +1838,7 @@
               </div>
             </div>
             <div class="field">
-              <label>與輸入輪 Y 距離</label>
+              <label>${t('yDistIn')}</label>
               <div class="input-wrap">
                 <input type="number" id="idlY_${i}" class="idl-y" data-idx="${i}" value="${dispY}" step="${it.uY === 'in' ? '0.05' : '0.5'}" />
                 <select class="unit-select idl-u-y" data-idx="${i}">
@@ -1554,16 +1850,16 @@
           </div>
           <div class="rel-grid" id="idlRead_${i}">
             <div class="rel-block">
-              <div class="rel-heading">相對輸入輪 (0, 0)</div>
+              <div class="rel-heading">${t('relIn')}</div>
               <div class="rel-coord">ΔX: ${fmtDual(it.x, it.uX)}</div>
               <div class="rel-coord">ΔY: ${fmtDual(it.y, it.uY)}</div>
-              <div class="rel-c">軸距 C = ${dIn.toFixed(2)} mm</div>
+              <div class="rel-c">${t('centerDistC')} ${dIn.toFixed(2)} mm</div>
             </div>
             <div class="rel-block">
-              <div class="rel-heading">相對輸出輪</div>
+              <div class="rel-heading">${t('relOut')}</div>
               <div class="rel-coord">ΔX: ${fmtDual(rx, it.uX)}</div>
               <div class="rel-coord">ΔY: ${fmtDual(ry, it.uY)}</div>
-              <div class="rel-c">軸距 C = ${dOut.toFixed(2)} mm</div>
+              <div class="rel-c">${t('centerDistC')} ${dOut.toFixed(2)} mm</div>
             </div>
           </div>
         </div>`;
@@ -1578,16 +1874,16 @@
     const angDeg = (Math.atan2(state.dy, state.dx) * 180) / Math.PI;
     readEl.innerHTML = `
       <div class="rel-block">
-        <div class="rel-heading">輸出兩皮帶輪 X / Y 距離</div>
-        <div class="rel-coord">X 軸距離: ${fmtDual(state.dx, state.units.dx)}</div>
-        <div class="rel-coord">Y 軸距離: ${fmtDual(state.dy, state.units.dy)}</div>
-        <div class="rel-c">中心距 C = ${C.toFixed(2)} mm (${(C / MM_PER_IN).toFixed(3)} in)</div>
+        <div class="rel-heading">${t('zeroOutHeading')}</div>
+        <div class="rel-coord">${t('zeroXDist')} ${fmtDual(state.dx, state.units.dx)}</div>
+        <div class="rel-coord">${t('zeroYDist')} ${fmtDual(state.dy, state.units.dy)}</div>
+        <div class="rel-c">${t('zeroCenterC')} ${C.toFixed(2)} mm (${(C / MM_PER_IN).toFixed(3)} in)</div>
       </div>
       <div class="rel-block">
-        <div class="rel-heading">傳動幾何資訊</div>
-        <div class="rel-coord">連心線角度: ${angDeg.toFixed(1)}°</div>
-        <div class="rel-coord">目標皮帶長: ${fmtDual(state.targetLen, state.units.beltLen)}</div>
-        <div class="rel-c">可拖曳畫布輸出輪或修改單軸距離</div>
+        <div class="rel-heading">${t('zeroGeoHeading')}</div>
+        <div class="rel-coord">${t('zeroAngle')} ${angDeg.toFixed(1)}°</div>
+        <div class="rel-coord">${t('zeroTargetBelt')} ${fmtDual(state.targetLen, state.units.beltLen)}</div>
+        <div class="rel-c">${t('zeroHintText')}</div>
       </div>`;
   }
 
@@ -1607,16 +1903,16 @@
       const dIn = Math.hypot(it.x, it.y), dOut = Math.hypot(rx, ry);
       readEl.innerHTML = `
         <div class="rel-block">
-          <div class="rel-heading">相對輸入輪 (0, 0)</div>
+          <div class="rel-heading">${t('relIn')}</div>
           <div class="rel-coord">ΔX: ${fmtDual(it.x, it.uX)}</div>
           <div class="rel-coord">ΔY: ${fmtDual(it.y, it.uY)}</div>
-          <div class="rel-c">軸距 C = ${dIn.toFixed(2)} mm</div>
+          <div class="rel-c">${t('centerDistC')} ${dIn.toFixed(2)} mm</div>
         </div>
         <div class="rel-block">
-          <div class="rel-heading">相對輸出輪</div>
+          <div class="rel-heading">${t('relOut')}</div>
           <div class="rel-coord">ΔX: ${fmtDual(rx, it.uX)}</div>
           <div class="rel-coord">ΔY: ${fmtDual(ry, it.uY)}</div>
-          <div class="rel-c">軸距 C = ${dOut.toFixed(2)} mm</div>
+          <div class="rel-c">${t('centerDistC')} ${dOut.toFixed(2)} mm</div>
         </div>`;
     }
   }
@@ -1635,9 +1931,9 @@
     }
 
     if (!sol.valid) {
-      document.getElementById('resIntUp').textContent = '位置重疊';
-      document.getElementById('resExact').textContent = '請拉開輪距';
-      document.getElementById('resIntDown').textContent = '位置重疊';
+      document.getElementById('resIntUp').textContent = t('overlapErr');
+      document.getElementById('resExact').textContent = t('pullApartErr');
+      document.getElementById('resIntDown').textContent = t('overlapErr');
       draw();
       return;
     }
@@ -1646,13 +1942,14 @@
     const intUp = Math.floor(L) + 1;
     const intDown = Math.ceil(L) - 1;
     const t5Up = Math.ceil(L / PITCH), t5Down = Math.floor(L / PITCH);
+    const tUnit = t('unitTeeth');
 
     document.getElementById('resIntUp').textContent = `${intUp} mm`;
-    document.getElementById('resStdUp').textContent = `標準上限: ${t5Up} 齒 (${t5Up * 5} mm)`;
+    document.getElementById('resStdUp').textContent = `${t('stdUpper')} ${t5Up} ${tUnit} (${t5Up * 5} mm)`;
     document.getElementById('resExact').textContent = `${L.toFixed(2)} mm`;
-    document.getElementById('resExactTeeth').textContent = `${(L / PITCH).toFixed(2)} 齒 (${(L / MM_PER_IN).toFixed(2)} in)`;
+    document.getElementById('resExactTeeth').textContent = `${(L / PITCH).toFixed(2)} ${tUnit} (${(L / MM_PER_IN).toFixed(2)} in)`;
     document.getElementById('resIntDown').textContent = `${intDown} mm`;
-    document.getElementById('resStdDown').textContent = `標準下限: ${t5Down} 齒 (${t5Down * 5} mm)`;
+    document.getElementById('resStdDown').textContent = `${t('stdLower')} ${t5Down} ${tUnit} (${t5Down * 5} mm)`;
 
     const inTIM = (state.inTeeth * sol.pIn.wrapAngle) / (2 * Math.PI);
     const outTIM = (state.outTeeth * sol.pOut.wrapAngle) / (2 * Math.PI);
@@ -1662,7 +1959,7 @@
     meshBadge.className = 'tag ' + (meshOk ? 'tag--ok' : 'tag--warn');
 
     document.getElementById('wrapBar').textContent =
-      `嚙合: 輸入 ${inTIM.toFixed(1)}T | 輸出 ${outTIM.toFixed(1)}T`;
+      `${t('meshWrap')} ${inTIM.toFixed(1)}T | ${t('meshOut')} ${outTIM.toFixed(1)}T`;
 
     const stTitle = document.getElementById('stTitle');
     const stBadge = document.getElementById('stBadge');
@@ -1670,43 +1967,43 @@
 
     if (state.idlers.length === 0) {
       const exactC = solveZeroIdlerCenterDist(state.inTeeth, state.outTeeth, state.targetLen);
-      stTitle.textContent = `0 顆惰輪 · 皮帶長 ${state.targetLen.toFixed(1)} mm (${(state.targetLen / 5).toFixed(0)}T)`;
+      stTitle.textContent = `${t('stZeroTitle')} ${state.targetLen.toFixed(1)} mm (${(state.targetLen / 5).toFixed(0)}T)`;
       if (exactC === null) {
         stBadge.textContent = 'TOO SHORT';
         stBadge.className = 'tag tag--err';
         stDetail.style.color = '#e57373';
-        stDetail.textContent = `目標皮帶長度過短，小於兩皮帶輪最小包覆周長`;
+        stDetail.textContent = t('stZeroShort');
       } else {
         stBadge.textContent = 'X/Y SOLVED';
         stBadge.className = 'tag tag--accent';
         stDetail.style.color = '#81c784';
-        stDetail.textContent = `輸出距離: X = ${state.dx.toFixed(2)} mm, Y = ${state.dy.toFixed(2)} mm (C = ${sol.mainD.toFixed(2)} mm)`;
+        stDetail.textContent = `${t('stZeroSolved')} X = ${state.dx.toFixed(2)} mm, Y = ${state.dy.toFixed(2)} mm (C = ${sol.mainD.toFixed(2)} mm)`;
       }
     } else if (state.mode === 1) {
       const diff = L - state.targetLen;
-      stTitle.textContent = `目標皮帶: ${state.targetLen.toFixed(1)} mm (${(state.targetLen / 5).toFixed(0)}T)`;
+      stTitle.textContent = `${t('stMode1Title')} ${state.targetLen.toFixed(1)} mm (${(state.targetLen / 5).toFixed(0)}T)`;
       if (Math.abs(diff) <= 0.4) {
         stBadge.textContent = 'OPTIMAL';
         stBadge.className = 'tag tag--ok';
         stDetail.style.color = '#81c784';
-        stDetail.textContent = `完美張緊！實際長 ${L.toFixed(2)} mm (誤差 ${diff >= 0 ? '+' : ''}${diff.toFixed(2)} mm)`;
+        stDetail.textContent = `${t('stOptimal')} ${L.toFixed(2)} mm (${t('stErrDiff')} ${diff >= 0 ? '+' : ''}${diff.toFixed(2)} mm)`;
       } else if (diff < 0) {
         stBadge.textContent = 'LOOSE';
         stBadge.className = 'tag tag--warn';
         stDetail.style.color = '#ffd54f';
-        stDetail.textContent = `皮帶偏鬆：尚差 ${(-diff).toFixed(2)} mm (當前 ${L.toFixed(2)} mm)`;
+        stDetail.textContent = `${t('stLoose')} ${(-diff).toFixed(2)} mm (${t('stCurrent')} ${L.toFixed(2)} mm)`;
       } else {
         stBadge.textContent = 'OVER-TIGHT';
         stBadge.className = 'tag tag--err';
         stDetail.style.color = '#e57373';
-        stDetail.textContent = `皮帶過緊：超出 +${diff.toFixed(2)} mm (當前 ${L.toFixed(2)} mm)`;
+        stDetail.textContent = `${t('stTight')} +${diff.toFixed(2)} mm (${t('stCurrent')} ${L.toFixed(2)} mm)`;
       }
     } else {
-      stTitle.textContent = `模式二：皮帶長度計算`;
+      stTitle.textContent = t('stMode2Title');
       stBadge.textContent = 'CALCULATED';
       stBadge.className = 'tag tag--accent';
       stDetail.style.color = 'var(--text-primary)';
-      stDetail.textContent = `大整數: ${intUp} mm | 實際: ${L.toFixed(2)} mm | 小整數: ${intDown} mm`;
+      stDetail.textContent = `${t('stMode2Body')} ${intUp} mm | ${t('stMode2Exact')} ${L.toFixed(2)} mm | ${t('stMode2Lower')} ${intDown} mm`;
     }
 
     draw();
@@ -1831,10 +2128,10 @@
 
     // 繪製主皮帶輪與惰輪實體
     const isZero = state.idlers.length === 0;
-    drawPulley(sol.pIn, `HTD-5M 輸入輪 ${state.inTeeth}T (0, 0)`, false);
+    drawPulley(sol.pIn, `${t('canvasInPulley')} ${state.inTeeth}T (0, 0)`, false);
     drawPulley(
       sol.pOut,
-      `HTD-5M 輸出輪 ${state.outTeeth}T (X:${state.dx.toFixed(1)}, Y:${state.dy.toFixed(1)})`,
+      `${t('canvasOutPulley')} ${state.outTeeth}T (X:${state.dx.toFixed(1)}, Y:${state.dy.toFixed(1)})`,
       isZero
     );
 
@@ -1856,7 +2153,11 @@
       ctx.fillStyle = sel ? ACCENT_HEX : '#f0f0f0';
       ctx.font = '600 11.5px "Inter", "Noto Sans TC", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(`惰輪 #${w.idx + 1} (OD:${w.od.toFixed(1)}mm | ${w.wrap === 'outside' ? '外壓' : '內撐'})`, c.x, c.y - rPx - 16);
+      ctx.fillText(
+        `${t('canvasIdler')} #${w.idx + 1} (OD:${w.od.toFixed(1)}mm | ${w.wrap === 'outside' ? t('canvasOutside') : t('canvasInside')})`,
+        c.x,
+        c.y - rPx - 16
+      );
       ctx.fillStyle = '#d4d4d4';
       ctx.font = '600 11px "JetBrains Mono", monospace';
       ctx.fillText(`(${w.x.toFixed(1)}, ${w.y.toFixed(1)})`, c.x, c.y - rPx - 3);
@@ -1919,14 +2220,6 @@
     document.getElementById('btnMode1').classList.toggle('active', m === 1);
     document.getElementById('btnMode2').classList.toggle('active', m === 2);
 
-    if (state.idlers.length === 0) {
-      document.getElementById('topbarModeTitle').textContent =
-        `模式${m === 1 ? '一' : '二'} (0 顆惰輪)：依齒數與皮帶長度計算兩皮帶輪 X、Y 軸距離`;
-    } else {
-      document.getElementById('topbarModeTitle').textContent =
-        m === 1 ? '模式一：固定皮帶長度找惰輪位置' : '模式二：固定皮帶輪與惰輪位置計算皮帶長度';
-    }
-
     syncModeAndZeroIdlerUI();
 
     if (updateHash) {
@@ -1935,6 +2228,15 @@
     locusDirty = true;
     updateAll();
   }
+
+  // 語言切換選單事件
+  document.getElementById('langSelect').addEventListener('change', e => {
+    state.lang = e.target.value;
+    applyLanguageStaticText();
+    syncModeAndZeroIdlerUI();
+    renderIdlerCards();
+    updateAll();
+  });
 
   window.addEventListener('hashchange', () => {
     if (location.hash === '#/length') setMode(2, false);
@@ -2046,9 +2348,9 @@
     if (state.idlers.length === 0) {
       if (updateXYForZeroIdlers()) {
         updateAll();
-        showToast(`已更新兩皮帶輪距離：X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm`);
+        showToast(`${t('toastZeroUpdated')}X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm`);
       } else {
-        showToast('目標皮帶長度過短，請增加皮帶長度');
+        showToast(t('toastTooShort'));
       }
       return;
     }
@@ -2058,7 +2360,7 @@
     state.idlers[i].y = +p.y.toFixed(2);
     updateFastIdlerReadout(i);
     updateAll();
-    showToast(`惰輪 #0${i + 1} 已吸附至完美張緊位置`);
+    showToast(`${t('idlerItemTitle')} #0${i + 1}: ${t('toastSnapped')}`);
   });
 
   document.getElementById('defaultOd').addEventListener('input', e => {
@@ -2111,18 +2413,18 @@
   });
 
   document.getElementById('idlerList').addEventListener('input', e => {
-    const t = e.target, idx = parseInt(t.dataset.idx, 10);
+    const tEl = e.target, idx = parseInt(tEl.dataset.idx, 10);
     if (isNaN(idx)) return;
     const it = state.idlers[idx];
     state.activeIdx = idx;
 
-    if (t.classList.contains('idl-od')) {
-      const v = parseFloat(t.value);
+    if (tEl.classList.contains('idl-od')) {
+      const v = parseFloat(tEl.value);
       if (!isNaN(v) && v > 0) { it.od = unitToMm(v, it.uOd); locusDirty = true; }
     }
-    if (t.classList.contains('idl-span')) { it.span = t.value; locusDirty = true; }
-    if (t.classList.contains('idl-wrap')) {
-      it.wrap = t.value;
+    if (tEl.classList.contains('idl-span')) { it.span = tEl.value; locusDirty = true; }
+    if (tEl.classList.contains('idl-wrap')) {
+      it.wrap = tEl.value;
       locusDirty = true;
       if (state.mode === 1 && state.snap) {
         const p = snapIdlerToTarget(idx, it.x, it.y);
@@ -2130,12 +2432,12 @@
         it.y = +p.y.toFixed(2);
       }
     }
-    if (t.classList.contains('idl-x')) {
-      const v = parseFloat(t.value);
+    if (tEl.classList.contains('idl-x')) {
+      const v = parseFloat(tEl.value);
       if (!isNaN(v)) it.x = unitToMm(v, it.uX);
     }
-    if (t.classList.contains('idl-y')) {
-      const v = parseFloat(t.value);
+    if (tEl.classList.contains('idl-y')) {
+      const v = parseFloat(tEl.value);
       if (!isNaN(v)) it.y = unitToMm(v, it.uY);
     }
     updateFastIdlerReadout(idx);
@@ -2143,25 +2445,25 @@
   });
 
   document.getElementById('idlerList').addEventListener('change', e => {
-    const t = e.target, idx = parseInt(t.dataset.idx, 10);
+    const tEl = e.target, idx = parseInt(tEl.dataset.idx, 10);
     if (isNaN(idx)) return;
     const it = state.idlers[idx];
 
-    if (t.classList.contains('idl-u-od')) {
-      it.uOd = t.value;
+    if (tEl.classList.contains('idl-u-od')) {
+      it.uOd = tEl.value;
       const inp = document.getElementById('idlOd_' + idx);
       inp.step = it.uOd === 'in' ? '0.05' : '0.5';
       inp.value = mmToUnit(it.od, it.uOd);
     }
-    if (t.classList.contains('idl-u-x')) {
-      it.uX = t.value;
+    if (tEl.classList.contains('idl-u-x')) {
+      it.uX = tEl.value;
       const inp = document.getElementById('idlX_' + idx);
       inp.step = it.uX === 'in' ? '0.05' : '0.5';
       inp.value = mmToUnit(it.x, it.uX);
       updateFastIdlerReadout(idx);
     }
-    if (t.classList.contains('idl-u-y')) {
-      it.uY = t.value;
+    if (tEl.classList.contains('idl-u-y')) {
+      it.uY = tEl.value;
       const inp = document.getElementById('idlY_' + idx);
       inp.step = it.uY === 'in' ? '0.05' : '0.5';
       inp.value = mmToUnit(it.y, it.uY);
@@ -2173,18 +2475,22 @@
     const zeroCopyBtn = e.target.closest('.btn-copy-zero');
     if (zeroCopyBtn) {
       const C = Math.hypot(state.dx, state.dy);
-      const txt = `兩皮帶輪距離 (0顆惰輪, 皮帶長=${state.targetLen.toFixed(1)}mm) | X=${state.dx.toFixed(2)}mm (${(state.dx / MM_PER_IN).toFixed(3)}in), Y=${state.dy.toFixed(2)}mm (${(state.dy / MM_PER_IN).toFixed(3)}in) | 中心距 C=${C.toFixed(2)}mm`;
+      const txt = state.lang === 'en'
+        ? `Pulley Distance (0 Idlers, Belt=${state.targetLen.toFixed(1)}mm) | X=${state.dx.toFixed(2)}mm (${(state.dx / MM_PER_IN).toFixed(3)}in), Y=${state.dy.toFixed(2)}mm (${(state.dy / MM_PER_IN).toFixed(3)}in) | Center C=${C.toFixed(2)}mm`
+        : `兩皮帶輪距離 (0顆惰輪, 皮帶長=${state.targetLen.toFixed(1)}mm) | X=${state.dx.toFixed(2)}mm (${(state.dx / MM_PER_IN).toFixed(3)}in), Y=${state.dy.toFixed(2)}mm (${(state.dy / MM_PER_IN).toFixed(3)}in) | 中心距 C=${C.toFixed(2)}mm`;
       navigator.clipboard.writeText(txt);
-      showToast('已複製兩皮帶輪 X/Y 距離');
+      showToast(t('toastZeroCopied'));
       return;
     }
 
     const copyBtn = e.target.closest('.btn-copy-one');
     if (copyBtn) {
       const i = parseInt(copyBtn.dataset.idx, 10), it = state.idlers[i];
-      const txt = `惰輪 #0${i + 1} (OD=${it.od.toFixed(2)}mm) | 相對輸入輪: X=${it.x.toFixed(2)}mm (${(it.x / MM_PER_IN).toFixed(3)}in), Y=${it.y.toFixed(2)}mm (${(it.y / MM_PER_IN).toFixed(3)}in) | 相對輸出輪: X=${(it.x - state.dx).toFixed(2)}mm, Y=${(it.y - state.dy).toFixed(2)}mm`;
+      const txt = state.lang === 'en'
+        ? `Idler #0${i + 1} (OD=${it.od.toFixed(2)}mm) | Rel to Input: X=${it.x.toFixed(2)}mm (${(it.x / MM_PER_IN).toFixed(3)}in), Y=${it.y.toFixed(2)}mm (${(it.y / MM_PER_IN).toFixed(3)}in) | Rel to Output: X=${(it.x - state.dx).toFixed(2)}mm, Y=${(it.y - state.dy).toFixed(2)}mm`
+        : `惰輪 #0${i + 1} (OD=${it.od.toFixed(2)}mm) | 相對輸入輪: X=${it.x.toFixed(2)}mm (${(it.x / MM_PER_IN).toFixed(3)}in), Y=${it.y.toFixed(2)}mm (${(it.y / MM_PER_IN).toFixed(3)}in) | 相對輸出輪: X=${(it.x - state.dx).toFixed(2)}mm, Y=${(it.y - state.dy).toFixed(2)}mm`;
       navigator.clipboard.writeText(txt);
-      showToast(`已複製 惰輪 #0${i + 1} 座標`);
+      showToast(`${t('toastIdlerCopied')} (#0${i + 1})`);
       return;
     }
     const card = e.target.closest('.idler-panel');
@@ -2213,7 +2519,6 @@
       view.panning = true; view.px = sx - view.ox; view.py = sy - view.oy; return;
     }
 
-    // 若為 0 顆惰輪，允許直接拖曳輸出皮帶輪改變 X / Y 軸距離
     if (state.idlers.length === 0) {
       const rOut = (state.outTeeth * PITCH) / (2 * Math.PI);
       if (Math.hypot(w.x - state.dx, w.y - state.dy) <= Math.max(rOut + 6, 16 / view.scale)) {
@@ -2309,7 +2614,7 @@
 
   document.getElementById('btnResetView').addEventListener('click', () => {
     resetView();
-    showToast('已自動置中視角');
+    showToast(t('toastViewReset'));
   });
 
   document.getElementById('btnPreset').addEventListener('click', () => {
@@ -2329,22 +2634,34 @@
     renderIdlerCards();
     resetView();
     updateAll();
-    showToast('已載入示意圖預設配置');
+    showToast(t('toastPreset'));
   });
 
   document.getElementById('btnCopyAll').addEventListener('click', () => {
     if (!lastSol || !lastSol.valid) return;
     const L = lastSol.totalLen;
-    let txt = `=== FRC 8725 Misty Panther | HTD-5M 皮帶計算報告 ===\n`;
-    txt += `輸入皮帶輪: ${state.inTeeth}T (0, 0) | 輸出皮帶輪: ${state.outTeeth}T (X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm | 中心距 C=${lastSol.mainD.toFixed(2)}mm)\n`;
-    txt += `1. 最接近大整數皮帶長: ${Math.floor(L) + 1} mm\n`;
-    txt += `2. 實際算出皮帶長度: ${L.toFixed(2)} mm (${(L / MM_PER_IN).toFixed(3)} in / ${(L / PITCH).toFixed(2)} 齒)\n`;
-    txt += `3. 最接近小整數皮帶長: ${Math.ceil(L) - 1} mm\n`;
-    state.idlers.forEach((it, i) => {
-      txt += `[惰輪 #0${i + 1}] OD=${it.od.toFixed(2)}mm (${it.wrap === 'outside' ? '外壓背側' : '內撐齒側'}): 相對輸入輪(${it.x.toFixed(2)}mm, ${it.y.toFixed(2)}mm) | 相對輸出輪(${(it.x - state.dx).toFixed(2)}mm, ${(it.y - state.dy).toFixed(2)}mm)\n`;
-    });
+    let txt = '';
+    if (state.lang === 'en') {
+      txt += `=== FRC 8725 Misty Panther | HTD-5M Belt Report ===\n`;
+      txt += `Input Pulley: ${state.inTeeth}T (0, 0) | Output Pulley: ${state.outTeeth}T (X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm | Center C=${lastSol.mainD.toFixed(2)}mm)\n`;
+      txt += `1. Nearest Upper Int Belt Len: ${Math.floor(L) + 1} mm\n`;
+      txt += `2. Exact Belt Length: ${L.toFixed(2)} mm (${(L / MM_PER_IN).toFixed(3)} in / ${(L / PITCH).toFixed(2)} T)\n`;
+      txt += `3. Nearest Lower Int Belt Len: ${Math.ceil(L) - 1} mm\n`;
+      state.idlers.forEach((it, i) => {
+        txt += `[Idler #0${i + 1}] OD=${it.od.toFixed(2)}mm (${it.wrap === 'outside' ? 'Outside' : 'Inside'}): Rel to Input(${it.x.toFixed(2)}mm, ${it.y.toFixed(2)}mm) | Rel to Output(${(it.x - state.dx).toFixed(2)}mm, ${(it.y - state.dy).toFixed(2)}mm)\n`;
+      });
+    } else {
+      txt += `=== FRC 8725 Misty Panther | HTD-5M 皮帶計算報告 ===\n`;
+      txt += `輸入皮帶輪: ${state.inTeeth}T (0, 0) | 輸出皮帶輪: ${state.outTeeth}T (X=${state.dx.toFixed(2)}mm, Y=${state.dy.toFixed(2)}mm | 中心距 C=${lastSol.mainD.toFixed(2)}mm)\n`;
+      txt += `1. 最接近大整數皮帶長: ${Math.floor(L) + 1} mm\n`;
+      txt += `2. 實際算出皮帶長度: ${L.toFixed(2)} mm (${(L / MM_PER_IN).toFixed(3)} in / ${(L / PITCH).toFixed(2)} 齒)\n`;
+      txt += `3. 最接近小整數皮帶長: ${Math.ceil(L) - 1} mm\n`;
+      state.idlers.forEach((it, i) => {
+        txt += `[惰輪 #0${i + 1}] OD=${it.od.toFixed(2)}mm (${it.wrap === 'outside' ? '外壓背側' : '內撐齒側'}): 相對輸入輪(${it.x.toFixed(2)}mm, ${it.y.toFixed(2)}mm) | 相對輸出輪(${(it.x - state.dx).toFixed(2)}mm, ${(it.y - state.dy).toFixed(2)}mm)\n`;
+      });
+    }
     navigator.clipboard.writeText(txt);
-    showToast('已複製完整工程報告至剪貼簿');
+    showToast(t('toastReportCopied'));
   });
 
   function resize() {
@@ -2357,6 +2674,7 @@
   window.addEventListener('resize', resize);
 
   if (location.hash === '#/length') state.mode = 2;
+  applyLanguageStaticText();
   syncInputsFromState();
   if (state.mode === 1 && state.snap && state.idlers.length > 0) {
     const p = snapIdlerToTarget(0, state.idlers[0].x, state.idlers[0].y);
