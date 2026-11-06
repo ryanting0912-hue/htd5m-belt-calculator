@@ -363,6 +363,7 @@
       background-color: var(--bg-elevated);
       color: var(--text-secondary);
       border: 1px solid var(--border-default);
+      flex-shrink: 0;
     }
 
     .tag--ok { background-color: var(--status-ok-bg); color: #81c784; border-color: rgba(76, 175, 80, 0.4); }
@@ -733,7 +734,7 @@
     .rel-c { color: var(--accent); font-weight: 600; }
 
     /* ==========================================================================
-       右側 CAD 畫布視窗與齒輪比專屬 HUD
+       右側 CAD 畫布視窗與防重疊動態 HUD 導覽列
        ========================================================================== */
     .canvas-pane {
       position: relative;
@@ -752,10 +753,22 @@
       cursor: grabbing;
     }
 
-    .canvas-hud-top {
+    /* 頂部雙框彈性防重疊容器：確保左右兩框永遠保持安全間距、絕不重疊，並依內容自動縮放換行 */
+    .canvas-hud-row {
       position: absolute;
       top: 12px;
       left: 12px;
+      right: 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .canvas-hud-top {
+      pointer-events: auto;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -764,7 +777,8 @@
       padding: 6px 10px;
       border-radius: var(--radius-md);
       flex-wrap: wrap;
-      z-index: 10;
+      flex: 0 1 auto;
+      max-width: 58%;
     }
 
     .hud-divider {
@@ -775,15 +789,36 @@
     }
 
     .canvas-hud-status {
-      position: absolute;
-      top: 12px;
-      right: 12px;
+      pointer-events: auto;
       background-color: rgba(37, 37, 37, 0.94);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      padding: 9px 13px;
-      min-width: 240px;
-      z-index: 10;
+      padding: 8px 12px;
+      min-width: 200px;
+      max-width: min(440px, 48%);
+      flex: 0 1 auto;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      transition: max-width 0.15s;
+    }
+
+    /* 當模式三左上角工具列較短時，允許右上角狀態框彈性使用更寬的空間但仍保留安全間距 */
+    .canvas-hud-row.mode3-active .canvas-hud-top {
+      flex-shrink: 0;
+      max-width: none;
+    }
+
+    .canvas-hud-row.mode3-active .canvas-hud-status {
+      max-width: calc(100% - 265px);
+    }
+
+    #stDetail {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.45;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .canvas-hud-bottom {
@@ -847,11 +882,13 @@
 
     .ratio-result-sub {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11.5px;
+      line-height: 1.45;
       color: var(--text-primary);
       margin-bottom: 10px;
       padding-bottom: 9px;
       border-bottom: 1px solid var(--border-subtle);
+      overflow-wrap: anywhere;
     }
 
     .ratio-guide-title {
@@ -1025,6 +1062,8 @@
       .workbench { grid-template-columns: 1fr; grid-template-rows: auto; overflow: visible; }
       .form-pane { height: auto; overflow: visible; border-right: none; border-bottom: 1px solid var(--border-subtle); }
       .canvas-pane { height: 580px; }
+      .canvas-hud-row { flex-direction: column; align-items: stretch; gap: 8px; }
+      .canvas-hud-top, .canvas-hud-status, .canvas-hud-row.mode3-active .canvas-hud-status { max-width: 100%; }
       .grid--2, .grid--3 { grid-template-columns: 1fr; }
     }
   </style>
@@ -1313,28 +1352,31 @@
 
         <!-- 右側互動式 CAD 視窗 (.canvas-pane) -->
         <main class="canvas-pane" id="canvasPane">
-          <div class="canvas-hud-top">
-            <!-- 上一步 (Undo) 與 下一步 (Redo) 箭頭按鈕 -->
-            <button type="button" class="btn btn--icon" id="btnUndo" title="上一步 (Ctrl+Z)" disabled>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
-            </button>
-            <button type="button" class="btn btn--icon" id="btnRedo" title="下一步 (Ctrl+Y)" disabled>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/></svg>
-            </button>
-            <span class="hud-divider"></span>
-            <button type="button" class="btn" id="btnResetView">置中視角</button>
-            <button type="button" class="btn" id="btnPreset">載入示意圖預設</button>
-            <span style="font-size:12px; color:var(--text-muted); padding-left:4px;" id="canvasHudHint">
-              左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移
-            </span>
-          </div>
-
-          <div class="canvas-hud-status">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);" id="stTitle">STATUS</span>
-              <span class="tag tag--ok" id="stBadge">READY</span>
+          <!-- 頂部防重疊雙框彈性列 (.canvas-hud-row) -->
+          <div class="canvas-hud-row" id="canvasHudRow">
+            <div class="canvas-hud-top">
+              <!-- 上一步 (Undo) 與 下一步 (Redo) 箭頭按鈕 -->
+              <button type="button" class="btn btn--icon" id="btnUndo" title="上一步 (Ctrl+Z)" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+              </button>
+              <button type="button" class="btn btn--icon" id="btnRedo" title="下一步 (Ctrl+Y)" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14l5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5v0A5.5 5.5 0 0 0 9.5 20H13"/></svg>
+              </button>
+              <span class="hud-divider"></span>
+              <button type="button" class="btn" id="btnResetView">置中視角</button>
+              <button type="button" class="btn" id="btnPreset">載入示意圖預設</button>
+              <span style="font-size:12px; color:var(--text-muted); padding-left:4px;" id="canvasHudHint">
+                左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移
+              </span>
             </div>
-            <div style="font-family:var(--font-mono); font-size:12px; font-weight:600;" id="stDetail">就緒</div>
+
+            <div class="canvas-hud-status" id="canvasHudStatus">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:3px;">
+                <span style="font-size:11.5px; font-weight:700; color:var(--text-secondary);" id="stTitle">STATUS</span>
+                <span class="tag tag--ok" id="stBadge">READY</span>
+              </div>
+              <div id="stDetail">就緒</div>
+            </div>
           </div>
 
           <!-- 畫布物件右鍵彈出式選單 (模式三專用) -->
@@ -2390,8 +2432,8 @@
     document.getElementById('gearFormGroup').style.display = isMode3 ? 'flex' : 'none';
     document.getElementById('beltHudBottom').style.display = isMode3 ? 'none' : 'flex';
     document.getElementById('ratioHudBox').style.display = isMode3 ? 'block' : 'none';
-    // 在齒輪比計算模式中隱藏畫布左上工具列右側的操作提示文字
     document.getElementById('canvasHudHint').style.display = isMode3 ? 'none' : 'inline';
+    document.getElementById('canvasHudRow').classList.toggle('mode3-active', isMode3);
 
     if (isMode3) {
       document.getElementById('topbarModeTitle').textContent = t('topbarMode3');
@@ -2654,6 +2696,7 @@
         stBadge.textContent = t('ratioStandby');
         stBadge.className = 'tag tag--warn';
         stDetail.style.color = '#ffd54f';
+        stDetail.style.fontSize = '11.5px';
         stDetail.textContent = msg;
       } else {
         const redRatio = gSol.reductionRatio;
@@ -2669,12 +2712,16 @@
         stBadge.textContent = 'SOLVED';
         stBadge.className = 'tag tag--ok';
         stDetail.style.color = '#81c784';
-        stDetail.textContent = `Ratio = 1 : ${redRatio.toFixed(2)} | ${gSol.pathStr}`;
+        const fullText = `Ratio = 1 : ${redRatio.toFixed(2)} | ${gSol.pathStr}`;
+        stDetail.style.fontSize = fullText.length > 65 ? '11px' : '11.5px';
+        stDetail.textContent = fullText;
       }
 
       draw();
       return;
     }
+
+    stDetail.style.fontSize = '11.5px';
 
     if (locusDirty) rebuildLocusCache();
     const sol = solveBelt();
@@ -2847,7 +2894,6 @@
     ctx.restore();
   }
 
-  // 繪製皮帶輪：支援依模式傳入不同填充顏色 (模式一、二維持 #5A4A46，齒輪比計算使用藍色 #85CAFA)
   function drawPulley(w, label, isDraggableHighlight = false, showCenterIcon = false, isCenterHover = false, customFillHex = null) {
     const c = w2s(w.x, w.y), rPx = w.drawR * view.scale;
     ctx.save();
@@ -2890,13 +2936,15 @@
       drawCenterMarker(c, isCenterHover);
     }
 
-    ctx.fillStyle = isDraggableHighlight ? ACCENT_HEX : '#f0f0f0';
-    ctx.font = '600 12px "Inter", "Noto Sans TC", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText(label, c.x, w.role === 'in' ? c.y + rPx + 20 : c.y - rPx - 12);
+    if (label) {
+      ctx.fillStyle = isDraggableHighlight ? ACCENT_HEX : '#f0f0f0';
+      ctx.font = '600 12px "Inter", "Noto Sans TC", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, c.x, w.role === 'in' ? c.y + rPx + 20 : c.y - rPx - 12);
+    }
   }
 
-  function drawToothedGear(node, idx, isHovered = false, isCenterHover = false, labelOffset = 0) {
+  function drawToothedGear(node, idx, isHovered = false, isCenterHover = false, labelOffset = 0, labelBaseRadiusPx = null) {
     const c = w2s(node.x, node.y);
     const pitchR = getPitchRadius(node.teeth);
     const rPx = pitchR * view.scale;
@@ -2965,17 +3013,23 @@
     ctx.restore();
 
     drawCenterMarker(c, isCenterHover);
-    drawGearNodeLabels(node, idx, c, outerR, labelOffset);
+    drawGearNodeLabels(node, idx, c, labelBaseRadiusPx || outerR, labelOffset);
   }
 
   function drawGearNodeLabels(node, idx, c, outerR, labelOffset = 0) {
     const typeName = node.type === 'gear' ? (state.lang === 'en' ? 'Gear' : '齒輪') : (state.lang === 'en' ? 'Pulley' : '皮帶輪');
     const baseText = `#0${idx + 1} ${typeName} ${node.teeth}T`;
-    const yPos = c.y - outerR - 12 - labelOffset * 18;
+    const yPos = c.y - outerR - 10 - labelOffset * 18;
 
     ctx.save();
-    ctx.font = '600 12px "Inter", "Noto Sans TC", sans-serif';
+    ctx.font = '600 11.5px "Inter", "Noto Sans TC", sans-serif';
     ctx.textAlign = 'center';
+    const textW = ctx.measureText(baseText).width;
+    ctx.fillStyle = 'rgba(24, 24, 24, 0.78)';
+    ctx.beginPath();
+    ctx.roundRect(c.x - textW / 2 - 5, yPos - 12, textW + 10, 16, 4);
+    ctx.fill();
+
     ctx.fillStyle = '#f0f0f0';
     ctx.fillText(baseText, c.x, yPos);
 
@@ -3039,22 +3093,29 @@
       .map((node, idx) => ({ node, idx, r: getPitchRadius(node.teeth) }))
       .sort((a, b) => b.r - a.r);
 
+    // 計算同心共軸群組的最大外徑與堆疊層數，確保同軸物件的文字標籤永遠排在最外圈之上且不重疊
     const labelOffsets = new Array(state.gearNodes.length).fill(0);
+    const maxCoaxialRadiusPx = new Array(state.gearNodes.length).fill(0);
+
     for (let i = 0; i < state.gearNodes.length; i++) {
       let count = 0;
-      for (let j = 0; j < i; j++) {
+      let maxR = getPitchRadius(state.gearNodes[i].teeth) * 1.12;
+      for (let j = 0; j < state.gearNodes.length; j++) {
         if (Math.hypot(state.gearNodes[i].x - state.gearNodes[j].x, state.gearNodes[i].y - state.gearNodes[j].y) < 1.0) {
-          count++;
+          maxR = Math.max(maxR, getPitchRadius(state.gearNodes[j].teeth) * 1.12);
+          if (j < i) count++;
         }
       }
       labelOffsets[i] = count;
+      maxCoaxialRadiusPx[i] = maxR * view.scale;
     }
 
     drawOrder.forEach(({ node, idx, r }) => {
       const isHover = view.hoverGearIdx === idx;
       const isCenterHover = view.hoverCenterIdx === idx;
+      const baseLabelRPx = maxCoaxialRadiusPx[idx];
       if (node.type === 'gear') {
-        drawToothedGear(node, idx, isHover, isCenterHover, labelOffsets[idx]);
+        drawToothedGear(node, idx, isHover, isCenterHover, labelOffsets[idx], baseLabelRPx);
       } else {
         const c = w2s(node.x, node.y);
         drawPulley(
@@ -3065,7 +3126,7 @@
           isCenterHover,
           RATIO_PULLEY_FILL_HEX
         );
-        drawGearNodeLabels(node, idx, c, r * view.scale * 1.04, labelOffsets[idx]);
+        drawGearNodeLabels(node, idx, c, baseLabelRPx, labelOffsets[idx]);
       }
     });
 
