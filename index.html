@@ -1358,10 +1358,10 @@
 
           <canvas id="cadCanvas"></canvas>
 
-          <!-- 模式一 & 二 底部圖例列 -->
+          <!-- 模式一 & 二 底部圖例列 (皮帶輪圖例圓點同步更新為文字背景淡紅褐色 #5A4A46) -->
           <div class="canvas-hud-bottom" id="beltHudBottom">
             <div class="legend-list">
-              <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
+              <div class="legend-node"><span class="swatch" style="background:#5A4A46;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
               <div class="legend-node"><span class="swatch" style="background:#8c939e;"></span><span id="legIdler">培林/惰輪 (外壓切外線 / 內撐切內線)</span></div>
               <div class="legend-node"><span class="swatch" style="background:#c8bba6;"></span><span id="legBelt">時規皮帶雙層虛線</span></div>
               <div class="legend-node"><span class="swatch" style="background:#CE5338;"></span><span id="legLocus">張緊軌跡線</span></div>
@@ -1396,10 +1396,11 @@
 
 <script>
 (function() {
-  const PITCH = 5.0;          // HTD-5M 齒距 5mm
-  const BELT_THICK = 3.5;     // HTD-5M 皮帶厚度 3.5mm
-  const MM_PER_IN = 25.4;     // 1 inch = 25.4 mm
+  const PITCH = 5.0;              // HTD-5M 齒距 5mm
+  const BELT_THICK = 3.5;         // HTD-5M 皮帶厚度 3.5mm
+  const MM_PER_IN = 25.4;         // 1 inch = 25.4 mm
   const ACCENT_HEX = '#CE5338';
+  const PULLEY_FILL_HEX = '#5A4A46'; // 擷取自圖片「材料」文字背景方框的淡紅褐色
   const GEAR_GRAY_HEX = '#7c8b99';
 
   // 中／英雙語字典
@@ -1913,7 +1914,6 @@
       canvas.style.width = cssW + 'px';
       canvas.style.height = cssH + 'px';
     }
-    // X 與 Y 軸使用完全相同的 dpr 縮放倍率，保證 1:1 等比例正交座標
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { width: cssW, height: cssH };
   }
@@ -2765,7 +2765,7 @@
   }
 
   // =========================================================================
-  // Canvas 視覺化渲染 (1:1 正方網格與正圓形保證)
+  // Canvas 視覺化渲染 (皮帶輪改為文字背景淡紅褐色 #5A4A46)
   // =========================================================================
   function w2s(wx, wy) { return { x: view.ox + wx * view.scale, y: view.oy - wy * view.scale }; }
   function s2w(sx, sy) { return { x: (sx - view.ox) / view.scale, y: (view.oy - sy) / view.scale }; }
@@ -2808,7 +2808,6 @@
     draw();
   }
 
-  // 繪製 1:1 正方網格
   function drawGrid(rect) {
     const step = view.scale > 1.8 ? 10 : 25;
     const tl = s2w(0, 0), br = s2w(rect.width, rect.height);
@@ -2849,6 +2848,7 @@
     ctx.restore();
   }
 
+  // 繪製皮帶輪 (本體顏色改為圖片中文字背景的淡紅褐色 #5A4A46)
   function drawPulley(w, label, isDraggableHighlight = false, showCenterIcon = false, isCenterHover = false) {
     const c = w2s(w.x, w.y), rPx = w.drawR * view.scale;
     ctx.save();
@@ -2866,7 +2866,7 @@
     ctx.fillStyle = '#252525'; ctx.fill(); ctx.strokeStyle = isDraggableHighlight ? ACCENT_HEX : '#787878'; ctx.lineWidth = 1.5; ctx.stroke();
 
     ctx.beginPath(); ctx.arc(0, 0, rPx * 0.93, 0, Math.PI * 2);
-    ctx.fillStyle = ACCENT_HEX; ctx.fill();
+    ctx.fillStyle = PULLEY_FILL_HEX; ctx.fill();
 
     ctx.fillStyle = '#181818';
     for (let i = 0; i < w.teeth; i++) {
@@ -3087,7 +3087,6 @@
   }
 
   function draw() {
-    // 每次繪製前強制同步畫布像素長寬，確保任何模式下皆為 1:1 正方網格與正圓
     const rect = syncCanvasAspect();
     ctx.clearRect(0, 0, rect.width, rect.height);
     drawGrid(rect);
@@ -4059,7 +4058,6 @@
   }
   window.addEventListener('resize', resize);
 
-  // 監聽畫布容器尺寸變化 (例如模式切換隱藏頂部摘要列時)，即時維持 1:1 比例
   if (typeof ResizeObserver !== 'undefined') {
     const ro = new ResizeObserver(() => {
       syncCanvasAspect();
