@@ -1358,7 +1358,7 @@
 
           <canvas id="cadCanvas"></canvas>
 
-          <!-- 模式一 & 二 底部圖例列 (皮帶輪圖例圓點同步更新為文字背景淡紅褐色 #5A4A46) -->
+          <!-- 模式一 & 二 底部圖例列 (維持 #5A4A46) -->
           <div class="canvas-hud-bottom" id="beltHudBottom">
             <div class="legend-list">
               <div class="legend-node"><span class="swatch" style="background:#5A4A46;"></span><span id="legPulley">HTD-5M 皮帶輪</span></div>
@@ -1396,11 +1396,12 @@
 
 <script>
 (function() {
-  const PITCH = 5.0;              // HTD-5M 齒距 5mm
-  const BELT_THICK = 3.5;         // HTD-5M 皮帶厚度 3.5mm
-  const MM_PER_IN = 25.4;         // 1 inch = 25.4 mm
+  const PITCH = 5.0;                     // HTD-5M 齒距 5mm
+  const BELT_THICK = 3.5;                // HTD-5M 皮帶厚度 3.5mm
+  const MM_PER_IN = 25.4;                // 1 inch = 25.4 mm
   const ACCENT_HEX = '#CE5338';
-  const PULLEY_FILL_HEX = '#5A4A46'; // 擷取自圖片「材料」文字背景方框的淡紅褐色
+  const PULLEY_FILL_HEX = '#5A4A46';       // 模式一、二的皮帶輪顏色維持現狀 (#5A4A46)
+  const RATIO_PULLEY_FILL_HEX = '#85CAFA'; // 齒輪比計算中的皮帶輪顏色改為「工具」文字的藍色 (#85CAFA)
   const GEAR_GRAY_HEX = '#7c8b99';
 
   // 中／英雙語字典
@@ -1897,7 +1898,7 @@
   const ctx = canvas.getContext('2d');
 
   // =========================================================================
-  // 1:1 畫布像素與長寬比強制同步器 (確保所有模式網格為 1:1 正方格、圓形為正圓)
+  // 1:1 畫布像素與長寬比強制同步器
   // =========================================================================
   function syncCanvasAspect() {
     const pane = canvas.parentElement;
@@ -1918,7 +1919,6 @@
     return { width: cssW, height: cssH };
   }
 
-  // 防止在左側欄滾動滑鼠滾輪下滑時，誤觸正在聚焦的 number input 數值增減
   document.getElementById('formPane').addEventListener('wheel', () => {
     if (document.activeElement && document.activeElement.type === 'number' && document.getElementById('formPane').contains(document.activeElement)) {
       document.activeElement.blur();
@@ -2765,7 +2765,7 @@
   }
 
   // =========================================================================
-  // Canvas 視覺化渲染 (皮帶輪改為文字背景淡紅褐色 #5A4A46)
+  // Canvas 視覺化渲染
   // =========================================================================
   function w2s(wx, wy) { return { x: view.ox + wx * view.scale, y: view.oy - wy * view.scale }; }
   function s2w(sx, sy) { return { x: (sx - view.ox) / view.scale, y: (view.oy - sy) / view.scale }; }
@@ -2848,8 +2848,8 @@
     ctx.restore();
   }
 
-  // 繪製皮帶輪 (本體顏色改為圖片中文字背景的淡紅褐色 #5A4A46)
-  function drawPulley(w, label, isDraggableHighlight = false, showCenterIcon = false, isCenterHover = false) {
+  // 繪製皮帶輪：支援依模式傳入不同填充顏色 (模式一、二維持 #5A4A46，齒輪比計算使用藍色 #85CAFA)
+  function drawPulley(w, label, isDraggableHighlight = false, showCenterIcon = false, isCenterHover = false, customFillHex = null) {
     const c = w2s(w.x, w.y), rPx = w.drawR * view.scale;
     ctx.save();
     ctx.translate(c.x, c.y);
@@ -2866,7 +2866,8 @@
     ctx.fillStyle = '#252525'; ctx.fill(); ctx.strokeStyle = isDraggableHighlight ? ACCENT_HEX : '#787878'; ctx.lineWidth = 1.5; ctx.stroke();
 
     ctx.beginPath(); ctx.arc(0, 0, rPx * 0.93, 0, Math.PI * 2);
-    ctx.fillStyle = PULLEY_FILL_HEX; ctx.fill();
+    ctx.fillStyle = customFillHex || PULLEY_FILL_HEX;
+    ctx.fill();
 
     ctx.fillStyle = '#181818';
     for (let i = 0; i < w.teeth; i++) {
@@ -3057,12 +3058,14 @@
         drawToothedGear(node, idx, isHover, isCenterHover, labelOffsets[idx]);
       } else {
         const c = w2s(node.x, node.y);
+        // 齒輪比計算中的皮帶輪使用「工具」文字的藍色 (#85CAFA)
         drawPulley(
           { x: node.x, y: node.y, teeth: node.teeth, drawR: r, role: 'out' },
           '',
           isHover,
           true,
-          isCenterHover
+          isCenterHover,
+          RATIO_PULLEY_FILL_HEX
         );
         drawGearNodeLabels(node, idx, c, r * view.scale * 1.04, labelOffsets[idx]);
       }
