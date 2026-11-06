@@ -1401,7 +1401,7 @@
   const MM_PER_IN = 25.4;                // 1 inch = 25.4 mm
   const ACCENT_HEX = '#CE5338';
   const PULLEY_FILL_HEX = '#5A4A46';       // 模式一、二的皮帶輪顏色維持現狀 (#5A4A46)
-  const RATIO_PULLEY_FILL_HEX = '#85CAFA'; // 齒輪比計算中的皮帶輪顏色改為「工具」文字的藍色 (#85CAFA)
+  const RATIO_PULLEY_FILL_HEX = '#85CAFA'; // 齒輪比計算中的皮帶輪顏色 (#85CAFA)
   const GEAR_GRAY_HEX = '#7c8b99';
 
   // 中／英雙語字典
@@ -1459,7 +1459,6 @@
       loadPreset: '載入示意圖預設',
       hudHintIdler: '左鍵拖曳惰輪 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
       hudHintZero: '左鍵拖曳輸出皮帶輪改變角度 · 滾輪縮放 · 空白鍵+左鍵或右鍵平移',
-      hudHintGear: '左鍵拖外圈移動(重疊即共軸) · 左鍵拖圓心拉虛線連接傳動 · 右鍵設輸入/輸出',
       legPulley: 'HTD-5M 皮帶輪',
       legIdler: '培林/惰輪 (外壓切外線 / 內撐切內線)',
       legBelt: '時規皮帶雙層虛線',
@@ -1618,7 +1617,6 @@
       loadPreset: 'Load Preset',
       hudHintIdler: 'LMB Drag Idler · Scroll Zoom · Space+LMB or RMB Pan',
       hudHintZero: 'LMB Drag Output Pulley Angle · Scroll Zoom · Space+LMB or RMB Pan',
-      hudHintGear: 'LMB Body: Move (Overlap=Coaxial) · LMB Center: Pull Dashed Link · RMB: Set Input/Output',
       legPulley: 'HTD-5M Pulley',
       legIdler: 'Idler (Outside: Outer Line / Inside: Inner Line)',
       legBelt: 'Timing Belt Dual Dashed Lines',
@@ -2392,10 +2390,11 @@
     document.getElementById('gearFormGroup').style.display = isMode3 ? 'flex' : 'none';
     document.getElementById('beltHudBottom').style.display = isMode3 ? 'none' : 'flex';
     document.getElementById('ratioHudBox').style.display = isMode3 ? 'block' : 'none';
+    // 在齒輪比計算模式中隱藏畫布左上工具列右側的操作提示文字
+    document.getElementById('canvasHudHint').style.display = isMode3 ? 'none' : 'inline';
 
     if (isMode3) {
       document.getElementById('topbarModeTitle').textContent = t('topbarMode3');
-      document.getElementById('canvasHudHint').textContent = t('hudHintGear');
       return;
     }
 
@@ -3058,7 +3057,6 @@
         drawToothedGear(node, idx, isHover, isCenterHover, labelOffsets[idx]);
       } else {
         const c = w2s(node.x, node.y);
-        // 齒輪比計算中的皮帶輪使用「工具」文字的藍色 (#85CAFA)
         drawPulley(
           { x: node.x, y: node.y, teeth: node.teeth, drawR: r, role: 'out' },
           '',
